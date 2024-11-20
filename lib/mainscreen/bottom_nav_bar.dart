@@ -1,96 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
-class TopNavBar extends StatelessWidget {
+class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
-  final List<String> iconPaths;
   final Function(int) onItemTapped;
 
-  TopNavBar({
-    required this.selectedIndex,
-    required this.iconPaths,
-    required this.onItemTapped,
-  });
+  BottomNavBar({required this.selectedIndex, required this.onItemTapped});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Bottom navigation bar with icons
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(iconPaths.length, (index) {
-                  final bool isSelected = selectedIndex == index;
-                  return GestureDetector(
-                    onTap: () => onItemTapped(index),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 16.0,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: isSelected
-                            ? LinearGradient(
-                          colors: [
-                            Color(0xFF5BB9AE),
-                            Color(0xFF81BEB7),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        )
-                            : null,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: SvgPicture.asset(
-                        iconPaths[index],
-                        color: isSelected ? Colors.white : Colors.black,
-                        width: 24,
-                        height: 24,
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ),
-            // Triangle indicator for selected tab
-            Positioned(
-              bottom: 0,
-              child: ClipPath(
-                clipper: TriangleClipper(),
-                child: Container(
-                  width: 24,
-                  height: 16,
-                  color: Color(0xFF5BB9AE),
-                ),
-              ),
-            ),
-          ],
-        ),
+    return BottomNavigationBar(
+      currentIndex: selectedIndex,
+      onTap: onItemTapped,
+      backgroundColor: Colors.white,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.teal,
+      unselectedItemColor: Colors.grey,
+      selectedLabelStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
       ),
+      unselectedLabelStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.normal,
+      ),
+      items: [
+        _buildNavItem('assets/icons/home.svg', 'الرئيسية', 0),
+        _buildNavItem('assets/icons/profile.svg', 'الكرت الصحي', 1),
+        _buildMapNavItem(),
+        _buildNavItem('assets/icons/info.svg', 'مساعدة', 3),
+        _buildNavItem('assets/icons/setting.svg', 'إعدادات', 4),
+      ],
     );
   }
-}
 
-class TriangleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(size.width / 2, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
+  BottomNavigationBarItem _buildNavItem(String assetPath, String label, int index) {
+    return BottomNavigationBarItem(
+      icon: SvgPicture.asset(
+        assetPath,
+        color: selectedIndex == index ? Colors.teal : Colors.grey,
+        width: Get.width * 0.06,
+        height: Get.height * 0.03,
+      ),
+      label: label,
+    );
   }
 
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
+  BottomNavigationBarItem _buildMapNavItem() {
+    return BottomNavigationBarItem(
+      icon: Container(
+        height: Get.height * 0.07,
+        width: Get.width * 0.12,
+        child: Center(
+          child: SvgPicture.asset(
+            'assets/icons/map.svg',
+            color: Colors.teal,
+            width: Get.width * 0.10,
+            height: Get.height * 0.05,
+          ),
+        ),
+      ),
+      label: 'الخريطة',
+    );
   }
 }

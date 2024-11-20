@@ -11,77 +11,40 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  static const _splashDuration = Duration(seconds: 7);
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 7), () {
+    Timer(_splashDuration, () {
       Get.off(() => const OnboardingScreen());
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Use GetX to access screen width and height
+    final screenWidth = Get.width;
+    final screenHeight = Get.height;
+
     return Scaffold(
       backgroundColor: const Color(0xFF26A69A),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: constraints.maxWidth,
-                  maxHeight: constraints.maxHeight,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(flex: 2),
-                      const AppLogo(),
-                      const SizedBox(height: 24),
-                      const AppTitle(),
-                      const Spacer(flex: 2),
-                      const FooterText(),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class AppLogo extends StatelessWidget {
-  const AppLogo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Calculate logo size based on screen width, with a maximum size
-    double screenWidth = MediaQuery.of(context).size.width;
-    double logoSize = screenWidth * 0.25;
-    // Ensure logo doesn't get too large on wide screens
-    logoSize = logoSize.clamp(50.0, 150.0);
-    double iconSize = logoSize * 0.8;
-
-    return SizedBox(
-      width: logoSize,
-      height: logoSize,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
+      body: SafeArea(
         child: Center(
-          child: Image(
-            image: const AssetImage('assets/images/logo.png'),
-            width: iconSize,
-            height: iconSize,
-            fit: BoxFit.contain,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(flex: 2),
+                AppLogo(screenWidth: screenWidth),
+                const SizedBox(height: 24),
+                AppTitle(screenWidth: screenWidth),
+                const Spacer(flex: 2),
+                FooterText(screenWidth: screenWidth),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
@@ -89,37 +52,58 @@ class AppLogo extends StatelessWidget {
   }
 }
 
-class AppTitle extends StatelessWidget {
-  const AppTitle({Key? key}) : super(key: key);
+class AppLogo extends StatelessWidget {
+  final double screenWidth;
+
+  const AppLogo({Key? key, required this.screenWidth}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    // Calculate font size with minimum and maximum bounds
-    double fontSize = (screenWidth * 0.08).clamp(20.0, 40.0);
+    // Make logo size responsive
+    final double logoSize = (screenWidth * 0.25).clamp(50.0, 150.0);
+    return SizedBox(
+      width: logoSize,
+      height: logoSize,
+      child: Center(
+        child: Image.asset(
+          'assets/images/logo.png',
+          width: logoSize * 0.8,
+          height: logoSize * 0.8,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+}
 
+class AppTitle extends StatelessWidget {
+  final double screenWidth;
+
+  const AppTitle({Key? key, required this.screenWidth}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double fontSize = (screenWidth * 0.08).clamp(20.0, 40.0);
     return Text(
       'طب الحشود',
       style: TextStyle(
         color: Colors.white,
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
-        fontFamily: 'Cairo',
       ),
     );
   }
 }
 
 class FooterText extends StatelessWidget {
-  const FooterText({Key? key}) : super(key: key);
+  final double screenWidth;
+
+  const FooterText({Key? key, required this.screenWidth}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    // Calculate font size with minimum and maximum bounds
-    double fontSize = (screenWidth * 0.04).clamp(14.0, 24.0);
-
-    return Container(
+    final double fontSize = (screenWidth * 0.04).clamp(14.0, 24.0);
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         'معاونية شؤون الطلبة والمقاتلين والمضحين',
@@ -127,7 +111,6 @@ class FooterText extends StatelessWidget {
         style: TextStyle(
           color: Colors.white,
           fontSize: fontSize,
-          fontFamily: 'Cairo',
         ),
       ),
     );
