@@ -87,7 +87,6 @@ class HomePage extends StatelessWidget {
                   content: 'AMPICILLIN\nAMPHOTERICIN\nAMPICILLIN',
                   title: 'الأدوية المصروفة لي',
                   iconPath: 'assets/icons/pill.svg',
-                  bgColor: Color(0xFFd6eaef),
                   iconColor: Color(0xFFFF9800),
                 ),
               ),

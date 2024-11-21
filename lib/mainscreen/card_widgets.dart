@@ -22,10 +22,11 @@ class SmallCard extends StatelessWidget {
     double cardHeight = height * 0.15;
 
     return Container(
+
       width: cardWidth,
       height: cardHeight,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xffdcf1f6),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.withOpacity(0.3)),
         boxShadow: [
@@ -66,14 +67,12 @@ class LargeCard extends StatelessWidget {
   final String content;
   final String title;
   final String iconPath;
-  final Color bgColor;
   final Color iconColor;
 
   LargeCard({
     required this.content,
     required this.title,
     required this.iconPath,
-    required this.bgColor,
     required this.iconColor,
   });
 
@@ -89,7 +88,7 @@ class LargeCard extends StatelessWidget {
       height: cardHeight,
       width: cardWidth,
       decoration: BoxDecoration(
-        color: bgColor,
+        color: Color(0xffdcf1f6),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.withOpacity(0.3)),
         boxShadow: [
@@ -144,7 +143,6 @@ class CardBase extends StatelessWidget {
   final Color iconColor;
   final Widget? child;
   final double height;
-  final Color bgColor;
   final bool isLargeCard;
 
   const CardBase({
@@ -153,7 +151,6 @@ class CardBase extends StatelessWidget {
     required this.iconColor,
     this.child,
     this.height = 100,
-    this.bgColor = Colors.white,
     this.isLargeCard = false,
   });
 
@@ -167,7 +164,6 @@ class CardBase extends StatelessWidget {
     return Container(
       height: cardHeight,
       decoration: BoxDecoration(
-        color: bgColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.withOpacity(0.3)),
         boxShadow: _buildBoxShadow(),
