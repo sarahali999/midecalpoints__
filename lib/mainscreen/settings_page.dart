@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
+import 'about.dart';
+import 'delete_account.dart';
+import 'edit_language.dart';
+import 'on_off_notifications.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -11,36 +13,29 @@ class SettingsPage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 60),
-
-
           _buildSettingsOption(
             icon: Icons.language,
             title: 'اللغة',
             trailingText: 'العربية',
+            onTap: () => _showLanguageDialog(context),
           ),
           SizedBox(height: 20),
-
           _buildSettingsOption(
             icon: Icons.person,
-            title: 'المعلومات الشخصية',
+            title: 'حذف الحساب',
+            onTap: () => _showDeleteAccountDialog(context),
           ),
           SizedBox(height: 20),
-
-          _buildSettingsOption(
-            icon: Icons.lock,
-            title: 'تغيير كلمة السر',
-          ),
-          SizedBox(height: 20),
-
           _buildSettingsOption(
             icon: Icons.notifications,
             title: 'السماح بالإشعارات',
+            onTap: () => _showNotificationsDialog(context),
           ),
           SizedBox(height: 20),
-
           _buildSettingsOption(
             icon: Icons.help_outline,
             title: 'اعرف عنا',
+            onTap: () => _showAboutDialog(context),
           ),
           Spacer(),
           _buildFooterText(),
@@ -54,26 +49,14 @@ class SettingsPage extends StatelessWidget {
       backgroundColor: Color(0xFf259e9f),
       elevation: 0,
       automaticallyImplyLeading: false,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Get.back(),
-          ),
-          Text(
-            'الإعدادات',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.home, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
+      centerTitle: true,
+      title: Text(
+        'الإعدادات',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -82,6 +65,7 @@ class SettingsPage extends StatelessWidget {
     required IconData icon,
     required String title,
     String? trailingText,
+    required Function() onTap,
   }) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -107,9 +91,7 @@ class SettingsPage extends StatelessWidget {
             Icon(Icons.chevron_left, color: Colors.grey),
           ],
         ),
-        onTap: () {
-          // Handle navigation to corresponding setting page
-        },
+        onTap: onTap,
       ),
     );
   }
@@ -122,6 +104,35 @@ class SettingsPage extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
       ),
+    );
+  }
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => LanguageDialog(),
+    );
+  }
+
+  void _showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => DeleteAccount(),
+    );
+  }
+
+  // Popup Dialog for Notifications
+  void _showNotificationsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => NotificationsDialog(),
+    );
+  }
+
+  // Popup Dialog for About
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Aboutapp(),
     );
   }
 }

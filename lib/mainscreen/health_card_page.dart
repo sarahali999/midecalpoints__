@@ -28,23 +28,25 @@ class HealthInfo extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildAppBar() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Get.width * 0.05, vertical: Get.height * 0.02),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(Icons.arrow_back, color: Colors.white, size: Get.width * 0.08),
-          Text(
-            'الكرت الصحي',
-            style: TextStyle(fontSize: Get.width * 0.05, fontWeight: FontWeight.bold, color: Colors.white),
+      child: AppBar(
+        backgroundColor: Color(0xFf259e9f),
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          'الكرت الصحي',
+          style: TextStyle(
+            fontSize: Get.width * 0.05,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          Icon(Icons.home, color: Colors.white, size: Get.width * 0.08),
-        ],
+        ),
       ),
     );
   }
+
 
   Widget _buildUserInfo(UserController controller) {
     return Obx(() {

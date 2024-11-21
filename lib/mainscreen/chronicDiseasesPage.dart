@@ -21,12 +21,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false),
-          ),
-        ],
+
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -87,7 +82,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
         children: [
           Row(
             children: [
-              Icon(Icons.shield, color: Color(0xFf259e9f)),
+              Icon(Icons.shield, color: Colors.orangeAccent),
               SizedBox(width: 8),
               Expanded(
                 child: Text(
