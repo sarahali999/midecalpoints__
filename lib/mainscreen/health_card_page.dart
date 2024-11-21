@@ -92,6 +92,7 @@ class HealthInfo extends StatelessWidget {
             style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: Color(0xFF5BB9AE)),
           ),
           SizedBox(height: Get.height * 0.01), // Responsive spacing
+          _buildInfoRow(Icons.phone, "رقم الهاتف: ${user?.phoneNumber ?? 'غير متوفر'}"),
           _buildInfoRow(
             Icons.person,
             "الجنس: ${controller.getGender(userData?.gender)}",

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
+import '../mainscreen/homePage.dart';
 import 'introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,9 +18,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(_splashDuration, () {
-      Get.off(() => const OnboardingScreen());
-    });
+    _checkTokenAndNavigate(); // Check token after the splash screen duration
+  }
+
+  Future<void> _checkTokenAndNavigate() async {
+    // Delay to show splash screen for the required duration
+    await Future.delayed(_splashDuration);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      Get.offAll(() => MainScreen());
+    } else {
+      Get.offAll(() => const OnboardingScreen());
+    }
   }
 
   @override

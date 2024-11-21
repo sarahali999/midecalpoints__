@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../phones/verification.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  const OnboardingScreen();
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }

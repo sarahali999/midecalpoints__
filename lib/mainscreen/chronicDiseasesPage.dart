@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
 
-class ChronicDiseasesPage extends StatelessWidget {
-  final UserController userController = Get.find<UserController>();
+class ChronicDiseasesPage extends GetView<UserController> {
+  final UserController controller = Get.put(UserController());
 
+  ChronicDiseasesPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +29,12 @@ class ChronicDiseasesPage extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        if (userController.isLoading.value) {
+        if (controller.isLoading.value) {
           return Center(child: CircularProgressIndicator());
         }
 
         return RefreshIndicator(
-          onRefresh: () => userController.fetchPatientDetails(),
+          onRefresh: controller.fetchPatientDetails,  // Fixed to use controller
           child: ListView(
             padding: EdgeInsets.all(16),
             children: [
@@ -42,7 +43,7 @@ class ChronicDiseasesPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   icon: Icon(Icons.refresh, color: Color(0xFF3EB49B)),
-                  onPressed: () => userController.fetchPatientDetails(),
+                  onPressed: controller.fetchPatientDetails,  // Fixed to use controller
                 ),
               ),
               SizedBox(height: 8),
@@ -50,9 +51,8 @@ class ChronicDiseasesPage extends StatelessWidget {
               // Chronic Diseases Card
               _buildInfoCard(
                 title: 'مرض مزمن',
-                date: '2024-8-23',
-                content: userController.userInfoDetails.value?.data?.chronicDiseases?.isNotEmpty == true
-                    ? userController.userInfoDetails.value!.data!.chronicDiseases!
+                content: controller.userInfoDetails.value?.data?.chronicDiseases?.isNotEmpty == true
+                    ? controller.userInfoDetails.value!.data!.chronicDiseases!
                     : 'لا يعاني من مرض مزمن',
               ),
 
@@ -61,9 +61,8 @@ class ChronicDiseasesPage extends StatelessWidget {
               // Allergies Card
               _buildInfoCard(
                 title: 'الحساسية',
-                date: '2024-8-23',
-                content: userController.userInfoDetails.value?.data?.allergies?.isNotEmpty == true
-                    ? userController.userInfoDetails.value!.data!.allergies!
+                content: controller.userInfoDetails.value?.data?.allergies?.isNotEmpty == true
+                    ? controller.userInfoDetails.value!.data!.allergies!
                     : 'لا يعاني من حساسية',
               ),
             ],
@@ -75,7 +74,6 @@ class ChronicDiseasesPage extends StatelessWidget {
 
   Widget _buildInfoCard({
     required String title,
-    required String date,
     required String content,
   }) {
     return Container(
@@ -104,16 +102,7 @@ class ChronicDiseasesPage extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              date,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
-              ),
-            ),
-          ),
+
         ],
       ),
     );
