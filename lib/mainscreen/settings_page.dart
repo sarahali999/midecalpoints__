@@ -34,7 +34,7 @@ class SettingsPage extends StatelessWidget {
           SizedBox(height: 20),
           _buildSettingsOption(
             icon: Icons.help_outline,
-            title: 'اعرف عنا',
+            title: 'الشروط والخدمة',
             onTap: () => _showAboutDialog(context),
           ),
           Spacer(),
@@ -46,8 +46,15 @@ class SettingsPage extends StatelessWidget {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: Color(0xFf259e9f),
-      elevation: 0,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF259E9F),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
+      ),
       automaticallyImplyLeading: false,
       centerTitle: true,
       title: Text(

@@ -22,48 +22,25 @@ class _PublicnoticesState extends State<Publicnotices> {
     OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
     OneSignal.initialize("050d7df1-2374-4fb5-9b4e-a800bb099f7b");
 
-    // Request notification permissions
     OneSignal.Notifications.requestPermission(true).then((accepted) {
       print("Notification permissions accepted: $accepted");
     });
 
     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-      print('Notification received in foreground: ${event.notification.title} - ${event.notification.body}');
       _addNotification(event.notification);
     });
 
     OneSignal.Notifications.addClickListener((event) {
-      print('Notification clicked: ${event.notification.body}');
       _addNotification(event.notification);
     });
-
-    OneSignal.Notifications.addPermissionObserver((state) {
-      print("Permission state changed: $state");
-    });
-
-    _checkStoredNotifications();
-  }
-
-  void _checkStoredNotifications() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? storedNotifications = prefs.getStringList('notifications');
-    if (storedNotifications != null && storedNotifications.isNotEmpty) {
-      print('Found stored notifications: ${storedNotifications.length}');
-      _loadNotifications();
-    } else {
-      print('No stored notifications found');
-    }
   }
 
   void _addNotification(OSNotification notification) {
     final Map<String, dynamic> notificationMap = {
       'title': notification.title ?? 'No Title',
       'body': notification.body ?? 'No Content',
-      'additionalData': notification.additionalData,
       'timestamp': DateTime.now().toIso8601String(),
     };
-
-    print('Adding notification: $notificationMap');
 
     setState(() {
       _notifications.insert(0, notificationMap);
@@ -73,34 +50,22 @@ class _PublicnoticesState extends State<Publicnotices> {
   }
 
   void _loadNotifications() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String>? notificationStrings = prefs.getStringList('notifications');
-      print('Loaded notifications: $notificationStrings');
-      if (notificationStrings != null && notificationStrings.isNotEmpty) {
-        setState(() {
-          _notifications = notificationStrings
-              .map((str) => json.decode(str) as Map<String, dynamic>)
-              .toList();
-        });
-      } else {
-        print('No stored notifications found');
-      }
-    } catch (e) {
-      print('Error loading notifications: $e');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? notificationStrings = prefs.getStringList('notifications');
+    if (notificationStrings != null && notificationStrings.isNotEmpty) {
+      setState(() {
+        _notifications = notificationStrings
+            .map((str) => json.decode(str) as Map<String, dynamic>)
+            .toList();
+      });
     }
-    print('Notifications after loading: $_notifications');
   }
 
   void _saveNotifications() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> notificationStrings = _notifications.map((n) => json.encode(n)).toList();
-      await prefs.setStringList('notifications', notificationStrings);
-      print('Saved notifications: $notificationStrings');
-    } catch (e) {
-      print('Error saving notifications: $e');
-    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> notificationStrings =
+    _notifications.map((n) => json.encode(n)).toList();
+    await prefs.setStringList('notifications', notificationStrings);
   }
 
   @override
@@ -109,14 +74,26 @@ class _PublicnoticesState extends State<Publicnotices> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Color(0xFf259e9f),
-          elevation: 0,
+       appBar:    AppBar(
+       flexibleSpace: Container(
+         decoration: BoxDecoration(
+           color: Color(0xFF259E9F),
+           borderRadius: BorderRadius.only(
+             bottomLeft: Radius.circular(20),
+             bottomRight: Radius.circular(20),
+           ),
+         ),
+       ),
           title: Text(
-            'الاشعارات',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
+            'الإشعارات',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
           centerTitle: true,
+
           actions: [
             IconButton(
               icon: Icon(Icons.refresh),
@@ -128,56 +105,52 @@ class _PublicnoticesState extends State<Publicnotices> {
             ),
           ],
         ),
-        body: Container(
-
-          child: _notifications.isEmpty
-              ? Center(child: Text('لا توجد إشعارات حالياً', style: TextStyle(fontSize: 18)))
-              : ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            itemCount: _notifications.length,
-            itemBuilder: (BuildContext context, int index) {
-              final notification = _notifications[index];
-              String? imageUrl = notification['additionalData']?['image'];
-
-              return Card(
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
+        body: _notifications.isEmpty
+            ? Center(
+          child: Text(
+            'لا توجد إشعارات حالياً',
+            style: TextStyle(fontSize: 18, color: Colors.grey),
+          ),
+        )
+            : ListView.builder(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          itemCount: _notifications.length,
+          itemBuilder: (BuildContext context, int index) {
+            final notification = _notifications[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFEAF8F8),
                   borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    if (imageUrl != null)
-                      ClipRRect(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                        child: Image.network(
-                          imageUrl,
-                          height: 180,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ListTile(
-                      title: Text(
-                        notification['title'] ?? 'No Title',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Color(0xFF5BB9AE),
-                        ),
-                      ),
-                      subtitle: Text(
-                        notification['body'] ?? 'No Content',
-                        style: TextStyle(fontSize: 16, height: 1.5, color: Colors.black54),
-                        textAlign: TextAlign.justify,
-                      ),
-                      trailing: Icon(Icons.notifications, color: Color(0xFF5BB9AE)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 5,
+                      spreadRadius: 2,
                     ),
                   ],
                 ),
-              );
-            },
-          ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.notifications,
+                    color: Color(0xFF5BB9AE),
+                  ),
+                  title: Text(
+                    notification['body'] ?? 'No Content',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    notification['timestamp']?.split('T').first ?? '',
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

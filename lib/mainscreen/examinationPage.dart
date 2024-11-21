@@ -63,11 +63,18 @@ class MedicationListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF259E9F),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),        title: Text(
           'مواد مختبر المريض',
           style: TextStyle(
-            color: Color(0xFf259e9f),
+            color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),

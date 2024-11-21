@@ -10,14 +10,14 @@ class Aboutapp extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         title: Row(
           children: [
-            Icon(Icons.info_outline, color: Colors.blueAccent, size: 35),
+            Icon(Icons.info_outline, color: Color(0xFf259e9f), size: 35),
             SizedBox(width: 12),
             Text(
-              'اعرف عنا',
+              'الشروط والخدمة',
               style: TextStyle(
-                fontSize: 26, // زيادة حجم الخط
+                fontSize: 26,
                 fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
+                color: Color(0xFf259e9f),
               ),
             ),
           ],
@@ -29,14 +29,14 @@ class Aboutapp extends StatelessWidget {
               Text(
                 'مرحبًا بك في تطبيقنا الطبي الخدمي!',
                 style: TextStyle(
-                  fontSize: 22, // زيادة حجم النص
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: 15),
               Text(
                 'يهدف تطبيقنا إلى توفير خدمات طبية متكاملة للزوار الوافدين من داخل وخارج العراق لزيارة مقام الإمام الحسين وأخيه العباس عليهما السلام.',
-                style: TextStyle(fontSize: 18, height: 1.6), // زيادة المسافة بين الأسطر
+                style: TextStyle(fontSize: 18, height: 1.6),
               ),
               SizedBox(height: 20),
               Text(
@@ -91,18 +91,18 @@ class Aboutapp extends StatelessWidget {
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueAccent, // لون الخلفية
+              backgroundColor: Color(0xFf259e9f),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14), // زيادة التدوير
+                borderRadius: BorderRadius.circular(14),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 12), // زيادة حجم الأزرار
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
             ),
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text(
               'موافق',
-              style: TextStyle(color: Colors.white, fontSize: 18), // زيادة حجم النص
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ),
         ],
@@ -115,7 +115,7 @@ class Aboutapp extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(Icons.check, color: Colors.blueAccent, size: 22),
+          Icon(Icons.check, color: Color(0xFf259e9f), size: 22),
           SizedBox(width: 10),
           Expanded(child: Text(text, style: TextStyle(fontSize: 18))),
         ],
@@ -128,7 +128,7 @@ class Aboutapp extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(Icons.arrow_right, color: Colors.blueAccent, size: 22),
+          Icon(Icons.arrow_right, color: Color(0xFf259e9f), size: 22),
           SizedBox(width: 10),
           Expanded(child: Text(text, style: TextStyle(fontSize: 18))),
         ],

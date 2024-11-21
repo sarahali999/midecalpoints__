@@ -64,17 +64,24 @@ class Quicksupportnumbers extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF259E9F),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),
         title: Text(
           'مساعدة',
           style: TextStyle(
             color: Colors.white,
-            fontSize: Get.width * 0.05, // Responsive font size
+            fontSize: Get.width * 0.05,
             fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Color(0xFf259e9f),
-        elevation: 0,
+
         centerTitle: true,
       ),
       body: Obx(

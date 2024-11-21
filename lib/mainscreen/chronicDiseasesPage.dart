@@ -11,8 +11,15 @@ class ChronicDiseasesPage extends GetView<UserController> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Color(0xFf259e9f),
-        title: Text(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF259E9F),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),        title: Text(
           'الامراض المزمنة والحساسية',
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
