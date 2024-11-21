@@ -259,64 +259,51 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       _buildTextField(
                         controller: _firstNameController,
                         labelText:"الاسم الاول",
-                        icon: Icons.person,
                       ),
                       _buildTextField(
                         controller: _secondNameController,
                         labelText: "الاسم الثاني",
-                        icon: Icons.person_outline,
                       ),
                       _buildTextField(
                         controller: _thirdNameController,
                         labelText: "الاسم الثالث",
-                        icon: Icons.person_outline,
                       ),
                       _buildTextField(
                         controller: _emailController,
                         labelText: "البريد الالكتروني",
-                        icon: Icons.email,
                       ),
                       _buildTextField(
                         controller: _phoneController,
                         labelText:"رقم الهاتف",
-                        icon: Icons.phone,
                       ),
                       _buildTextField(
                         controller: _addressController,
                         labelText: "العنوان",
-                        icon: Icons.home,
                       ),
                       _buildTextField(
                         controller: _birthYearController,
                         labelText:"العمر",
-                        icon: Icons.cake,
                       ),
                       _buildCountryDropdown(
                         controller: _countryController,
                         labelText: "البلد",
-                        icon: Icons.flag,
                       ),
                       _buildTextField(
                         controller: _provinceController,
-                        labelText: "المحافظة",
-                        icon: Icons.location_city,
-                      ),
+                        labelText: "المحافظة",),
                       _buildTextField(
                         controller: _districtController,
                         labelText: "المحلة",
-                        icon: Icons.location_on,
                       ),
                       _buildTextField(
                         controller: _alleyController,
                         labelText: "الزقاق",
-                        icon: Icons.streetview,
                       ),
                       _buildTextField(
                         controller: _houseController,
                         labelText: "الدار",
-                        icon: Icons.house,
                       ),
-                      _buildAnimatedDropdown(
+                      _buildDropdown(
                         value: _selectedGender,
                         label: "الجنس",
                         items: [
@@ -330,13 +317,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ],
                         onChanged: (value) => setState(() => _selectedGender = value),
-                        icon: Icons.wc,
                       ),
                       SizedBox(height: 20),
                       _buildSectionHeader(
                           "المعلومات الطبية"
                       ),
-                      _buildAnimatedDropdown(
+                      _buildDropdown(
                         value: _selectedBloodType,
                         label: "فصيلة الدم",
                         items: [
@@ -350,55 +336,45 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ],
                         onChanged: (value) => setState(() => _selectedBloodType = value),
-                        icon: Icons.bloodtype,
                       ),
                       _buildCountryDropdownem(
 
                         controller: _emergencyContactCountryController,
                         labelText:"البلد",
-                        icon: Icons.flag,
                       ),
                       _buildTextField(
                         controller: _chronicDiseasesController,
                         labelText: "الامراض المزمنة",
-                        icon: Icons.medical_services,
                       ),
                       _buildTextField(
                         controller: _allergiesController,
                         labelText: "الحساسية",
-                        icon: Icons.warning,
                       ),
                       SizedBox(height: 20),
                       _buildSectionHeader("معلومات الاتصال الطارئة"),
                       _buildTextField(
                         controller: _emergencyContactNameController,
                         labelText: "اسمه",
-                        icon: Icons.contact_emergency,
                       ),
                       _buildTextField(
                         controller: _emergencyContactPhoneController,
                         labelText: "رقم هاتفه",
-                        icon: Icons.phone_callback,
                       ),
                       _buildTextField(
                         controller: _emergencyContactAddressController,
                         labelText: "العنوان",
-                        icon: Icons.home_work,
                       ),
                       _buildCountryDropdown(
                         controller: _emergencyContactCountryController,
                         labelText: "البلد",
-                        icon: Icons.flag,
                       ),
                       _buildTextField(
                         controller: _emergencyContactProvinceController,
                         labelText: "المحافظة",
-                        icon: Icons.location_city,
                       ),
                       _buildTextField(
                         controller: _emergencyContactDistrictController,
                         labelText:"المحلة",
-                        icon: Icons.location_on,
                       ),
                       // _buildAnimatedDropdown(
                       //   value: _selectedEmergencyContactRelationship,
@@ -422,12 +398,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       _buildTextField(
                         controller: _usernameController,
                         labelText: "اسم المستخدم",
-                        icon: Icons.account_circle,
                       ),
                       _buildTextField(
                         controller: _passwordController,
                         labelText: "كلمة السر",
-                        icon: Icons.lock,
                         obscureText: true,
                       ),
                       SizedBox(height: 30),
@@ -461,7 +435,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget _buildCountryDropdown({
     required TextEditingController controller,
     required String labelText,
-    required IconData icon,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -476,7 +449,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
               decoration: InputDecoration(
                 labelText: '${labelText} (Failed to load)',
-                prefixIcon: Icon(icon, color: _primaryColor),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -510,7 +482,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               },
               decoration: InputDecoration(
                 labelText: labelText,
-                prefixIcon: Icon(icon, color: _primaryColor),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -530,7 +501,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget _buildCountryDropdownem({
     required TextEditingController controller,
     required String labelText,
-    required IconData icon,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -544,7 +514,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               controller: controller,
               decoration: InputDecoration(
                 labelText: '${labelText} (Failed to load)',
-                prefixIcon: Icon(icon, color: _primaryColor),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -578,7 +547,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               },
               decoration: InputDecoration(
                 labelText: labelText,
-                prefixIcon: Icon(icon, color: _primaryColor),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -608,11 +576,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     ).animate().fadeIn(duration: 500.ms).slideX(begin: -0.2, end: 0);
   }
-
   Widget _buildTextField({
     required TextEditingController controller,
     required String labelText,
-    required IconData icon,
     bool obscureText = false,
   }) {
     return Padding(
@@ -622,25 +588,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: labelText,
-          prefixIcon: Icon(icon, color: _primaryColor),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: _primaryColor),
+            borderSide: BorderSide(color: _secondaryColor),
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.edit,color: _primaryColor,),
+            onPressed: () {
+            },
           ),
         ),
       ),
     ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideX(
         begin: 0.2, end: 0);
   }
-  Widget _buildAnimatedDropdown({
+
+  Widget _buildDropdown({
     required int? value,
     required String label,
     required List<DropdownMenuItem<int>> items,
     required Function(int?) onChanged,
-    required IconData icon,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -648,7 +618,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         value: value,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(icon, color: _primaryColor),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
