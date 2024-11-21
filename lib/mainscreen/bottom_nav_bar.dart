@@ -15,7 +15,7 @@ class BottomNavBar extends StatelessWidget {
       onTap: onItemTapped,
       backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.teal,
+      selectedItemColor: Color(0xFf259e9f),
       unselectedItemColor: Colors.grey,
       selectedLabelStyle: TextStyle(
         fontSize: 12,
@@ -39,7 +39,7 @@ class BottomNavBar extends StatelessWidget {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset(
         assetPath,
-        color: selectedIndex == index ? Colors.teal : Colors.grey,
+        color: selectedIndex == index ? Color(0xFf259e9f) : Colors.grey,
         width: Get.width * 0.06,
         height: Get.height * 0.03,
       ),
@@ -55,7 +55,7 @@ class BottomNavBar extends StatelessWidget {
         child: Center(
           child: SvgPicture.asset(
             'assets/icons/map.svg',
-            color: Colors.teal,
+            color: Color(0xFf259e9f),
             width: Get.width * 0.10,
             height: Get.height * 0.05,
           ),

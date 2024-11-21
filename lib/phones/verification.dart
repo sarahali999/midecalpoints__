@@ -55,7 +55,7 @@ class _MyPhoneState extends State<MyPhone> {
           Get.snackbar(
             'نجاح',
             'تم تسجيل الدخول بنجاح',
-            backgroundColor: Colors.green[100],
+            backgroundColor: Color(0xFf259e9f),
           );
 
           return token;
@@ -122,7 +122,7 @@ class _MyPhoneState extends State<MyPhone> {
                     'assets/images/logo.png',
                     width: screenWidth * 0.2,
                     height: screenWidth * 0.2,
-                    color: const Color(0xFF26A69A),
+                    color: const Color(0xFf259e9f),
                   ),
                   SizedBox(height: screenHeight * 0.05),
                   _buildTitle("تسجيل الدخول"),
@@ -233,7 +233,7 @@ class _MyPhoneState extends State<MyPhone> {
           onPressed: () {},
           child: Text(
             "هل نسيت كلمة السر؟",
-            style: TextStyle(color: const Color(0xFF26A69A), fontSize: Get.width * 0.035),
+            style: TextStyle(color: const Color(0xFf259e9f), fontSize: Get.width * 0.035),
           ),
         ),
         TextButton(
@@ -245,7 +245,7 @@ class _MyPhoneState extends State<MyPhone> {
           },
           child: Text(
             "ليس لدي حساب، إنشاء حساب الآن",
-            style: TextStyle(color: const Color(0xFF26A69A), fontSize: Get.width * 0.035),
+            style: TextStyle(color: const Color(0xFf259e9f), fontSize: Get.width * 0.035),
           ),
         ),
       ],
@@ -258,7 +258,7 @@ class _MyPhoneState extends State<MyPhone> {
       height: Get.height * 0.06,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF26A69A),
+          backgroundColor: const Color(0xFf259e9f),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

@@ -75,7 +75,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         Get.snackbar(
           'نجاح',
           'تم إنشاء الحساب بنجاح',
-          backgroundColor: Colors.green,
+          backgroundColor: Color(0xFf259e9f),
           colorText: Colors.white,
           duration: Duration(seconds: 2),
         );
@@ -156,6 +156,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     double textWidth = textPainter.size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Stack(
@@ -171,7 +173,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xfffafbfb),
+                      Color(0xfffaf5fb),
                       Color(0xFFecf2f3),
                     ],
                   ),
@@ -189,7 +191,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                   'assets/images/logo.png',
                   width: screenWidth * 0.2,
                   height: screenWidth * 0.2,
-                  color: const Color(0xFF26A69A),
+                  color: const Color(0xFf259e9f),
                 ),
                 SizedBox(height: 4),
                 Align(
@@ -239,7 +241,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                         Container(
                           width: textWidth,
                           height: 2,
-                          color: Colors.teal,
+                          color: Color(0xFf259e9f),
                         ),
                       ],
                     ),
@@ -323,55 +325,75 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
               ],
             ),
             Positioned(
+
               bottom: screenHeight * 0.1,
               left: 0,
               right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(4, (index) {
-                  return GestureDetector(
-                    onTap: () {
-                      _pageController.jumpToPage(index);
-                    },
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      width: _currentPage == index ? 12 : 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentPage == index ? Colors.teal : Colors.grey,
-                      ),
-                    ),
-                  );
-                }),
+              child: AnimatedOpacity(
+                opacity: MediaQuery.of(context).viewInsets.bottom > 0 ? 0.0 : 1.0,
+                duration: Duration(milliseconds: 300),
+                child: IgnorePointer(
+                  ignoring: MediaQuery.of(context).viewInsets.bottom > 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(4, (index) {
+                      return GestureDetector(
+
+                        onTap: () {
+                          _pageController.jumpToPage(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 4),
+                          width: _currentPage == index ? 12 : 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentPage == index ? Color(0xFf259e9f) :
+                            Colors.grey,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
               ),
             ),
             Positioned(
+
               bottom: screenHeight * 0.03,
               right: screenWidth * 0.05,
               left: screenWidth * 0.05,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF26A69A),
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              child: AnimatedOpacity(
+
+                opacity: MediaQuery.of(context).viewInsets.bottom > 0 ? 0.0 : 1.0,
+                duration: Duration(milliseconds: 300),
+                child: IgnorePointer(
+
+                  ignoring: MediaQuery.of(context).viewInsets.bottom > 0,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFf259e9f),
+                      padding: EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (_currentPage < 3) {
+                        _pageController.nextPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      } else {
+                        submitPatientData();
+                      }
+                    },
+                    child: Text(
+                      _currentPage < 3 ? "التالي" : "إنهاء",
+                      style: TextStyle(fontSize: 18 * fontScale, color: Colors.white),
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  if (_currentPage < 3) {
-                    _pageController.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  } else {
-                    submitPatientData();
-                  }
-                },
-                child: Text(
-                  _currentPage < 3 ? "التالي" : "إنهاء",
-                  style: TextStyle(fontSize: 18 * fontScale, color: Colors.white),
                 ),
               ),
             ),

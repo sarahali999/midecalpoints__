@@ -45,7 +45,7 @@ class UserProfile extends GetView<UserController> {
   Widget _buildProfileHeader(Data user, double screenWidth, double screenHeight) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF5BB9AE),
+        color: Color(0xFf259e9f),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
       padding: EdgeInsets.symmetric(

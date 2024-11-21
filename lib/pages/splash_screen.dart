@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final screenHeight = Get.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26A69A),
+      backgroundColor: const Color(0xFf259e9f),
       body: SafeArea(
         child: Center(
           child: Padding(

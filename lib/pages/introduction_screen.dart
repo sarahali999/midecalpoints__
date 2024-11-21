@@ -25,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _showLanguages = false;
   String _selectedLanguage = 'العربية';
 
-  static const _primaryColor = Color(0xFF26A69A);
+  static const _primaryColor = Color(0xFf259e9f);
   static const _languages = ['العربية', 'فارسی', 'كوردي', 'تركماني', 'English'];
 
   static const _contents = [

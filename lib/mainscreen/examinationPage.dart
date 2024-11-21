@@ -68,7 +68,7 @@ class MedicationListWidget extends StatelessWidget {
         title: Text(
           'مواد مختبر المريض',
           style: TextStyle(
-            color: Color(0xFF5CBBE3),
+            color: Color(0xFf259e9f),
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -104,18 +104,13 @@ class MedicationListWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/icons/no.svg',
-            width: 200,
-            height: 200,
-          ),
-          SizedBox(height: 20),
+
           Text(
             'لم يتم صرف الدواء بعد',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF5CBBE3),
+              color: Color(0xFf259e9f),
             ),
             textAlign: TextAlign.center,
           ),
@@ -148,7 +143,8 @@ class MedicationListWidget extends StatelessWidget {
         padding: EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF5CBBE3), Colors.white],
+            colors: [Color(0xFf259e9f),
+              Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -188,7 +184,7 @@ class MedicationListWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF5CBBE3),
+                color: Color(0xFf259e9f),
               ),
             ),
             _buildInfoRow(

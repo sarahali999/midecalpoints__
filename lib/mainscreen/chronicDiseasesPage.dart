@@ -11,7 +11,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Color(0xFF3EB49B),
+        backgroundColor: Color(0xFf259e9f),
         title: Text(
           'الامراض المزمنة والحساسية',
           style: TextStyle(color: Colors.white, fontSize: 20),
@@ -42,7 +42,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: IconButton(
-                  icon: Icon(Icons.refresh, color: Color(0xFF3EB49B)),
+                  icon: Icon(Icons.refresh, color: Color(0xFf259e9f)),
                   onPressed: controller.fetchPatientDetails,  // Fixed to use controller
                 ),
               ),
@@ -87,7 +87,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
         children: [
           Row(
             children: [
-              Icon(Icons.shield, color: Color(0xFF3EB49B)),
+              Icon(Icons.shield, color: Color(0xFf259e9f)),
               SizedBox(width: 8),
               Expanded(
                 child: Text(

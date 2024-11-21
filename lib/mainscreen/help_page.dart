@@ -76,7 +76,7 @@ class Quicksupportnumbers extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Color(0xFF5BB9AE),
+        backgroundColor: Color(0xFf259e9f),
         elevation: 0,
         centerTitle: true,
       ),
@@ -113,7 +113,7 @@ class Quicksupportnumbers extends StatelessWidget {
                         Text(
                           '128',
                           style: TextStyle(
-                            color: Color(0xFF5BB9AE),
+                            color: Color(0xFf259e9f),
                             fontSize: Get.width * 0.12, // Responsive font size
                             fontWeight: FontWeight.bold,
                           ),
@@ -148,7 +148,7 @@ class Quicksupportnumbers extends StatelessWidget {
                       Text(
                         'ارقام الطوارئ',
                         style: TextStyle(
-                          color: Color(0xFF5BB9AE),
+                          color: Color(0xFf259e9f),
                           fontSize: Get.width * 0.05, // Responsive font size
                           fontWeight: FontWeight.bold,
                         ),
@@ -208,7 +208,7 @@ class Quicksupportnumbers extends StatelessWidget {
         trailing: IconButton(
           icon: SvgPicture.asset(
             'assets/icons/phone.svg',
-            color: Colors.green,
+            color: Color(0xFf259e9f),
             width: Get.width * 0.06, // Responsive icon size
             height: Get.width * 0.06, // Responsive icon size
           ),

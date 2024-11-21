@@ -16,7 +16,7 @@ class News extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF5CBBE3)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFf259e9f)),
             ),
           );
         } else if (snapshot.hasError) {

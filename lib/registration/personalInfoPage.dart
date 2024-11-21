@@ -127,7 +127,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 decoration: InputDecoration(
                   labelText: 'اليوم',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   filled: true,
                   fillColor: Color(0xFFd6dedf),
@@ -154,7 +155,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 decoration: InputDecoration(
                   labelText: 'الشهر',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   filled: true,
                   fillColor: Color(0xFFd6dedf),
@@ -181,7 +183,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 decoration: InputDecoration(
                   labelText: 'السنة',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   filled: true,
                   fillColor: Color(0xFFd6dedf),
@@ -252,7 +255,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               labelText: 'البلد',
               labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10.0),
               ),
               filled: true,
               fillColor: Color(0xFFd6dedf),
@@ -283,7 +287,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 labelText: 'المحافظة',
                 labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
@@ -330,7 +335,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     decoration: InputDecoration(
                       labelText: 'البلد',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       filled: true,
                       fillColor: Color(0xFFd6dedf),
@@ -349,7 +355,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             decoration: InputDecoration(
               labelText: 'الجنس',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10.0),
               ),
               filled: true,
               fillColor: Color(0xFFd6dedf),

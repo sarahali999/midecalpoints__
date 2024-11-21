@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:midecalpoints/mainscreen/profile.dart';
-import 'notificationsPage.dart';
+import 'profile.dart'; // Ensure correct import path
+import 'notificationsPage.dart'; // Ensure correct import path
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -22,23 +22,23 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             IconButton(
               icon: SvgPicture.asset(
                 'assets/icons/notification.svg',
-                color: Colors.teal,
+                color: Color(0xFF259E9F),
                 width: Get.width * 0.07,
               ),
               onPressed: () {
-                Get.to(() => Publicnotices());
+                Get.to(() => Publicnotices()); // Navigate to Public Notices
               },
             ),
             GestureDetector(
               onTap: () {
-                Get.to(() => UserProfile());
+                Get.to(() => UserProfile()); // Navigate to User Profile
               },
               child: CircleAvatar(
                 backgroundColor: Colors.white70,
                 radius: Get.width * 0.06,
                 child: SvgPicture.asset(
                   'assets/icons/profiles.svg',
-                  color: Colors.teal,
+                  color: Color(0xFF259E9F),
                   width: Get.width * 0.07,
                 ),
               ),
@@ -62,10 +62,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         hintText: 'اكتب ما تريد ان تبحث عنه',
         prefixIcon: Padding(
           padding: EdgeInsets.all(Get.width * 0.015),
-          child: SvgPicture.asset(
-            'assets/icons/search.svg',
-            color: Colors.teal,
-            width: Get.width * 0.06,
+          child: Icon(
+            Icons.search, // Corrected to Material Icon
+            color: Color(0xFF259E9F),
+            size: Get.width * 0.06,
           ),
         ),
         border: OutlineInputBorder(

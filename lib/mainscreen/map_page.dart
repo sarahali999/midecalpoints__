@@ -82,7 +82,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       polylines.add(
         Polyline(
           points: routePointsList,
-          color: const Color(0xFF32817D).withOpacity(0.8),
+          color: const Color(0xFf259e9f).withOpacity(0.8),
           strokeWidth: 4.0,
           borderColor: Colors.white.withOpacity(0.5),
           borderStrokeWidth: 2.0,
@@ -105,7 +105,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             height: 12.0,
             child: Container(
               decoration: BoxDecoration(
-                color: const Color(0xFF32817D),
+                color: const Color(0xFf259e9f),
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Colors.white,

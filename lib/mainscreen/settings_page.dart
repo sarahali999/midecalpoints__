@@ -51,7 +51,7 @@ class SettingsPage extends StatelessWidget {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.teal,
+      backgroundColor: Color(0xFf259e9f),
       elevation: 0,
       automaticallyImplyLeading: false,
       title: Row(
@@ -91,7 +91,7 @@ class SettingsPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        leading: Icon(icon, color: Colors.teal),
+        leading: Icon(icon, color: Color(0xFf259e9f)),
         title: Text(
           title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),

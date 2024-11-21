@@ -130,7 +130,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 labelText: 'البلد',
                 labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
@@ -171,7 +172,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                       labelText: 'المحافظة',
                       labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       filled: true,
                       fillColor: Color(0xFFd6dedf),
@@ -255,7 +257,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                         labelText: 'البلد',
                         labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         filled: true,
                         fillColor: Color(0xFFd6dedf),
@@ -287,7 +290,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
               decoration: InputDecoration(
                 labelText: 'صلة القرابة',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
@@ -310,7 +314,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
               decoration: InputDecoration(
                 labelText: 'رقم هاتفه',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 filled: true,
                 fillColor: Color(0xFFd6dedf),

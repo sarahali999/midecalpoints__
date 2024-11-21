@@ -60,8 +60,9 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
               decoration: InputDecoration(
                 labelText: 'فصيلة الدم',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
                 filled: true,
                 fillColor: const Color(0xFFd6dedf),
               ),

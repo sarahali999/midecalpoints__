@@ -84,7 +84,7 @@ class _PublicnoticesState extends State<Publicnotices> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF5BB9AE),
+          backgroundColor: Color(0xFf259e9f),
           elevation: 5,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,7 +153,7 @@ class _PublicnoticesState extends State<Publicnotices> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
-                          color: Color(0xFF5BB9AE),
+                          color: Color(0xFf259e9f),
                         ),
                       ),
                       subtitle: Text(
@@ -165,7 +165,7 @@ class _PublicnoticesState extends State<Publicnotices> {
                         ),
                       ),
                       trailing: Icon(Icons.notifications,
-                          color: Color(0xFF5BB9AE)),
+                          color: Color(0xFf259e9f)),
                     ),
                   ],
                 ),

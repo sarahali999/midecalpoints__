@@ -12,7 +12,7 @@ class HealthInfo extends StatelessWidget {
     final UserController controller = Get.put(UserController());
 
     return Scaffold(
-      backgroundColor: Color(0xFF5BB9AE),
+      backgroundColor: Color(0xFf259e9f),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -89,7 +89,7 @@ class HealthInfo extends StatelessWidget {
         children: [
           Text(
             "${user?.firstName ?? ''} ${user?.secondName ?? ''}",
-            style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: Color(0xFF5BB9AE)),
+            style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: Color(0xFf259e9f)),
           ),
           SizedBox(height: Get.height * 0.01), // Responsive spacing
           _buildInfoRow(Icons.phone, "رقم الهاتف: ${user?.phoneNumber ?? 'غير متوفر'}"),
@@ -120,7 +120,7 @@ class HealthInfo extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: Get.height * 0.01), // Responsive padding
       child: Row(
         children: [
-          Icon(icon, color: Color(0xFF5BB9AE), size: Get.width * 0.06), // Responsive icon size
+          Icon(icon, color: Color(0xFf259e9f), size: Get.width * 0.06), // Responsive icon size
           SizedBox(width: Get.width * 0.03),
           Text(
             text,

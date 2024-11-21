@@ -46,13 +46,14 @@ class ContactInfoPage extends StatelessWidget {
             decoration: InputDecoration(
               labelText: 'رقم الهاتف',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10.0),
               ),
               filled: true,
               fillColor: const Color(0xFFd6dedf),
             ),
-            initialCountryCode: 'IQ', // Default country code
-            textAlign: TextAlign.right, // RTL support
+            initialCountryCode: 'IQ',
+            textAlign: TextAlign.right,
             invalidNumberMessage: 'رقم هاتف غير صالح',
             onChanged: (phone) {
               print(phone.completeNumber);
