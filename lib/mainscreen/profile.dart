@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
 import '../models/UserDetails.dart';
+import 'edit_information.dart';
 
 class UserProfile extends GetView<UserController> {
   @override
@@ -31,6 +32,8 @@ class UserProfile extends GetView<UserController> {
                     children: [
                       _buildProfileHeader(controller.userInfoDetails.value!.data!, screenWidth, screenHeight),
                       _buildPersonalInfo(controller.userInfoDetails.value!.data!, screenWidth),
+                      _buildEditProfileButton(screenWidth),
+
                     ],
                   ),
                 ),
@@ -148,7 +151,39 @@ class UserProfile extends GetView<UserController> {
       ),
     );
   }
-
+  Widget _buildEditProfileButton(double screenWidth) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: screenWidth * 0.04,
+        horizontal: screenWidth * 0.04,
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          Get.to(() => EditProfilePage( userData: controller.userInfoDetails.value!.data!,
+              ));
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFf259e9f),
+          padding: EdgeInsets.symmetric(
+            vertical: screenWidth * 0.04,
+            horizontal: screenWidth * 0.1,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        child: Text(
+          'تعديل المعلومات الشخصية',
+          style: TextStyle(
+            fontSize: screenWidth * 0.045,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
   Widget _buildInfoTile(String title, String value, double screenWidth) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
@@ -173,4 +208,4 @@ class UserProfile extends GetView<UserController> {
       ),
     );
   }
-}
+

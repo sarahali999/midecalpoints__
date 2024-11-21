@@ -19,13 +19,11 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 16),
-              // جزء الأخبار
               Container(
                 height: Get.height * 0.25,
                 child: News(),
               ),
               SizedBox(height: 24),
-              // Small Card Row (Diagnosis, Chronic Diseases, and Examination)
               Row(
                 children: [
                   Expanded(
@@ -78,7 +76,6 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24),
-              // Large Card (Medications)
               GestureDetector(
                 onTap: () {
                   Navigator.push(

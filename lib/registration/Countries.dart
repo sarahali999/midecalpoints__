@@ -10,7 +10,7 @@ class CountryService {
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       return data.map((item) => {
-        'id': item['code'],  // Ensure the 'id' is unique for each country
+        'id': item['code'],
         'name': item['name'],
       }).toList();
     } else {

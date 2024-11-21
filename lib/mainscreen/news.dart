@@ -48,7 +48,6 @@ class News extends StatelessWidget {
             items: snapshot.data!.map((article) {
               return Builder(
                 builder: (BuildContext context) {
-                  // Pass selectedLanguage to AnimatedNewsCard
                   return AnimatedNewsCard(article: article);
                 },
               );

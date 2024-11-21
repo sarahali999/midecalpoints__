@@ -127,7 +127,6 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  // Popup Dialog for Notifications
   void _showNotificationsDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -135,7 +134,6 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  // Popup Dialog for About
   void _showAboutDialog(BuildContext context) {
     showDialog(
       context: context,

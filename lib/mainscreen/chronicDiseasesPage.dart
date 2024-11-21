@@ -36,21 +36,19 @@ class ChronicDiseasesPage extends GetView<UserController> {
         }
 
         return RefreshIndicator(
-          onRefresh: controller.fetchPatientDetails,  // Fixed to use controller
+          onRefresh: controller.fetchPatientDetails,
           child: ListView(
             padding: EdgeInsets.all(16),
             children: [
-              // Refresh Button
               Align(
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   icon: Icon(Icons.refresh, color: Color(0xFf259e9f)),
-                  onPressed: controller.fetchPatientDetails,  // Fixed to use controller
+                  onPressed: controller.fetchPatientDetails,
                 ),
               ),
               SizedBox(height: 8),
 
-              // Chronic Diseases Card
               _buildInfoCard(
                 title: 'مرض مزمن',
                 content: controller.userInfoDetails.value?.data?.chronicDiseases?.isNotEmpty == true
@@ -60,7 +58,6 @@ class ChronicDiseasesPage extends GetView<UserController> {
 
               SizedBox(height: 16),
 
-              // Allergies Card
               _buildInfoCard(
                 title: 'الحساسية',
                 content: controller.userInfoDetails.value?.data?.allergies?.isNotEmpty == true

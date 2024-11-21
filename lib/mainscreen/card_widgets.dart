@@ -15,16 +15,15 @@ class SmallCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = Get.width; // Get the screen width
-    double height = Get.height; // Get the screen height
+    double width = Get.width;
+    double height = Get.height;
 
-    // Adjust card size based on screen size
     double cardWidth = width * 0.25;
     double cardHeight = height * 0.15;
 
     return Container(
-      width: cardWidth, // Responsive width
-      height: cardHeight, // Responsive height
+      width: cardWidth,
+      height: cardHeight,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -52,7 +51,7 @@ class SmallCard extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: width * 0.04, // Adjust text size based on screen width
+              fontSize: width * 0.04,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
@@ -80,10 +79,9 @@ class LargeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = Get.width; // Get the screen width
-    double height = Get.height; // Get the screen height
+    double width = Get.width;
+    double height = Get.height;
 
-    // Adjust card size based on screen size
     double cardWidth = width * 0.9;
     double cardHeight = height * 0.2;
 
@@ -119,7 +117,7 @@ class LargeCard extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: width * 0.05, // Adjust text size based on screen width
+                  fontSize: width * 0.05,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
@@ -130,7 +128,7 @@ class LargeCard extends StatelessWidget {
           Text(
             content,
             style: TextStyle(
-              fontSize: width * 0.04, // Adjust text size based on screen width
+              fontSize: width * 0.04,
               color: Colors.black54,
             ),
           ),
@@ -161,10 +159,9 @@ class CardBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = Get.width; // Get the screen width
-    double height = Get.height; // Get the screen height
+    double width = Get.width;
+    double height = Get.height;
 
-    // Adjust card height based on screen size
     double cardHeight = height * 0.15;
 
     return Container(
@@ -192,7 +189,7 @@ class CardBase extends StatelessWidget {
   }
 
   Widget _buildLargeCard(BuildContext context) {
-    double width = Get.width; // Get the screen width
+    double width = Get.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +205,7 @@ class CardBase extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: width * 0.05, // Adjust text size based on screen width
+                fontSize: width * 0.05,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
@@ -225,7 +222,7 @@ class CardBase extends StatelessWidget {
   }
 
   Widget _buildSmallCard() {
-    double width = Get.width; // Get the screen width
+    double width = Get.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

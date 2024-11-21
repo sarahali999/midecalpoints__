@@ -338,8 +338,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.blue.withOpacity(0.7),
-                  Colors.green.withOpacity(0.7)
+                  Color(0xFf259e9f),
+                  Color(0xFf259e9f),
                 ],
               ),
             ),
@@ -494,8 +494,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Colors.blue.withOpacity(0.9),
-                      Colors.green.withOpacity(0.9)
+                      Color(0xFf259e9f),
+                      Color(0xFf259e9f),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(20),

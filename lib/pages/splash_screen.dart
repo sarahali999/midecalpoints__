@@ -18,11 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkTokenAndNavigate(); // Check token after the splash screen duration
+    _checkTokenAndNavigate();
   }
 
   Future<void> _checkTokenAndNavigate() async {
-    // Delay to show splash screen for the required duration
     await Future.delayed(_splashDuration);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use GetX to access screen width and height
     final screenWidth = Get.width;
     final screenHeight = Get.height;
 
@@ -73,7 +71,6 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Make logo size responsive
     final double logoSize = (screenWidth * 0.25).clamp(50.0, 150.0);
     return SizedBox(
       width: logoSize,

@@ -27,7 +27,6 @@ class Article {
   final String imageUrl;
   final String imageFullUrl;
 
-  // Base URL for the API
   static const String baseUrl = 'https://medicalpoint-api.tatwer.tech';
 
   Article({
@@ -44,7 +43,7 @@ class Article {
       imageFullUrl: json['imageFullUrl'] ?? '',
       imageUrl: json['imageUrl'] != null && json['imageUrl'].isNotEmpty
           ? '$baseUrl${json['imageUrl']}'
-          : '', // Concatenate base URL with the image path
+          : '',
     );
   }
 }

@@ -63,7 +63,7 @@ class Aboutapp extends StatelessWidget {
               Text(
                 'كيفية استخدام التطبيق:',
                 style: TextStyle(
-                  fontSize: 20, // زيادة حجم الخط
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -80,7 +80,7 @@ class Aboutapp extends StatelessWidget {
               Text(
                 'نحن نولي أهمية كبيرة لصحة الزوار، ونسعى لضمان راحتهم وأمنهم أثناء زيارتهم.',
                 style: TextStyle(
-                  fontSize: 18, // زيادة حجم النص
+                  fontSize: 18,
                   fontStyle: FontStyle.italic,
                   color: Colors.grey[700],
                 ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'profile.dart'; // Ensure correct import path
-import 'notificationsPage.dart'; // Ensure correct import path
+import 'profile.dart';
+import 'notificationsPage.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -26,12 +26,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                 width: Get.width * 0.07,
               ),
               onPressed: () {
-                Get.to(() => Publicnotices()); // Navigate to Public Notices
+                Get.to(() => Publicnotices());
               },
             ),
             GestureDetector(
               onTap: () {
-                Get.to(() => UserProfile()); // Navigate to User Profile
+                Get.to(() => UserProfile());
               },
               child: CircleAvatar(
                 backgroundColor: Colors.white70,
@@ -63,7 +63,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         prefixIcon: Padding(
           padding: EdgeInsets.all(Get.width * 0.015),
           child: Icon(
-            Icons.search, // Corrected to Material Icon
+            Icons.search,
             color: Color(0xFF259E9F),
             size: Get.width * 0.06,
           ),

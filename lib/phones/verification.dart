@@ -96,7 +96,6 @@ class _MyPhoneState extends State<MyPhone> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Background design
             Positioned.fill(
               child: Container(
                 decoration: const BoxDecoration(
@@ -117,7 +116,6 @@ class _MyPhoneState extends State<MyPhone> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: screenHeight * 0.05),
-                  // Logo
                   Image.asset(
                     'assets/images/logo.png',
                     width: screenWidth * 0.2,

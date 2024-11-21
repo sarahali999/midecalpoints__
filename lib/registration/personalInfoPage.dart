@@ -54,7 +54,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   String? selectedCountry;
   String? selectedGovernorate;
 
-  // Lists for date dropdowns
   final List<int> days = List.generate(31, (index) => index + 1);
   final List<String> months = [
     'كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران',

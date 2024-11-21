@@ -156,8 +156,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     double textWidth = textPainter.size.width;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Stack(

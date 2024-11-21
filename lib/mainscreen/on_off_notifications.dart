@@ -9,7 +9,6 @@ class NotificationsDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            // Enable notifications
             Navigator.pop(context);
           },
           child: Text('نعم'),

@@ -18,9 +18,9 @@ class HealthInfo extends StatelessWidget {
           child: Column(
             children: [
               _buildAppBar(),
-              SizedBox(height: Get.height * 0.02), // Responsive spacing
+              SizedBox(height: Get.height * 0.02),
               _buildUserInfo(controller),
-              SizedBox(height: Get.height * 0.02), // Responsive spacing
+              SizedBox(height: Get.height * 0.02),
               _buildQRCodeSection(controller),
             ],
           ),
@@ -93,7 +93,7 @@ class HealthInfo extends StatelessWidget {
             "${user?.firstName ?? ''} ${user?.secondName ?? ''}",
             style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: Color(0xFf259e9f)),
           ),
-          SizedBox(height: Get.height * 0.01), // Responsive spacing
+          SizedBox(height: Get.height * 0.01),
           _buildInfoRow(Icons.phone, "رقم الهاتف: ${user?.phoneNumber ?? 'غير متوفر'}"),
           _buildInfoRow(
             Icons.person,
@@ -107,7 +107,7 @@ class HealthInfo extends StatelessWidget {
             Icons.calendar_today,
             "العمر: ${userData?.birthYear ?? 'غير متوفر'}",
           ),
-          SizedBox(height: Get.height * 0.02), // Responsive spacing
+          SizedBox(height: Get.height * 0.02),
           Text(
             'مديرية شؤون الطبابة والمقاتلين والمضحين',
             style: TextStyle(fontSize: Get.width * 0.04, color: Colors.grey),
@@ -119,10 +119,10 @@ class HealthInfo extends StatelessWidget {
 
   Widget _buildInfoRow(IconData icon, String text) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: Get.height * 0.01), // Responsive padding
+      padding: EdgeInsets.symmetric(vertical: Get.height * 0.01),
       child: Row(
         children: [
-          Icon(icon, color: Color(0xFf259e9f), size: Get.width * 0.06), // Responsive icon size
+          Icon(icon, color: Color(0xFf259e9f), size: Get.width * 0.06),
           SizedBox(width: Get.width * 0.03),
           Text(
             text,

@@ -11,18 +11,15 @@ class LanguageDialog extends StatelessWidget {
           ListTile(
             title: Text('العربية'),
             onTap: () {
-              // Set language to Arabic
               Navigator.pop(context);
             },
           ),
           ListTile(
             title: Text('الإنجليزية'),
             onTap: () {
-              // Set language to English
               Navigator.pop(context);
             },
           ),
-          // Add more languages if needed
         ],
       ),
     );

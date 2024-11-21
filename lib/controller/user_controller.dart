@@ -114,7 +114,6 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? jwtToken = prefs.getString('token');
 
-      // Debug print for token
       print('JWT Token: ${jwtToken?.substring(0, 10)}...');
 
       if (jwtToken == null) throw Exception('JWT token is missing');
@@ -127,7 +126,6 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
         },
       );
 
-      // Debug print for response
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -135,7 +133,6 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         userInfoDetails.value = UserDetails.fromJson(jsonResponse);
 
-        // Debug print for parsed data
         print('Parsed user details: ${userInfoDetails.value?.toJson()}');
       } else {
         throw Exception('Failed to load patient details: ${response.statusCode}');

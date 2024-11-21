@@ -98,9 +98,9 @@ class Quicksupportnumbers extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(Get.width * 0.05), // Responsive padding
+                  padding: EdgeInsets.all(Get.width * 0.05),
                   child: Container(
-                    padding: EdgeInsets.all(Get.width * 0.05), // Responsive padding
+                    padding: EdgeInsets.all(Get.width * 0.05),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -118,26 +118,26 @@ class Quicksupportnumbers extends StatelessWidget {
                           '128',
                           style: TextStyle(
                             color: Color(0xFf259e9f),
-                            fontSize: Get.width * 0.12, // Responsive font size
+                            fontSize: Get.width * 0.12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: Get.height * 0.02), // Responsive spacing
+                        SizedBox(height: Get.height * 0.02),
                         Text(
                           'يستقبل الرقم الاتصال على الرقم 128 من جميع الشبكات مجانا',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: Get.width * 0.04, // Responsive font size
+                            fontSize: Get.width * 0.04,
                           ),
                         ),
-                        SizedBox(height: Get.height * 0.01), // Responsive spacing
+                        SizedBox(height: Get.height * 0.01),
                         Text(
                           'الخدمة متوفرة على مدار 24 ساعة',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: Get.width * 0.04, // Responsive font size
+                            fontSize: Get.width * 0.04,
                           ),
                         ),
                       ],
@@ -145,7 +145,7 @@ class Quicksupportnumbers extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(Get.width * 0.05), // Responsive padding
+                  padding: EdgeInsets.all(Get.width * 0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -153,11 +153,11 @@ class Quicksupportnumbers extends StatelessWidget {
                         'ارقام الطوارئ',
                         style: TextStyle(
                           color: Color(0xFf259e9f),
-                          fontSize: Get.width * 0.05, // Responsive font size
+                          fontSize: Get.width * 0.05,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: Get.height * 0.02), // Responsive spacing
+                      SizedBox(height: Get.height * 0.02),
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -165,7 +165,7 @@ class Quicksupportnumbers extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final number = controller.supportNumbers[index];
                           return Padding(
-                            padding: EdgeInsets.only(bottom: Get.height * 0.02), // Responsive spacing
+                            padding: EdgeInsets.only(bottom: Get.height * 0.02),
                             child: _buildSupportNumberCard(number),
                           );
                         },
@@ -198,7 +198,7 @@ class Quicksupportnumbers extends StatelessWidget {
         title: Text(
           number['name']!,
           style: TextStyle(
-            fontSize: Get.width * 0.04, // Responsive font size
+            fontSize: Get.width * 0.04,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -206,15 +206,15 @@ class Quicksupportnumbers extends StatelessWidget {
           number['number']!,
           style: TextStyle(
             color: Colors.grey[600],
-            fontSize: Get.width * 0.035, // Responsive font size
+            fontSize: Get.width * 0.035,
           ),
         ),
         trailing: IconButton(
           icon: SvgPicture.asset(
             'assets/icons/phone.svg',
             color: Color(0xFf259e9f),
-            width: Get.width * 0.06, // Responsive icon size
-            height: Get.width * 0.06, // Responsive icon size
+            width: Get.width * 0.06,
+            height: Get.width * 0.06,
           ),
           onPressed: () => Get.find<QuicksupportnumbersController>()._makePhoneCall(number['number']!),
         ),

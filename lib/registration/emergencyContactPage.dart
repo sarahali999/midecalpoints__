@@ -42,7 +42,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
   final TextEditingController emergencyhouseController = TextEditingController();
   final TextEditingController emergencybirthYearController = TextEditingController();
   final TextEditingController emergencyphoneNumberController = TextEditingController();
-  String initialCountryCode = 'IQ'; // Default to Iraq
+  String initialCountryCode = 'IQ';
   String completePhoneNumber = '';
 
   final Map<String, int> relationshipOptions = {
@@ -328,7 +328,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 completePhoneNumber = phone.completeNumber;
               },
               onCountryChanged: (country) {
-                // Update the country code if needed
                 setState(() {
                   initialCountryCode = country.code;
                 });

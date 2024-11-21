@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white, // Use scaffoldBackgroundColor
+        scaffoldBackgroundColor: Colors.white,
         fontFamily: 'Cairo',
       ),
       title: 'My App',
