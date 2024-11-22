@@ -102,15 +102,25 @@ class _MyPhoneState extends State<MyPhone> {
           child: Stack(
             children: [
               Positioned.fill(
+                left: 0,
+                right: 0,
+                bottom: Get.height * 0.3,
+                top: 0,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
                         Color(0xffecf2f3),
                         Color(0xFFecf2f3),
                       ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(0),
+                      topRight: const Radius.circular(0),
+                      bottomLeft: Radius.circular(Get.width * 0.3),
+                      bottomRight: Radius.circular(Get.width * 10),
                     ),
                   ),
                 ),
@@ -191,34 +201,32 @@ class _MyPhoneState extends State<MyPhone> {
   }
 
   Widget _buildPasswordField() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xffecf0f1),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: TextField(
-        controller: passwordController,
-        textAlign: TextAlign.end,
-        obscureText: !_isPasswordVisible,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
-          hintText: 'password'.tr,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-              color: Colors.grey,
-            ),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
+    return TextField(
+      controller: passwordController,
+      obscureText: !_isPasswordVisible,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color(0xFFECEFF1),
+        hintText: 'password'.tr,
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Colors.grey,
           ),
+          onPressed: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
         ),
       ),
     );
   }
+
 
   Widget _buildAuthLinks() {
     return Column(

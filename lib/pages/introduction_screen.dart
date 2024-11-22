@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../languages.dart';
 import '../phones/verification.dart';
 
@@ -50,8 +51,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       descriptionKey: 'medical_centers_desc',
     ),
   ];
+  void _onLanguageSelected(String language) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedLanguage', language);
 
-  void _onLanguageSelected(String language) {
     setState(() {
       _selectedLanguage = language;
       _showLanguages = false;
@@ -80,6 +83,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     });
   }
 
+
   void _toggleLanguages() => setState(() => _showLanguages = !_showLanguages);
 
   void _navigateToPhone() => Get.to(() => const MyPhone());
@@ -91,7 +95,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
     }
   }
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedLanguage();
+  }
 
+  Future<void> _loadSavedLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedLanguage = prefs.getString('selectedLanguage') ?? 'العربية';
+    _onLanguageSelected(savedLanguage);
+  }
   @override
   void dispose() {
     _pageController.dispose();

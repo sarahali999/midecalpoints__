@@ -421,7 +421,7 @@ class Languages extends Translations {
       'diagnosisPage.title': 'Diagnosis & Notes',
       'medicationsPage.title': 'Tests & Medications',
       'medicationsPage.prescribedMedications': 'My Prescribed Medications',
-  },
+    },
   };
 
 }

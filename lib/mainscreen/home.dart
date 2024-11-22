@@ -10,10 +10,8 @@ import 'card_widgets.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isRTL = true;
-
     return Directionality(
-      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+      textDirection: TextDirection.rtl,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -37,7 +35,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'diagnosisPage.title'.tr,
+                        title: 'التشخيص\nوالملاحظات',
                         iconPath: 'assets/icons/heart.svg',
                         iconColor: Color(0xFF4CAF50),
                       ),
@@ -53,25 +51,9 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'chronic_diseases'.tr,
+                        title: 'الأمراض\nالمزمنة',
                         iconPath: 'assets/icons/health.svg',
                         iconColor: Color(0xFF2196F3),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MedicationListWidget()),
-                        );
-                      },
-                      child: SmallCard(
-                        title: 'medicationsPage.title'.tr,
-                        iconPath: 'assets/icons/medical.svg',
-                        iconColor: Color(0xFFFF5722),
                       ),
                     ),
                   ),
@@ -82,12 +64,12 @@ class HomePage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MedicationsPage()),
+                    MaterialPageRoute(builder: (context) => MedicationListWidget()),
                   );
                 },
                 child: LargeCard(
                   content: 'AMPICILLIN\nAMPHOTERICIN\nAMPICILLIN',
-                  title: 'medicationsPage.prescribedMedications'.tr,
+                  title: 'الأدوية المصروفة لي',
                   iconPath: 'assets/icons/pill.svg',
                   iconColor: Color(0xFFFF9800),
                 ),

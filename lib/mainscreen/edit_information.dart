@@ -137,7 +137,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _usernameController.dispose();
     _passwordController.dispose();
   }
-
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
@@ -153,7 +152,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           "firstName": _firstNameController.text,
           "secondName": _secondNameController.text,
           "thirdName": _thirdNameController.text,
-          "gender": _selectedGender,
+          "gender": _selectedGender ?? 0,  // Default to 0 if null
           "address": _addressController.text,
           "birthYear": _birthYearController.text,
           "country": _countryController.text,
@@ -161,7 +160,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           "district": _districtController.text,
           "alley": _alleyController.text,
           "house": _houseController.text,
-          "bloodType": _selectedBloodType,
+          "bloodType": _selectedBloodType ?? 1,  // Default to 1 if null
           "email": _emailController.text,
           "chronicDiseases": _chronicDiseasesController.text,
           "allergies": _allergiesController.text,
@@ -173,18 +172,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
           "emergencyContactAlley": _emergencyContactAlleyController.text,
           "emergencyContactHouse": _emergencyContactHouseController.text,
           "emergencyContactPhoneNumber": _emergencyContactPhoneController.text,
-          "emergencyContactRelationship": _selectedEmergencyContactRelationship,
+          "emergencyContactRelationship": _selectedEmergencyContactRelationship ?? 0,
           "phoneNumber": _phoneController.text,
           "username": _usernameController.text,
+          "password": _passwordController.text.isNotEmpty ? _passwordController.text : null
         };
 
-        if (_passwordController.text.isNotEmpty) {
-          requestBody["password"] = _passwordController.text;
-        }
-
         final response = await http.put(
-          Uri.parse(
-              'https://medicalpoint-api.tatwer.tech/api/Mobile/UpdatePatientDetails'),
+          Uri.parse('https://medicalpoint-api.tatwer.tech/api/Mobile/UpdatePatientDetails'),
           headers: {
             'Authorization': 'Bearer $jwtToken',
             'Content-Type': 'application/json',
@@ -192,18 +187,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
           body: json.encode(requestBody),
         );
 
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${response.body}');
+
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('تم تحديث الملف الشخصي بنجاح')),
           );
           Navigator.pop(context, true);
         } else {
-          throw Exception('فشل تحديث الملف الشخصي: ${response.statusCode}');
+          throw Exception('فشل تحديث الملف الشخصي: ${response.body}');
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('فشل تحديث الملف الشخصي: $e')),
         );
+        print('Error updating profile: $e');
       } finally {
         setState(() => _isLoading = false);
       }
@@ -303,40 +302,40 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: _houseController,
                         labelText: "الدار",
                       ),
-                      _buildDropdown(
-                        value: _selectedGender,
-                        label: "الجنس",
-                        items: [
-                          DropdownMenuItem(
-                            value: 1,
-                            child: Text(_translateGender(1)),
-                          ),
-                          DropdownMenuItem(
-                            value: 2,
-                            child: Text(_translateGender(2)),
-                          ),
-                        ],
-                        onChanged: (value) => setState(() => _selectedGender = value),
-                      ),
+                      // _buildDropdown(
+                      //   value: _selectedGender,
+                      //   label: "الجنس",
+                      //   items: [
+                      //     DropdownMenuItem(
+                      //       value: 1,
+                      //       child: Text(_translateGender(1)),
+                      //     ),
+                      //     DropdownMenuItem(
+                      //       value: 2,
+                      //       child: Text(_translateGender(2)),
+                      //     ),
+                      //   ],
+                      //   onChanged: (value) => setState(() => _selectedGender = value),
+                      // ),
                       SizedBox(height: 20),
                       _buildSectionHeader(
                           "المعلومات الطبية"
                       ),
-                      _buildDropdown(
-                        value: _selectedBloodType,
-                        label: "فصيلة الدم",
-                        items: [
-                          DropdownMenuItem(
-                            value: 1,
-                            child: Text(_translateBloodType(1)),
-                          ),
-                          DropdownMenuItem(
-                            value: 2,
-                            child: Text(_translateBloodType(2)),
-                          ),
-                        ],
-                        onChanged: (value) => setState(() => _selectedBloodType = value),
-                      ),
+                      // _buildDropdown(
+                      //   value: _selectedBloodType,
+                      //   label: "فصيلة الدم",
+                      //   items: [
+                      //     DropdownMenuItem(
+                      //       value: 1,
+                      //       child: Text(_translateBloodType(1)),
+                      //     ),
+                      //     DropdownMenuItem(
+                      //       value: 2,
+                      //       child: Text(_translateBloodType(2)),
+                      //     ),
+                      //   ],
+                      //   onChanged: (value) => setState(() => _selectedBloodType = value),
+                      // ),
                       _buildCountryDropdownem(
 
                         controller: _emergencyContactCountryController,
@@ -605,100 +604,100 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideX(
         begin: 0.2, end: 0);
   }
-
-  Widget _buildDropdown({
-    required int? value,
-    required String label,
-    required List<DropdownMenuItem<int>> items,
-    required Function(int?) onChanged,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<int>(
-        value: value,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: _primaryColor),
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        ),
-        items: items,
-        onChanged: onChanged,
-        icon: Icon(Icons.arrow_drop_down, color: _primaryColor),
-        isExpanded: true,
-        dropdownColor: _accentColor,
-        style: TextStyle(color: _secondaryColor),
-      ),
-    ).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideX(
-        begin: -0.2, end: 0);
-  }
-  String _translateBloodType(int? type) {
-    if (type == null) return "غير معروف";
-
-    switch (type) {
-      case 1:
-        return "A+";
-      case 2:
-        return "A-";
-      case 3:
-        return "B+";
-      case 4:
-        return "B-";
-      case 5:
-        return "O+";
-      case 6:
-        return "O-";
-      case 7:
-        return "AB+";
-      case 8:
-        return "AB-";
-      default:
-        return "غير معروف";
-    }
-  }
-
-  String _translateEmergencyContactRelationship(int? relationship) {
-    if (relationship == null) return "غير معروف";
-
-    switch (relationship) {
-      case 1:
-        return 'اب';
-      case 2:
-        return 'ام';
-      case 3:
-        return 'اخ';
-      case 4:
-        return 'اخت';
-      case 5:
-        return 'ابن';
-      case 6:
-        return 'ابنة';
-      case 7:
-        return 'زوج';
-      case 8:
-        return 'زوجة';
-      case 9:
-        return 'أخرى';
-      default:
-        return 'غير معروف';
-    }
-  }
-
-  String _translateGender(int? gender) {
-    if (gender == null) return "غير معروف";
-
-    switch (gender) {
-      case 1:
-        return 'ذكر';
-      case 2:
-        return 'أنثى';
-      default:
-        return 'غير معروف';
-    }
-  }
+  //
+  // Widget _buildDropdown({
+  //   required int? value,
+  //   required String label,
+  //   required List<DropdownMenuItem<int>> items,
+  //   required Function(int?) onChanged,
+  // }) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+  //     child: DropdownButtonFormField<int>(
+  //       value: value,
+  //       decoration: InputDecoration(
+  //         labelText: label,
+  //         border: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //         focusedBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //           borderSide: BorderSide(color: _primaryColor),
+  //         ),
+  //         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+  //       ),
+  //       items: items,
+  //       onChanged: onChanged,
+  //       icon: Icon(Icons.arrow_drop_down, color: _primaryColor),
+  //       isExpanded: true,
+  //       dropdownColor: _accentColor,
+  //       style: TextStyle(color: _secondaryColor),
+  //     ),
+  //   ).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideX(
+  //       begin: -0.2, end: 0);
+  // }
+  // String _translateBloodType(int? type) {
+  //   if (type == null) return "غير معروف";
+  //
+  //   switch (type) {
+  //     case 1:
+  //       return "A+";
+  //     case 2:
+  //       return "A-";
+  //     case 3:
+  //       return "B+";
+  //     case 4:
+  //       return "B-";
+  //     case 5:
+  //       return "O+";
+  //     case 6:
+  //       return "O-";
+  //     case 7:
+  //       return "AB+";
+  //     case 8:
+  //       return "AB-";
+  //     default:
+  //       return "غير معروف";
+  //   }
+  // }
+  //
+  // String _translateEmergencyContactRelationship(int? relationship) {
+  //   if (relationship == null) return "غير معروف";
+  //
+  //   switch (relationship) {
+  //     case 1:
+  //       return 'اب';
+  //     case 2:
+  //       return 'ام';
+  //     case 3:
+  //       return 'اخ';
+  //     case 4:
+  //       return 'اخت';
+  //     case 5:
+  //       return 'ابن';
+  //     case 6:
+  //       return 'ابنة';
+  //     case 7:
+  //       return 'زوج';
+  //     case 8:
+  //       return 'زوجة';
+  //     case 9:
+  //       return 'أخرى';
+  //     default:
+  //       return 'غير معروف';
+  //   }
+  // }
+  //
+  // String _translateGender(int? gender) {
+  //   if (gender == null) return "غير معروف";
+  //
+  //   switch (gender) {
+  //     case 1:
+  //       return 'ذكر';
+  //     case 2:
+  //       return 'أنثى';
+  //     default:
+  //       return 'غير معروف';
+  //   }
+  // }
 }

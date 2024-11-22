@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'about.dart';
 import 'delete_account.dart';
 import 'edit_language.dart';
-import 'on_off_notifications.dart';
+// import 'on_off_notifications.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -25,12 +25,12 @@ class SettingsPage extends StatelessWidget {
             title: 'حذف الحساب',
             onTap: () => _showDeleteAccountDialog(context),
           ),
-          SizedBox(height: 20),
-          _buildSettingsOption(
-            icon: Icons.notifications,
-            title: 'السماح بالإشعارات',
-            onTap: () => _showNotificationsDialog(context),
-          ),
+          // SizedBox(height: 20),
+          // _buildSettingsOption(
+          //   icon: Icons.notifications,
+          //   title: 'السماح بالإشعارات',
+          //   onTap: () => _showNotificationsDialog(context),
+          // ),
           SizedBox(height: 20),
           _buildSettingsOption(
             icon: Icons.help_outline,
@@ -126,13 +126,13 @@ class SettingsPage extends StatelessWidget {
       builder: (context) => DeleteAccount(),
     );
   }
-
-  void _showNotificationsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => NotificationsDialog(),
-    );
-  }
+  //
+  // void _showNotificationsDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => NotificationsDialog(),
+  //   );
+  // }
 
   void _showAboutDialog(BuildContext context) {
     showDialog(
