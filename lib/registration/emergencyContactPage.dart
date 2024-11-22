@@ -113,10 +113,13 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomTextField(labelText: 'الاسم كامل', controller: fullNameController),
+            CustomTextField(
+                labelText: 'emergencyContactPage.fullName'.tr,
+                controller: fullNameController
+            ),
             SizedBox(height: spacing),
             DropdownButtonFormField<String>(
-              hint: Text("اختر البلد من هنا"),
+              hint: Text('emergencyContactPage.selectCountry'.tr),
               value: selectedCountry,
               items: countryOptions.map((item) => DropdownMenuItem<String>(
                 value: item['id'],
@@ -127,7 +130,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
               )).toList(),
               onChanged: _onCountryChanged,
               decoration: InputDecoration(
-                labelText: 'البلد',
+                labelText: 'emergencyContactPage.country'.tr,
                 labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -147,7 +150,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     visible: false,
                     maintainState: true,
                     child: CustomTextField(
-                      labelText: 'البلد',
+                      labelText: 'emergencyContactPage.country'.tr,
                       controller: emergencycountryController,
                     ),
                   ),
@@ -169,7 +172,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                       });
                     },
                     decoration: InputDecoration(
-                      labelText: 'المحافظة',
+                      labelText: 'emergencyContactPage.province'.tr,
                       labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
@@ -182,17 +185,17 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
-                    labelText: 'المحلة',
+                    labelText: 'emergencyContactPage.district'.tr,
                     controller: emergencydistrictController,
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
-                    labelText: 'الزقاق',
+                    labelText: 'emergencyContactPage.alley'.tr,
                     controller: emergencyalleyController,
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
-                    labelText: 'الدار',
+                    labelText: 'emergencyContactPage.house'.tr,
                     controller: emergencyhouseController,
                   ),
                 ],
@@ -230,7 +233,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                       ),
                       child: Center(
                         child: Text(
-                          'فشل في تحميل قائمة الدول',
+                          'emergencyContactPage.countriesError'.tr,
                           style: TextStyle(color: Colors.red, fontSize: 14),
                         ),
                       ),
@@ -254,7 +257,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                         });
                       },
                       decoration: InputDecoration(
-                        labelText: 'البلد',
+                        labelText: 'emergencyContactPage.country'.tr,
                         labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -275,7 +278,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                       ),
                       child: Center(
                         child: Text(
-                          'لا توجد دول متاحة',
+                          'emergencyContactPage.noCountries'.tr,
                           style: TextStyle(color: Colors.grey[600], fontSize: 14),
                         ),
                       ),
@@ -284,11 +287,14 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 },
               ),
             SizedBox(height: spacing),
-            CustomTextField(labelText: 'سنة الميلاد', controller: emergencybirthYearController),
+            CustomTextField(
+                labelText: 'emergencyContactPage.birthYear'.tr,
+                controller: emergencybirthYearController
+            ),
             SizedBox(height: spacing),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                labelText: 'صلة القرابة',
+                labelText: 'emergencyContactPage.relationship'.tr,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(10.0),
@@ -296,6 +302,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
               ),
+              value: selectedRelationship,
               items: relationshipOptions.keys.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -312,7 +319,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
             IntlPhoneField(
               controller: emergencyphoneNumberController,
               decoration: InputDecoration(
-                labelText: 'رقم هاتفه',
+                labelText: 'emergencyContactPage.phoneNumber'.tr,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(10.0),

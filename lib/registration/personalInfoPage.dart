@@ -47,10 +47,9 @@ class PersonalInfoPage extends StatefulWidget {
 
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final Map<String, int> genderOptions = {
-    'ذكر': 1,
-    'أنثى': 2,
+    'male'.tr: 1,
+    'female'.tr: 2,
   };
-
   String? selectedCountry;
   String? selectedGovernorate;
 
@@ -110,7 +109,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         Padding(
           padding: EdgeInsets.only(right: 4, bottom: spacing * 0.5),
           child: Text(
-            'تاريخ الميلاد',
+            'birth_date'.tr,
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey[600],
@@ -124,7 +123,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: DropdownButtonFormField<String>(
                 isExpanded: true,
                 decoration: InputDecoration(
-                  labelText: 'اليوم',
+                  labelText: 'day'.tr,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(10.0),
@@ -152,7 +151,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: DropdownButtonFormField<String>(
                 isExpanded: true,
                 decoration: InputDecoration(
-                  labelText: 'الشهر',
+                  labelText: 'month'.tr,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(10.0),
@@ -180,7 +179,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: DropdownButtonFormField<String>(
                 isExpanded: true,
                 decoration: InputDecoration(
-                  labelText: 'السنة',
+                  labelText: 'year'.tr,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(10.0),
@@ -199,9 +198,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     ),
                   );
                 }).toList(),
-                onChanged: (value) {
-                  widget.onYearChanged(value);
-                },
+                onChanged: widget.onYearChanged,
               ),
             ),
           ],
@@ -222,25 +219,25 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       child: Column(
         children: [
           CustomTextField(
-            labelText: 'الاسم الأول',
+            labelText: 'first_name'.tr,
             controller: widget.firstNameController,
           ),
           SizedBox(height: spacing),
 
           CustomTextField(
-            labelText: 'الاسم الأوسط',
+            labelText: 'middle_name'.tr,
             controller: widget.middleNameController,
           ),
           SizedBox(height: spacing),
 
           CustomTextField(
-            labelText: 'الاسم الأخير',
+            labelText: 'last_name'.tr,
             controller: widget.lastNameController,
           ),
           SizedBox(height: spacing),
 
           DropdownButtonFormField<String>(
-            hint: Text("اختر البلد من هنا"),
+            hint: Text('choose_country'.tr),
             value: selectedCountry,
             items: countryOptions.map((item) => DropdownMenuItem<String>(
               value: item['id'],
@@ -251,7 +248,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             )).toList(),
             onChanged: _onCountryChanged,
             decoration: InputDecoration(
-              labelText: 'البلد',
+              labelText: 'country'.tr,
               labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
@@ -283,7 +280,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 });
               },
               decoration: InputDecoration(
-                labelText: 'المحافظة',
+                labelText: 'province'.tr,
                 labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -296,17 +293,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             ),
             SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'المحلة',
+              labelText: 'district'.tr,
               controller: widget.districtController,
             ),
             SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'الزقاق',
+              labelText: 'alley'.tr,
               controller: widget.alleyController,
             ),
             SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'الدار',
+              labelText: 'house'.tr,
               controller: widget.houseController,
             ),
           ] else if (selectedCountry == '2')
@@ -316,7 +313,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Text('فشل في تحميل قائمة الدول');
+                  return Text('countries_error'.tr);
                 } else if (snapshot.hasData) {
                   return DropdownButtonFormField<String>(
                     value: widget.countryController.text.isNotEmpty ? widget.countryController.text : null,
@@ -332,7 +329,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       });
                     },
                     decoration: InputDecoration(
-                      labelText: 'البلد',
+                      labelText: 'country'.tr,
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
@@ -352,7 +349,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
           DropdownButtonFormField<String>(
             decoration: InputDecoration(
-              labelText: 'الجنس',
+              labelText: 'gender'.tr,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10.0),
@@ -367,7 +364,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               );
             }).toList(),
             onChanged: (newValue) {
-              widget.onGenderChanged(newValue == 'ذكر' ? 1 : 2);
+              widget.onGenderChanged(genderOptions[newValue]);
             },
           ),
         ],

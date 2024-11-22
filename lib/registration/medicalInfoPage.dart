@@ -39,6 +39,7 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = Get.height;
@@ -58,11 +59,11 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
             DropdownButtonFormField<String>(
               isExpanded: true,
               decoration: InputDecoration(
-                labelText: 'فصيلة الدم',
+                labelText: 'blood_type'.tr,  // Use .tr for translation
                 border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
                 filled: true,
                 fillColor: const Color(0xFFd6dedf),
               ),
@@ -83,12 +84,12 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
             ),
             SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'الحساسية',
+              labelText: 'allergies'.tr,  // Use .tr for translation
               controller: widget.allergiesController,
             ),
             SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'الامراض المزمنة',
+              labelText: 'chronic_diseases'.tr,  // Use .tr for translation
               controller: widget.chronicDiseasesController,
             ),
             SizedBox(height: spacing),

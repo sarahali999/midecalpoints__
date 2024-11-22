@@ -16,6 +16,8 @@ class RegistrationStepsScreen extends StatefulWidget {
 class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  bool isRTL = true;
+
 
   final personalInfoKey = GlobalKey<FormState>();
   final medicalInfoKey = GlobalKey<FormState>();
@@ -55,26 +57,25 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   int selectedGender = 0;
   int selectedBloodType = 1;
   int currentStep = 0;
-
   final List<String> _titles = [
-    "معلومات شخصية",
-    "معلومات الاتصال",
-    "معلومات طبية",
-    "معلومات شخص مقرب"
+    'personal_info'.tr,
+    'contact_info'.tr,
+    'medical_info'.tr,
+    'emergency_contact'.tr
   ];
 
   @override
   void initState() {
     super.initState();
-  }Future<void> submitPatientData() async {
+  }  Future<void> submitPatientData() async {
     try {
       if (phoneNumberController.text.isEmpty || passwordController.text.isEmpty) {
-        Get.snackbar('خطأ', 'يرجى ملء الحقول المطلوبة');
+        Get.snackbar('error'.tr, 'fill_required_fields'.tr);
         return;
       } else {
         Get.snackbar(
-          'نجاح',
-          'تم إنشاء الحساب بنجاح',
+          'success'.tr,
+          'registration_success'.tr,
           backgroundColor: Color(0xFf259e9f),
           colorText: Colors.white,
           duration: Duration(seconds: 2),
@@ -157,7 +158,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
 
     return Scaffold(
       body: Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
         child: Stack(
           children: [
             Positioned.fill(
@@ -165,19 +166,23 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
               right: 0,
               bottom: screenHeight * 0.3,
               top: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xfffafbfb),
-                      Color(0xFFecf2f3),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(Get.width * 0.3),
-                    bottomRight: Radius.circular(Get.width * 10),
+              child: Directionality(
+                textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xfffafbfb),
+                        Color(0xFFecf2f3),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(Get.width * 0.3),
+                      bottomRight: Radius.circular(Get.width * 10),
+                    ),
                   ),
                 ),
               ),
@@ -201,7 +206,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'تسجيل جديد',
+                          'new_registration'.tr,
                           style: TextStyle(
                             fontSize: 24 * fontScale,
                             fontWeight: FontWeight.bold,
@@ -210,7 +215,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'أنشئ حسابك بسهولة من خلال ملء بياناتك الكاملة',
+                          'create_account_easily'.tr,
                           style:
                           TextStyle(fontSize: 14 * fontScale, color: Colors.grey),
                           textAlign: TextAlign.right,
@@ -370,7 +375,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                   }
                 },
                 child: Text(
-                  _currentPage < 3 ? "التالي" : "إنهاء",
+                  _currentPage < 3 ? 'next'.tr : 'finish'.tr,
                   style: TextStyle(fontSize: 18 * fontScale, color: Colors.white),
                 ),
               ),

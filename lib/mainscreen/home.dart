@@ -10,8 +10,10 @@ import 'card_widgets.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isRTL = true;
+
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -35,7 +37,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'التشخيص\nوالملاحظات',
+                        title: 'diagnosisPage.title'.tr,
                         iconPath: 'assets/icons/heart.svg',
                         iconColor: Color(0xFF4CAF50),
                       ),
@@ -51,7 +53,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'الأمراض\nالمزمنة',
+                        title: 'chronic_diseases'.tr,
                         iconPath: 'assets/icons/health.svg',
                         iconColor: Color(0xFF2196F3),
                       ),
@@ -67,7 +69,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'الفحوصات\nوالدواء',
+                        title: 'medicationsPage.title'.tr,
                         iconPath: 'assets/icons/medical.svg',
                         iconColor: Color(0xFFFF5722),
                       ),
@@ -85,7 +87,7 @@ class HomePage extends StatelessWidget {
                 },
                 child: LargeCard(
                   content: 'AMPICILLIN\nAMPHOTERICIN\nAMPICILLIN',
-                  title: 'الأدوية المصروفة لي',
+                  title: 'medicationsPage.prescribedMedications'.tr,
                   iconPath: 'assets/icons/pill.svg',
                   iconColor: Color(0xFFFF9800),
                 ),
