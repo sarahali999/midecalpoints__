@@ -62,11 +62,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       100,
           (index) => (DateTime.now().year - index).toString()
   );
-
   final List<Map<String, String>> countryOptions = [
-    {'id': '1', 'name': 'العراق'},
-    {'id': '2', 'name': 'اخرى'}
+    {'id': '1', 'name': 'iraq'.tr},
+    {'id': '2', 'name': 'other_country'.tr}
   ];
+
 
   final List<Map<String, String>> iraqGovernorates = [
     {'id': '1', 'name': 'بغداد'},

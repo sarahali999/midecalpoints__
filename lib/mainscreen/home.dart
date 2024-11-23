@@ -3,20 +3,19 @@ import 'package:get/get.dart';
 import 'chronicDiseasesPage.dart';
 import 'diagnosisPage.dart';
 import 'examinationPage.dart';
-import 'medicationsPage.dart';
 import 'news.dart';
 import 'card_widgets.dart';
 
 class HomePage extends StatelessWidget {
+  bool isRTL = true;
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 16),
               Container(
@@ -35,7 +34,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'التشخيص\nوالملاحظات',
+                        title: 'diagnosis_notes'.tr,
                         iconPath: 'assets/icons/heart.svg',
                         iconColor: Color(0xFF4CAF50),
                       ),
@@ -51,7 +50,7 @@ class HomePage extends StatelessWidget {
                         );
                       },
                       child: SmallCard(
-                        title: 'الأمراض\nالمزمنة',
+                        title: 'chronic_diseases'.tr,
                         iconPath: 'assets/icons/health.svg',
                         iconColor: Color(0xFF2196F3),
                       ),
@@ -68,8 +67,8 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: LargeCard(
-                  content: 'AMPICILLIN\nAMPHOTERICIN\nAMPICILLIN',
-                  title: 'الأدوية المصروفة لي',
+                  content: 'medications_list'.tr,
+                  title: 'my_medications'.tr,
                   iconPath: 'assets/icons/pill.svg',
                   iconColor: Color(0xFFFF9800),
                 ),

@@ -97,18 +97,10 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
     }
   }
 
-  String getGender(int? gender) {
-    if (gender == null) return "غير معروف";
+  final genderMap = {1: 'ذكر', 2: 'أنثى'};
+  String getGender(int? gender) => genderMap[gender] ?? 'غير معروف';
 
-    switch (gender) {
-      case 1:
-        return 'ذكر';
-      case 2:
-        return 'أنثى';
-      default:
-        return 'غير معروف';
-    }
-  }Future<void> fetchPatientDetails() async {
+  Future<void> fetchPatientDetails() async {
     isLoading.value = true;
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -27,55 +27,50 @@ class ContactInfoPage extends StatelessWidget {
       horizontal: screenWidth * 0.05,
       vertical: spacing,
     );
-    bool isRTL = true;
 
-    return Directionality(
-      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+    return Padding(
+      padding: padding,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomTextField(
+            labelText: 'username'.tr, // استخدام الترجمة للنص
+            controller: usernameController,
+          ),
+          SizedBox(height: spacing),
 
-      child: Padding(
-        padding: padding,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextField(
-              labelText: 'username'.tr, // استخدام الترجمة للنص
-              controller: usernameController,
-            ),
-            SizedBox(height: spacing),
-
-            IntlPhoneField(
-              controller: phoneController,
-              decoration: InputDecoration(
-                labelText: 'phone_number'.tr, // استخدام الترجمة للنص
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                filled: true,
-                fillColor: const Color(0xFFd6dedf),
+          IntlPhoneField(
+            controller: phoneController,
+            decoration: InputDecoration(
+              labelText: 'phone_number'.tr, // استخدام الترجمة للنص
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              initialCountryCode: 'IQ',
-              textAlign: TextAlign.right,
-              invalidNumberMessage: 'invalid_phone'.tr, // استخدام الترجمة للنص
-              onChanged: (phone) {
-                print(phone.completeNumber);
-              },
+              filled: true,
+              fillColor: const Color(0xFFd6dedf),
             ),
-            SizedBox(height: spacing),
+            initialCountryCode: 'IQ',
+            textAlign: TextAlign.right,
+            invalidNumberMessage: 'invalid_phone'.tr, // استخدام الترجمة للنص
+            onChanged: (phone) {
+              print(phone.completeNumber);
+            },
+          ),
+          SizedBox(height: spacing),
 
-            CustomTextField(
-              labelText: 'email'.tr, // استخدام الترجمة للنص
-              controller: emailController,
-            ),
-            SizedBox(height: spacing),
+          CustomTextField(
+            labelText: 'email'.tr, // استخدام الترجمة للنص
+            controller: emailController,
+          ),
+          SizedBox(height: spacing),
 
-            CustomTextField(
-              labelText: 'enter_password'.tr, // استخدام الترجمة للنص
-              controller: passwordController,
-              isPassword: true,
-            ),
-          ],
-        ),
+          CustomTextField(
+            labelText: 'enter_password'.tr, // استخدام الترجمة للنص
+            controller: passwordController,
+            isPassword: true,
+          ),
+        ],
       ),
     );
   }

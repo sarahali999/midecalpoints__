@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:midecalpoints/registration/personalInfoPage.dart';
+import '../languages.dart';
 import '../mainscreen/homePage.dart';
 import 'contactInfoPage.dart';
 import 'emergencyContactPage.dart';
@@ -67,6 +68,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   @override
   void initState() {
     super.initState();
+    isRTL = Languages.isRTL(Get.locale?.languageCode ?? 'en');
+
   }  Future<void> submitPatientData() async {
     try {
       if (phoneNumberController.text.isEmpty || passwordController.text.isEmpty) {
@@ -144,7 +147,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     double screenHeight = Get.size.height;
     double screenWidth = Get.size.width;
     double fontScale = screenWidth / 375;
-
     TextSpan textSpan = TextSpan(
       text: _titles[_currentPage],
       style: TextStyle(fontSize: 18 * fontScale, fontWeight: FontWeight.bold),
@@ -198,19 +200,26 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                 ),
                 SizedBox(height: 4),
                 Align(
-                  alignment: Alignment.topRight,
+                  alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: screenHeight * 0.05, right: screenWidth * 0.04),
+                      top: screenHeight * 0.05,
+                      right: isRTL ? screenWidth * 0.04 : 0,
+                      left: isRTL ? 0 : screenWidth * 0.04,
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          'new_registration'.tr,
-                          style: TextStyle(
-                            fontSize: 24 * fontScale,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                        Align(
+                          alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
+
+                          child: Text(
+                            'new_registration'.tr,
+                            style: TextStyle(
+                              fontSize: 24 * fontScale,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                           ),
                         ),
                         SizedBox(height: 4),
@@ -218,7 +227,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           'create_account_easily'.tr,
                           style:
                           TextStyle(fontSize: 14 * fontScale, color: Colors.grey),
-                          textAlign: TextAlign.right,
                         ),
                         SizedBox(height: 20),
                       ],
@@ -228,9 +236,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                   child: Align(
-                    alignment: Alignment.centerRight,
+                    alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                       children: [
                         Text(
                           _titles[_currentPage],
@@ -376,7 +384,11 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                 },
                 child: Text(
                   _currentPage < 3 ? 'next'.tr : 'finish'.tr,
-                  style: TextStyle(fontSize: 18 * fontScale, color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 16 * fontScale,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

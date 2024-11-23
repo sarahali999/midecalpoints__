@@ -44,25 +44,24 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
   final TextEditingController emergencyphoneNumberController = TextEditingController();
   String initialCountryCode = 'IQ';
   String completePhoneNumber = '';
-
   final Map<String, int> relationshipOptions = {
-    'اب': 1,
-    'ام': 2,
-    'اخ': 3,
-    'اخت': 4,
-    'ابن': 5,
-    'ابنه': 6,
-    'زوج': 7,
-    'زوجة': 8,
-    'اخرى': 9,
+    'emergencyContactPage.father'.tr: 1,
+    'emergencyContactPage.mother'.tr: 2,
+    'emergencyContactPage.brother'.tr: 3,
+    'emergencyContactPage.sister'.tr: 4,
+    'emergencyContactPage.son'.tr: 5,
+    'emergencyContactPage.daughter'.tr: 6,
+    'emergencyContactPage.husband'.tr: 7,
+    'emergencyContactPage.wife'.tr: 8,
+    'emergencyContactPage.other'.tr: 9,
   };
 
   String selectedRelationship = 'اب';
 
   String cntr = "";
   final List<Map<String, String>> countryOptions = [
-    {'id': '1', 'name': 'العراق'},
-    {'id': '2', 'name': 'اخرى'}
+    {'id': '1', 'name': 'emergencyContactPage.iraq'.tr},
+    {'id': '2', 'name': 'emergencyContactPage.other_country'.tr}
   ];
   String? selectedCountry;
   final List<Map<String, String>> iraqGovernorates = [
@@ -92,7 +91,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
       setState(() {
         this.selectedCountry = selectedCountry;
         if (selectedCountry == '1') {
-          emergencycountryController.text = 'العراق';
+          emergencycountryController.text = 'emergencyContactPage.iraq'.tr;
         } else {
           emergencycountryController.clear();
         }
@@ -105,7 +104,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     double screenHeight = Get.height;
     double screenWidth = Get.width;
     double spacing = screenHeight * 0.02;
-    EdgeInsets padding = EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: spacing);
+    EdgeInsets padding = EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.05, vertical: spacing);
 
     return SingleChildScrollView(
       child: Padding(
@@ -121,13 +121,14 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
             DropdownButtonFormField<String>(
               hint: Text('emergencyContactPage.selectCountry'.tr),
               value: selectedCountry,
-              items: countryOptions.map((item) => DropdownMenuItem<String>(
-                value: item['id'],
-                child: Text(
-                  item['name']!,
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
-                ),
-              )).toList(),
+              items: countryOptions.map((item) =>
+                  DropdownMenuItem<String>(
+                    value: item['id'],
+                    child: Text(
+                      item['name']!.tr,
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    ),
+                  )).toList(),
               onChanged: _onCountryChanged,
               decoration: InputDecoration(
                 labelText: 'emergencyContactPage.country'.tr,
@@ -138,7 +139,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 ),
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
-                contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: 16, horizontal: 16),
               ),
             ),
             SizedBox(height: spacing),
@@ -173,14 +175,16 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     },
                     decoration: InputDecoration(
                       labelText: 'emergencyContactPage.province'.tr,
-                      labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
+                      labelStyle: TextStyle(
+                          color: Colors.grey[600], fontSize: 14),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       filled: true,
                       fillColor: Color(0xFFd6dedf),
-                      contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 16),
                     ),
                   ),
                   SizedBox(height: spacing),
@@ -200,97 +204,100 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   ),
                 ],
               )
-            else if (selectedCountry == '2')
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: CountryService.fetchCountries(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade400),
-                      ),
-                      child: Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+            else
+              if (selectedCountry == '2')
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  future: CountryService.fetchCountries(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.blue),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.red.shade300),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'emergencyContactPage.countriesError'.tr,
-                          style: TextStyle(color: Colors.red, fontSize: 14),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.red.shade300),
                         ),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
-                    final countries = snapshot.data!;
-                    return DropdownButtonFormField<String>(
-                      value: emergencycountryController.text.isNotEmpty ? emergencycountryController.text : null,
-                      items: countries.map((country) {
-                        return DropdownMenuItem<String>(
-                          value: country['name'],
+                        child: Center(
                           child: Text(
-                            country['name']!,
-                            style: TextStyle(fontSize: 16, color: Colors.black87),
+                            'emergencyContactPage.countriesError'.tr,
+                            style: TextStyle(color: Colors.red, fontSize: 14),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          emergencycountryController.text = value ?? '';
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'emergencyContactPage.country'.tr,
-                        labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        filled: true,
-                        fillColor: Color(0xFFd6dedf),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade400),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'emergencyContactPage.noCountries'.tr,
-                          style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                      );
+                    } else if (snapshot.hasData) {
+                      final countries = snapshot.data!;
+                      return DropdownButtonFormField<String>(
+                        value: emergencycountryController.text.isNotEmpty
+                            ? emergencycountryController.text
+                            : null,
+                        items: countries.map((country) {
+                          return DropdownMenuItem<String>(
+                            value: country['name'],
+                            child: Text(
+                              country['name']!,
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.black87),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            emergencycountryController.text = value ?? '';
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'emergencyContactPage.country'.tr,
+                          labelStyle: TextStyle(color: Colors.grey[600],
+                              fontSize: 14),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: Color(0xFFd6dedf),
+                          contentPadding: EdgeInsets.symmetric(vertical: 16,
+                              horizontal: 16),
                         ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            SizedBox(height: spacing),
-            CustomTextField(
-                labelText: 'emergencyContactPage.birthYear'.tr,
-                controller: emergencybirthYearController
-            ),
+                      );
+                    } else {
+                      return Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'emergencyContactPage.noCountries'.tr,
+                            style: TextStyle(
+                                color: Colors.grey[600], fontSize: 14),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
             SizedBox(height: spacing),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
@@ -302,11 +309,11 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
               ),
-              value: selectedRelationship,
+              value: relationshipOptions.keys.contains(selectedRelationship) ? selectedRelationship : null,
               items: relationshipOptions.keys.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(value.tr),
                 );
               }).toList(),
               onChanged: (String? newValue) {
@@ -315,6 +322,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 });
               },
             ),
+
             SizedBox(height: spacing),
             IntlPhoneField(
               controller: emergencyphoneNumberController,
@@ -326,7 +334,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 ),
                 filled: true,
                 fillColor: Color(0xFFd6dedf),
-                contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: 16, horizontal: 16),
               ),
               initialCountryCode: initialCountryCode,
               textAlign: TextAlign.right,

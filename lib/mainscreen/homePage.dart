@@ -9,12 +9,14 @@ import 'bottom_nav_bar.dart';
 import 'package:latlong2/latlong.dart';
 
 class MainScreen extends StatefulWidget {
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  bool isRTL = true;
 
   final List<Widget> _pages = [
     HomePage(),
@@ -48,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
     bool isHomePage = _selectedIndex == 0;
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
       child: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
