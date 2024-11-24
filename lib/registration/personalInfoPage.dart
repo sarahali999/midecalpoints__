@@ -44,12 +44,23 @@ class PersonalInfoPage extends StatefulWidget {
   @override
   _PersonalInfoPageState createState() => _PersonalInfoPageState();
 }
-
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final Map<String, int> genderOptions = {
+    'gender'.tr: 0,
     'male'.tr: 1,
     'female'.tr: 2,
   };
+
+  String? _currentGenderKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentGenderKey = genderOptions.entries
+        .firstWhere((entry) => entry.value == widget.selectedGender,
+        orElse: () => genderOptions.entries.first)
+        .key;
+  }
   String? selectedCountry;
   String? selectedGovernorate;
 
@@ -346,29 +357,34 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           SizedBox(height: spacing),
           _buildBirthDateSection(spacing),
           SizedBox(height: spacing),
-
-          DropdownButtonFormField<String>(
-            decoration: InputDecoration(
-              labelText: 'gender'.tr,
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              filled: true,
-              fillColor: Color(0xFFd6dedf),
-            ),
-            items: genderOptions.keys.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (newValue) {
-              widget.onGenderChanged(genderOptions[newValue]);
-            },
-          ),
-        ],
-      ),
+    DropdownButtonFormField<String>(
+    value: _currentGenderKey,
+    decoration: InputDecoration(
+    labelText: 'gender'.tr,
+    border: OutlineInputBorder(
+    borderSide: BorderSide.none,
+    borderRadius: BorderRadius.circular(10.0),
+    ),
+    filled: true,
+    fillColor: Color(0xFFd6dedf),
+    ),
+    items: genderOptions.keys.map((String value) {
+    return DropdownMenuItem<String>(
+    value: value,
+    child: Text(value),
+    );
+    }).toList(),
+    onChanged: (newValue) {
+    if (newValue != null) {
+    setState(() {
+    _currentGenderKey = newValue;
+    widget.onGenderChanged(genderOptions[newValue]);
+    });
+    }
+    },
+    ),
+    ],
+      )
     );
   }
 }

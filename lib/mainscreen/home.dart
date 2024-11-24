@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
       textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: Column(
             children: [
               SizedBox(height: 16),

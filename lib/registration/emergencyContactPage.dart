@@ -7,25 +7,29 @@ import 'custom.dart';
 class EmergencyContactPage extends StatefulWidget {
   final TextEditingController emergencyContactNameController;
   final TextEditingController emergencyContactAddressController;
-  final TextEditingController emergencyContactRelationshipController;
+  final int emergencyContactRelationship;
   final TextEditingController emergencyContactPhoneController;
   final TextEditingController emergencyContactCountryController;
   final TextEditingController emergencyContactProvinceController;
   final TextEditingController emergencyContactDistrictController;
   final TextEditingController emergencyContactAlleyController;
   final TextEditingController emergencyContactHouseController;
+  final Function(int) onRelationshipChanged;
 
-  const EmergencyContactPage({
+   EmergencyContactPage({
     required this.emergencyContactNameController,
     required this.emergencyContactAddressController,
-    required this.emergencyContactRelationshipController,
+    required this.emergencyContactRelationship,
     required this.emergencyContactPhoneController,
     required this.emergencyContactCountryController,
     required this.emergencyContactProvinceController,
     required this.emergencyContactDistrictController,
     required this.emergencyContactAlleyController,
     required this.emergencyContactHouseController,
-    Key? key,
+     required this.onRelationshipChanged,
+
+
+     Key? key,
   }) : super(key: key);
 
   @override
@@ -45,6 +49,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
   String initialCountryCode = 'IQ';
   String completePhoneNumber = '';
   final Map<String, int> relationshipOptions = {
+    'emergencyContactPage.relationship'.tr: 0,
     'emergencyContactPage.father'.tr: 1,
     'emergencyContactPage.mother'.tr: 2,
     'emergencyContactPage.brother'.tr: 3,
@@ -56,7 +61,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     'emergencyContactPage.other'.tr: 9,
   };
 
-  String selectedRelationship = 'اب';
+
 
   String cntr = "";
   final List<Map<String, String>> countryOptions = [
@@ -299,29 +304,38 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   },
                 ),
             SizedBox(height: spacing),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'emergencyContactPage.relationship'.tr,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                filled: true,
-                fillColor: Color(0xFFd6dedf),
-              ),
-              value: relationshipOptions.keys.contains(selectedRelationship) ? selectedRelationship : null,
-              items: relationshipOptions.keys.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value.tr),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedRelationship = newValue!;
-                });
-              },
-            ),
+
+    DropdownButtonFormField<String>(
+    decoration: InputDecoration(
+    labelText: 'emergencyContactPage.relationship'.tr,
+    border: OutlineInputBorder(
+    borderSide: BorderSide.none,
+    borderRadius: BorderRadius.circular(10.0),
+    ),
+    filled: true,
+    fillColor: Color(0xFFd6dedf),
+    ),
+    value: relationshipOptions.entries
+        .firstWhere(
+    (entry) => entry.value == widget.emergencyContactRelationship,
+    orElse: () => MapEntry('', 0),
+    )
+        .key, // Map selected numeric value to corresponding string key
+    items: relationshipOptions.keys.map((String key) {
+    return DropdownMenuItem<String>(
+    value: key, // Ensure unique string value for each item
+    child: Text(key),
+    );
+    }).toList(),
+    onChanged: (String? newKey) {
+    if (newKey != null) {
+    int newValue = relationshipOptions[newKey] ?? 0;
+    widget.onRelationshipChanged(newValue); // Notify parent
+    }
+    },
+    ),
+
+
 
             SizedBox(height: spacing),
             IntlPhoneField(

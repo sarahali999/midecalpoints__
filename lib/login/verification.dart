@@ -7,24 +7,25 @@ import 'package:http/http.dart' as http;
 import '../mainscreen/homePage.dart';
 import '../registration/registrationStepsScreen.dart';
 
-class MyPhone extends StatefulWidget {
-  const MyPhone({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<MyPhone> createState() => _MyPhoneState();
+  State<Login> createState() => _LoginState();
 }
 
-class _MyPhoneState extends State<MyPhone> {
+class _LoginState extends State<Login> {
   bool _isPasswordVisible = false;
   bool isLoading = false;
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool isRTL = true;
 
-
   Future<String?> login() async {
     try {
       if (phoneController.text.isEmpty || passwordController.text.isEmpty) {
+
+        print('Validation Error: Empty phone or password');
         Get.snackbar(
           'error'.tr,
           'enter_phone_password'.tr,
@@ -32,27 +33,42 @@ class _MyPhoneState extends State<MyPhone> {
         );
         return null;
       }
+
       setState(() {
         isLoading = true;
       });
 
+      final requestBody = {
+        'phoneNumber': phoneController.text.trim(),
+        'password': passwordController.text.trim(),
+      };
+
+      print('Request URL: https://medicalpoint-api.tatwer.tech/api/Login');
+      print('Request Headers: {"Content-Type": "application/json"}');
+      print('Request Body: ${json.encode(requestBody)}');
+
       final response = await http.post(
         Uri.parse('https://medicalpoint-api.tatwer.tech/api/Login'),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'phoneNumber': phoneController.text.trim(),
-          'password': passwordController.text.trim(),
-        }),
+        body: json.encode(requestBody),
       );
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Headers: ${response.headers}');
+      print('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+        print('Parsed JSON Response: $jsonResponse');
 
         if (jsonResponse['error'] == false) {
           final token = jsonResponse['data']['token'];
-          final prefs = await SharedPreferences.getInstance();
+          print('Login Successful');
+          print('Token: $token');
 
+          final prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
+          print('Token saved to SharedPreferences');
 
           Get.snackbar(
             'success'.tr,
@@ -62,20 +78,28 @@ class _MyPhoneState extends State<MyPhone> {
 
           return token;
         } else {
+          print('Login Failed - Server Error Message: ${jsonResponse['message']}');
           Get.snackbar(
             'error'.tr,
-            jsonResponse['message'] ?? 'login_failed'.tr,
+            'login_failed'.tr,
             backgroundColor: Colors.red[100],
           );
         }
       } else {
+        print('HTTP Error: Status Code ${response.statusCode}');
+        print('Error Response Body: ${response.body}');
+
         Get.snackbar(
           'error'.tr,
-          'server_error'.tr + ' ${response.statusCode}',
+          'server_error'.tr,
           backgroundColor: Colors.red[100],
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('Exception during login:');
+      print('Error: $e');
+      print('Stack Trace: $stackTrace');
+
       Get.snackbar(
         'error'.tr,
         'unexpected_error'.tr,
@@ -85,6 +109,7 @@ class _MyPhoneState extends State<MyPhone> {
       setState(() {
         isLoading = false;
       });
+      print('Login process completed - Loading state reset');
     }
     return null;
   }

@@ -39,10 +39,10 @@ class News extends StatelessWidget {
           print('Loaded articles: ${snapshot.data}');
           return CarouselSlider(
             options: CarouselOptions(
-              height: screenHeight * 0.3,
+              height: screenHeight * 0.5,
               autoPlay: true,
               enlargeCenterPage: true,
-              viewportFraction: 0.9,
+              viewportFraction: 1,
               autoPlayAnimationDuration: Duration(milliseconds: 800),
             ),
             items: snapshot.data!.map((article) {

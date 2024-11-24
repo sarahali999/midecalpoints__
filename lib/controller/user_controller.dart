@@ -7,7 +7,6 @@ import '../models/UserDetails.dart';
 
 class UserController extends GetxController with GetSingleTickerProviderStateMixin {
   static const String API_URL = 'https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientDetails';
-
   late AnimationController animationController;
   late Animation<double> animation;
   var isExpanded = false.obs;
@@ -71,8 +70,6 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
   }
 
   String getEmergencyContactRelationship(int? relationship) {
-    if (relationship == null) return "غير معروف";
-
     switch (relationship) {
       case 1:
         return 'اب';
@@ -97,12 +94,15 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
     }
   }
 
+
   final genderMap = {1: 'ذكر', 2: 'أنثى'};
   String getGender(int? gender) => genderMap[gender] ?? 'غير معروف';
 
   Future<void> fetchPatientDetails() async {
+
     isLoading.value = true;
     try {
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? jwtToken = prefs.getString('token');
 
@@ -117,16 +117,16 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
           'Content-Type': 'application/json',
         },
       );
-
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
-
       if (response.statusCode == 200) {
+        print(response.body);
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         userInfoDetails.value = UserDetails.fromJson(jsonResponse);
 
         print('Parsed user details: ${userInfoDetails.value?.toJson()}');
       } else {
+        print(response.body);
         throw Exception('Failed to load patient details: ${response.statusCode}');
       }
     } catch (e) {

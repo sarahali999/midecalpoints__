@@ -19,9 +19,9 @@ class MedicalInfoPage extends StatefulWidget {
   @override
   _MedicalInfoPageState createState() => _MedicalInfoPageState();
 }
-
 class _MedicalInfoPageState extends State<MedicalInfoPage> {
   final Map<String, int> bloodTypeOptions = {
+    'blood_type'.tr: 0,
     'A+': 1,
     'A-': 2,
     'B+': 3,
@@ -32,13 +32,17 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
     'O-': 8,
   };
 
-  late final Map<int, String> bloodTypeFromId;
-  late String? selectedBloodTypeString;
+  String? _currentBloodType;
 
   @override
   void initState() {
     super.initState();
+    _currentBloodType = bloodTypeOptions.entries
+        .firstWhere((entry) => entry.value == widget.selectedBloodType,
+        orElse: () => bloodTypeOptions.entries.first)
+        .key;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +61,9 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DropdownButtonFormField<String>(
-              isExpanded: true,
+              value: _currentBloodType,
               decoration: InputDecoration(
-                labelText: 'blood_type'.tr,  // Use .tr for translation
+                labelText: 'blood_type'.tr,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(10.0),
@@ -76,20 +80,20 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
               onChanged: (String? newValue) {
                 if (newValue != null) {
                   setState(() {
-                    selectedBloodTypeString = newValue;
+                    _currentBloodType = newValue;
                     widget.onBloodTypeChanged(bloodTypeOptions[newValue]);
                   });
                 }
               },
             ),
-            SizedBox(height: spacing),
+          SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'allergies'.tr,  // Use .tr for translation
+              labelText: 'allergies'.tr,
               controller: widget.allergiesController,
             ),
             SizedBox(height: spacing),
             CustomTextField(
-              labelText: 'chronic_diseases'.tr,  // Use .tr for translation
+              labelText: 'chronic_diseases'.tr,
               controller: widget.chronicDiseasesController,
             ),
             SizedBox(height: spacing),

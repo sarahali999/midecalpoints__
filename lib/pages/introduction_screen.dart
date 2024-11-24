@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../languages.dart';
-import '../phones/verification.dart';
+import '../login/verification.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen();
@@ -86,7 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _toggleLanguages() => setState(() => _showLanguages = !_showLanguages);
 
-  void _navigateToPhone() => Get.to(() => const MyPhone());
+  void _navigateToPhone() => Get.to(() => const Login());
 
   void _handleMainButtonPress() {
     if (_currentPage == _contents.length - 1) {

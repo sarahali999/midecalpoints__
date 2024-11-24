@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:midecalpoints/registration/personalInfoPage.dart';
 import '../languages.dart';
-import '../mainscreen/homePage.dart';
+import '../login/verification.dart';
 import 'contactInfoPage.dart';
 import 'emergencyContactPage.dart';
 import 'medicalInfoPage.dart';
@@ -18,8 +18,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   bool isRTL = true;
-
-
+  int selectedRelationship = 0;
+  int _selectedGender = 0;  // القيمة الافتراضية
+  int _selectedBloodType = 0;  // القيمة الافتراضية
   final personalInfoKey = GlobalKey<FormState>();
   final medicalInfoKey = GlobalKey<FormState>();
   final emergencyContactKey = GlobalKey<FormState>();
@@ -53,10 +54,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   TextEditingController emergencyContactNameController = TextEditingController();
   TextEditingController emergencyContactPhoneController = TextEditingController();
   TextEditingController emergencyContactAddressController = TextEditingController();
-  TextEditingController emergencyContactRelationshipController = TextEditingController();
   List<TextEditingController> phoneControllers = [TextEditingController()];
-  int selectedGender = 0;
-  int selectedBloodType = 1;
   int currentStep = 0;
   final List<String> _titles = [
     'personal_info'.tr,
@@ -70,23 +68,17 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     super.initState();
     isRTL = Languages.isRTL(Get.locale?.languageCode ?? 'en');
 
-  }  Future<void> submitPatientData() async {
+  } Future<void> submitPatientData() async {
     try {
       if (phoneNumberController.text.isEmpty || passwordController.text.isEmpty) {
-        Get.snackbar('error'.tr, 'fill_required_fields'.tr);
-        return;
-      } else {
         Get.snackbar(
-          'success'.tr,
-          'registration_success'.tr,
-          backgroundColor: Color(0xFf259e9f),
+          'error'.tr,
+          'fill_required_fields'.tr,
+          backgroundColor: Colors.red[400],
           colorText: Colors.white,
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 3),
         );
-
-        await Future.delayed(Duration(seconds: 2));
-
-        Get.offAll(() => MainScreen());
+        return;
       }
 
       var headers = {'Content-Type': 'application/json'};
@@ -96,19 +88,19 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
           'https://medicalpoint-api.tatwer.tech/api/Mobile/RegisterPatient',
         ),
       );
-      request.body = json.encode({
+
+      var requestBody = {
         'firstName': firstNameController.text,
         'secondName': lastNameController.text,
         'thirdName': middleNameController.text,
-        'gender': selectedGender == 1 ? 0 : 1,
-        'address': addressController.text,
+        'gender': _selectedGender,  // سيتم إرسال القيمة الصحيحة (0 أو 1)
+        'bloodType': _selectedBloodType,  // سيتم إرسال القيمة الصحيحة (0 إلى 7)        'address': addressController.text,
         'birthYear': selectedYear ?? '',
         'country': countryController.text,
         'province': governorateController.text,
         'district': districtController.text,
         'alley': alleyController.text,
         'house': houseController.text,
-        'bloodType': selectedBloodType,
         'email': emailController.text,
         'chronicDiseases': chronicDiseasesController.text,
         'allergies': allergiesController.text,
@@ -120,25 +112,87 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         'emergencyContactAlley': emergencyContactAlleyController.text,
         'emergencyContactHouse': emergencyContactHouseController.text,
         'emergencyContactPhoneNumber': emergencyContactPhoneController.text,
-        'emergencyContactRelationship':
-        int.tryParse(emergencyContactRelationshipController.text) ?? 0,
+        'emergencyContactRelationship': selectedRelationship,
         'password': passwordController.text,
         'phoneNumber': phoneNumberController.text,
         'username': usernameController.text,
-      });
+      };
+
+      request.body = json.encode(requestBody);
       request.headers.addAll(headers);
 
+      print('Request URL: ${request.url}');
+      print('Request Headers: ${request.headers}');
       print('Request Body: ${request.body}');
-      http.StreamedResponse response = await request.send();
 
-      if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+      http.StreamedResponse response = await request.send();
+      String responseBody = await response.stream.bytesToString();
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Headers: ${response.headers}');
+      print('Response Body: $responseBody');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Registration Successful');
+        print('Full Success Response: $responseBody');
+        Get.snackbar(
+          'success'.tr,
+          'registration_success'.tr,
+          backgroundColor: Color(0xFf259e9f),
+          colorText: Colors.white,
+          duration: Duration(seconds: 2),
+        );
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Login())
+        );
       } else {
-        print('Error: ${response.statusCode} - ${response.reasonPhrase}');
-        print('Response: ${await response.stream.bytesToString()}');
+        Map<String, dynamic> errorResponse = json.decode(responseBody);
+        String errorMessage = errorResponse['message'] ?? 'unknown_error'.tr;
+
+        print('Registration Failed');
+        print('Error Status Code: ${response.statusCode}');
+        print('Error Response Body: $responseBody');
+        print('Parsed Error Message: $errorMessage');
+
+        if (errorMessage.toLowerCase().contains('phone') ||
+            errorMessage.toLowerCase().contains('already exists')) {
+          Get.snackbar(
+            'error'.tr,
+            'رقم الهاتف موجود مسبقا',
+            backgroundColor: Colors.red[400],
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+        else {
+
+          print('Request URL: ${request.url}');
+          print('Request Headers: ${request.headers}');
+          print('Request Body: ${request.body}');
+          Get.snackbar(
+            'error'.tr,
+            errorMessage,
+            backgroundColor: Colors.red[400],
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
+          );
+        }
       }
-    } catch (e) {
-      print('Exception: $e');
+    } catch (e, stackTrace) {
+      print('Exception occurred during registration:');
+      print('Error: $e');
+      print('Stack Trace: $stackTrace');
+
+      Get.snackbar(
+        'error'.tr,
+        'something_went_wrong'.tr,
+        backgroundColor: Colors.red[400],
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
     }
   }
 
@@ -277,12 +331,17 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           governorateController: governorateController,
                           countryController: countryController,
                           houseController: houseController,
-                          selectedGender: selectedGender,
-                          selectedDay: selectedDay,
+                          selectedGender: _selectedGender,
+                          onGenderChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                _selectedGender = value;
+                              });
+                            }
+                          },                          selectedDay: selectedDay,
                           selectedMonth: selectedMonth,
                           selectedYear: selectedYear,
-                          onGenderChanged: (value) =>
-                              setState(() => selectedGender = value!),
+
                           onDayChanged: (value) =>
                               setState(() => selectedDay = int.parse(value!)),
                           onMonthChanged: (value) =>
@@ -301,11 +360,17 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                       ),
                       SingleChildScrollView(
                         child: MedicalInfoPage(
-                          selectedBloodType: selectedBloodType,
+                          selectedBloodType: _selectedBloodType,
+                          onBloodTypeChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                _selectedBloodType = value;
+                              });
+                            }
+                          },
                           chronicDiseasesController: chronicDiseasesController,
                           allergiesController: allergiesController,
-                          onBloodTypeChanged: (value) =>
-                              setState(() => selectedBloodType = value!),
+
                         ),
                       ),
                       SingleChildScrollView(
@@ -313,8 +378,12 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           emergencyContactNameController: emergencyContactNameController,
                           emergencyContactAddressController:
                           emergencyContactAddressController,
-                          emergencyContactRelationshipController:
-                          emergencyContactRelationshipController,
+                          emergencyContactRelationship: selectedRelationship,
+                          onRelationshipChanged: (int newRelationship) {
+                            setState(() {
+                              selectedRelationship = newRelationship;
+                            });
+                          },
                           emergencyContactPhoneController:
                           emergencyContactPhoneController,
                           emergencyContactCountryController:

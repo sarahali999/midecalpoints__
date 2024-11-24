@@ -40,21 +40,21 @@ class _SplashScreenState extends State<SplashScreen> {
     final screenHeight = Get.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFf259e9f),
+      backgroundColor: const Color(0xFF259E9F),
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.05),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(flex: 2),
+                const Spacer(flex: 4),
                 AppLogo(screenWidth: screenWidth),
-                const SizedBox(height: 24),
-                AppTitle(screenWidth: screenWidth),
-                const Spacer(flex: 2),
-                FooterText(screenWidth: screenWidth),
                 const SizedBox(height: 16),
+                AppTitle(screenWidth: screenWidth),
+                const Spacer(flex: 3),
+                FooterText(screenWidth: screenWidth),
+                SizedBox(height: screenHeight * 0.04),
               ],
             ),
           ),
@@ -71,16 +71,17 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double logoSize = (screenWidth * 0.25).clamp(50.0, 150.0);
+    final double logoSize = (screenWidth * 0.28).clamp(70.0, 150.0);
     return SizedBox(
       width: logoSize,
       height: logoSize,
       child: Center(
         child: Image.asset(
           'assets/images/logo.png',
-          width: logoSize * 0.8,
-          height: logoSize * 0.8,
+          width: logoSize,
+          height: logoSize,
           fit: BoxFit.contain,
+          color: Colors.white,
         ),
       ),
     );
@@ -94,13 +95,14 @@ class AppTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fontSize = (screenWidth * 0.08).clamp(20.0, 40.0);
+    final double fontSize = (screenWidth * 0.06).clamp(20.0, 32.0);
     return Text(
       'طب الحشود',
       style: TextStyle(
         color: Colors.white,
         fontSize: fontSize,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w500,
+        height: 1.2,
       ),
     );
   }
@@ -113,15 +115,17 @@ class FooterText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fontSize = (screenWidth * 0.04).clamp(14.0, 24.0);
+    final double fontSize = (screenWidth * 0.038).clamp(12.0, 18.0);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Text(
         'معاونية شؤون الطلبة والمقاتلين والمضحين',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,
           fontSize: fontSize,
+          height: 1.4,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );
