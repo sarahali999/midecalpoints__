@@ -19,8 +19,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   int _currentPage = 0;
   bool isRTL = true;
   int selectedRelationship = 0;
-  int _selectedGender = 0;  // القيمة الافتراضية
-  int _selectedBloodType = 0;  // القيمة الافتراضية
+  int _selectedGender = 0;
+  int _selectedBloodType = 0;
+
   final personalInfoKey = GlobalKey<FormState>();
   final medicalInfoKey = GlobalKey<FormState>();
   final emergencyContactKey = GlobalKey<FormState>();
@@ -58,9 +59,10 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   int currentStep = 0;
   final List<String> _titles = [
     'personal_info'.tr,
-    'contact_info'.tr,
     'medical_info'.tr,
-    'emergency_contact'.tr
+    'emergency_contact'.tr,
+    'contact_info'.tr,
+
   ];
 
   @override
@@ -224,7 +226,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
               top: 0,
               child: Directionality(
                 textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
@@ -338,7 +339,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                 _selectedGender = value;
                               });
                             }
-                          },                          selectedDay: selectedDay,
+                          },
+                          selectedDay: selectedDay,
                           selectedMonth: selectedMonth,
                           selectedYear: selectedYear,
 
@@ -350,14 +352,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           selectedYear = value),
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: ContactInfoPage(
-                          phoneController: phoneNumberController,
-                          emailController: emailController,
-                          usernameController: usernameController,
-                          passwordController: passwordController,
-                        ),
-                      ),
+
                       SingleChildScrollView(
                         child: MedicalInfoPage(
                           selectedBloodType: _selectedBloodType,
@@ -398,6 +393,15 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           emergencyContactHouseController,
                         ),
                       ),
+                      SingleChildScrollView(
+                        child: ContactInfoPage(
+                          phoneController: phoneNumberController,
+                          emailController: emailController,
+                          usernameController: usernameController,
+                          passwordController: passwordController,
+                        ),
+                      ),
+
                     ],
                   ),
                 ),

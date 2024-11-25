@@ -19,7 +19,8 @@ class ChronicDiseasesPage extends GetView<UserController> {
               bottomRight: Radius.circular(20),
             ),
           ),
-        ),        title: Text(
+        ),
+        title: Text(
           'الامراض المزمنة والحساسية',
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),

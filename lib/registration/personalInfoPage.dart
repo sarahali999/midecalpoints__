@@ -46,7 +46,7 @@ class PersonalInfoPage extends StatefulWidget {
 }
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final Map<String, int> genderOptions = {
-    'gender'.tr: 0,
+    'غير معروف': 0,
     'male'.tr: 1,
     'female'.tr: 2,
   };
@@ -56,11 +56,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   void initState() {
     super.initState();
-    _currentGenderKey = genderOptions.entries
-        .firstWhere((entry) => entry.value == widget.selectedGender,
-        orElse: () => genderOptions.entries.first)
+    _currentGenderKey = widget.selectedGender == 0 ? null : genderOptions.entries
+        .firstWhere((entry) => entry.value == widget.selectedGender)
         .key;
   }
+
   String? selectedCountry;
   String? selectedGovernorate;
 
@@ -357,7 +357,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           SizedBox(height: spacing),
           _buildBirthDateSection(spacing),
           SizedBox(height: spacing),
-    DropdownButtonFormField<String>(
+     DropdownButtonFormField<String>(
     value: _currentGenderKey,
     decoration: InputDecoration(
     labelText: 'gender'.tr,
@@ -368,10 +368,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     filled: true,
     fillColor: Color(0xFFd6dedf),
     ),
-    items: genderOptions.keys.map((String value) {
+    items: genderOptions.entries
+        .where((entry) => entry.value != 0) // استثناء القيمة 0
+        .map((entry) {
     return DropdownMenuItem<String>(
-    value: value,
-    child: Text(value),
+    value: entry.key,
+    child: Text(entry.key),
     );
     }).toList(),
     onChanged: (newValue) {
@@ -382,9 +384,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     });
     }
     },
-    ),
-    ],
-      )
+    )
+    ]
+    )
     );
   }
 }

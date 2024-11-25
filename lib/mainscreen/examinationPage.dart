@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
-class MedicationController extends GetxController {
-  var medications = <dynamic>[].obs;
+class MedicalSuppliesController extends GetxController {
+  var supplies = <dynamic>[].obs;
   var isLoading = true.obs;
   var errorMessage = ''.obs;
   var jwtToken = ''.obs;
@@ -14,15 +14,16 @@ class MedicationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchJwtTokenAndMedications();
+    fetchJwtTokenAndSupplies();
   }
 
-  Future<void> fetchJwtTokenAndMedications() async {
+  Future<void> fetchJwtTokenAndSupplies() async {
     await fetchJwtToken();
     if (jwtToken.value.isNotEmpty) {
-      await fetchMedications();
+      await fetchSupplies();
     } else {
       isLoading.value = false;
+      errorMessage.value = "فشل في جلب رمز JWT";
     }
   }
 
@@ -31,11 +32,11 @@ class MedicationController extends GetxController {
     jwtToken.value = prefs.getString('token') ?? '';
   }
 
-  Future<void> fetchMedications() async {
+  Future<void> fetchSupplies() async {
     try {
       final response = await http.get(
         Uri.parse(
-          'https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientDispenseLaboratoryMaterial?PageNumber=1&PageSize=11',
+          'https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientMedicalSuppliesDispense',
         ),
         headers: {
           'Authorization': 'Bearer ${jwtToken.value}',
@@ -44,10 +45,10 @@ class MedicationController extends GetxController {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        medications.value = data['value']['items'];
+        supplies.value = data['value']['items'];
         isLoading.value = false;
       } else {
-        throw Exception('Failed to load medications');
+        throw Exception('فشل في تحميل المستلزمات الطبية');
       }
     } catch (e) {
       isLoading.value = false;
@@ -56,67 +57,74 @@ class MedicationController extends GetxController {
   }
 }
 
-class MedicationListWidget extends StatelessWidget {
-  final MedicationController _controller = Get.put(MedicationController());
+class MedicalSuppliesWidget extends StatelessWidget {
+  final MedicalSuppliesController controller = Get.put(MedicalSuppliesController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Color(0xFF259E9F),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-          ),
-        ),        title: Text(
-          'مواد مختبر المريض',
+        title: Text(
+          'المستلزمات الطبية',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF259E9F),
+                Color(0xFF1A7F80),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25),
+            ),
           ),
         ),
         elevation: 0,
         centerTitle: true,
       ),
       body: Obx(() {
-        if (_controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        } else if (_controller.errorMessage.value.isNotEmpty) {
-          return _buildErrorView(_controller.errorMessage.value);
-        } else if (_controller.medications.isEmpty) {
-          return _buildEmptyMedicationsView();
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF259E9F)),
+            ),
+          );
+        } else if (controller.errorMessage.value.isNotEmpty) {
+          return _buildErrorView(controller.errorMessage.value);
+        } else if (controller.supplies.isEmpty) {
+          return _buildEmptyView();
         } else {
-          return _buildMedicationList();
+          return _buildSuppliesList();
         }
       }),
     );
   }
 
-  Widget _buildErrorView(String errorMessage) {
-    return Center(
-      child: Text(
-        errorMessage,
-        style: TextStyle(color: Colors.red, fontSize: 18),
-      ),
-    );
-  }
-
-  Widget _buildEmptyMedicationsView() {
+  Widget _buildErrorView(String error) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
+          Icon(
+            Icons.error_outline,
+            size: 60,
+            color: Colors.red,
+          ),
+          SizedBox(height: 16),
           Text(
-            'لم يتم صرف الدواء بعد',
+            error,
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFf259e9f),
+              color: Colors.red[700],
             ),
             textAlign: TextAlign.center,
           ),
@@ -125,109 +133,169 @@ class MedicationListWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMedicationList() {
+  Widget _buildEmptyView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.medical_services_outlined,
+            size: 60,
+            color: Color(0xFF259E9F),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'لا توجد مستلزمات طبية مصروفة',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF259E9F),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSuppliesList() {
     return ListView.builder(
-      padding: EdgeInsets.all(16.0),
-      itemCount: _controller.medications.length,
+      padding: EdgeInsets.all(16),
+      itemCount: controller.supplies.length,
       itemBuilder: (context, index) {
-        final medication = _controller.medications[index];
-        final labMaterial = medication['laboratoryMaterial'];
-        final center = labMaterial['center'];
-        return _buildMedicationCard(labMaterial, center);
+        final supply = controller.supplies[index];
+        final medicalSupply = supply['medicalSupply'];
+        return Card(
+          elevation: 4,
+          margin: EdgeInsets.only(bottom: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.white, Color(0xFFF5F5F5)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF259E9F).withOpacity(0.1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.medical_services,
+                        color: Color(0xFF259E9F),
+                        size: 24,
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          medicalSupply['name'] ?? 'غير محدد',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF259E9F),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF259E9F),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'الكمية: ${supply['quantity']}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow(Icons.inventory, 'القطع في الحزمة', '${medicalSupply['piecesPerPacket']}'),
+                      _buildInfoRow(Icons.inventory_2, 'عدد الحزم', '${medicalSupply['packetCount']}'),
+                      _buildInfoRow(Icons.business, 'المورد', medicalSupply['supplier'] ?? 'غير محدد'),
+                      _buildInfoRow(Icons.factory, 'المنتج', medicalSupply['producer'] ?? 'غير محدد'),
+                      if (medicalSupply['expiryDate'] != null)
+                        _buildInfoRow(
+                          Icons.event,
+                          'تاريخ انتهاء الصلاحية',
+                          DateFormat('yyyy-MM-dd').format(DateTime.parse(medicalSupply['expiryDate'])),
+                        ),
+                      Divider(height: 24),
+                      Text(
+                        'معلومات المركز',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF259E9F),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      _buildInfoRow(Icons.local_hospital, 'اسم المركز', medicalSupply['center']['centerName'] ?? 'غير محدد'),
+                      _buildInfoRow(Icons.location_on, 'العنوان', medicalSupply['center']['addressCenter'] ?? 'غير محدد'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
 
-  Widget _buildMedicationCard(dynamic labMaterial, dynamic center) {
-    return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        padding: EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFf259e9f),
-              Colors.white],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'محلول: ${labMaterial['solutionName'] ?? "N/A"}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.black87,
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey[600]),
+          SizedBox(width: 8),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '$label: ',
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextSpan(
+                    text: value,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 8),
-            _buildInfoRow(
-              Icons.science,
-              'الاختبارات لكل عدة: ${labMaterial['testsPerKit'] ?? "N/A"}',
-            ),
-            _buildInfoRow(
-              Icons.category,
-              'عدد العدة: ${labMaterial['kitCount'] ?? "N/A"}',
-            ),
-            _buildInfoRow(
-              Icons.business,
-              'المورد: ${labMaterial['supplier'] ?? "N/A"}',
-            ),
-            _buildInfoRow(
-              Icons.factory,
-              'المنتج: ${labMaterial['producer'] ?? "N/A"}',
-            ),
-            Divider(),
-            Text(
-              'معلومات المركز',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFf259e9f),
-              ),
-            ),
-            _buildInfoRow(
-              Icons.local_hospital,
-              'المركز: ${center['centerName'] ?? "N/A"}',
-            ),
-            _buildInfoRow(
-              Icons.location_on,
-              'الموقع: ${center['addressCenter'] ?? "N/A"}',
-            ),
-            Divider(),
-            _buildInfoRow(
-              Icons.calendar_today,
-              'تاريخ الإنتاج: ${labMaterial['productionDate'] != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(labMaterial['productionDate'])) : "N/A"}',
-            ),
-            _buildInfoRow(
-              Icons.hourglass_empty,
-              'تاريخ انتهاء الصلاحية: ${labMaterial['expiryDate'] != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(labMaterial['expiryDate'])) : "N/A"}',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.grey[600], size: 20),
-        SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: TextStyle(fontSize: 16),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

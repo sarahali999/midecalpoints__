@@ -49,7 +49,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
   String initialCountryCode = 'IQ';
   String completePhoneNumber = '';
   final Map<String, int> relationshipOptions = {
-    'emergencyContactPage.relationship'.tr: 0,
+    'غير معروف': 0,  // تم تغيير النص
     'emergencyContactPage.father'.tr: 1,
     'emergencyContactPage.mother'.tr: 2,
     'emergencyContactPage.brother'.tr: 3,
@@ -60,9 +60,15 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     'emergencyContactPage.wife'.tr: 8,
     'emergencyContactPage.other'.tr: 9,
   };
+  String? _currentRelationship;
 
-
-
+  @override
+  void initState() {
+    super.initState();
+    _currentRelationship = widget.emergencyContactRelationship == 0 ? null : relationshipOptions.entries
+        .firstWhere((entry) => entry.value == widget.emergencyContactRelationship)
+        .key;
+  }
   String cntr = "";
   final List<Map<String, String>> countryOptions = [
     {'id': '1', 'name': 'emergencyContactPage.iraq'.tr},
@@ -304,8 +310,9 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   },
                 ),
             SizedBox(height: spacing),
-
     DropdownButtonFormField<String>(
+    value: _currentRelationship,
+    hint: Text('اختر صلة القرابة'), // نص تلميحي عندما لا يوجد اختيار
     decoration: InputDecoration(
     labelText: 'emergencyContactPage.relationship'.tr,
     border: OutlineInputBorder(
@@ -315,26 +322,21 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     filled: true,
     fillColor: Color(0xFFd6dedf),
     ),
-    value: relationshipOptions.entries
-        .firstWhere(
-    (entry) => entry.value == widget.emergencyContactRelationship,
-    orElse: () => MapEntry('', 0),
-    )
-        .key, // Map selected numeric value to corresponding string key
-    items: relationshipOptions.keys.map((String key) {
+    items: relationshipOptions.entries
+        .where((entry) => entry.value != 0)
+        .map((entry) {
     return DropdownMenuItem<String>(
-    value: key, // Ensure unique string value for each item
-    child: Text(key),
+    value: entry.key,
+    child: Text(entry.key),
     );
     }).toList(),
-    onChanged: (String? newKey) {
-    if (newKey != null) {
-    int newValue = relationshipOptions[newKey] ?? 0;
-    widget.onRelationshipChanged(newValue); // Notify parent
-    }
+    onChanged: (String? newValue) {
+    setState(() {
+    _currentRelationship = newValue;
+    widget.onRelationshipChanged(newValue != null ? relationshipOptions[newValue]! : 0);
+    });
     },
     ),
-
 
 
             SizedBox(height: spacing),

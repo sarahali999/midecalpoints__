@@ -18,10 +18,9 @@ class MedicalInfoPage extends StatefulWidget {
 
   @override
   _MedicalInfoPageState createState() => _MedicalInfoPageState();
-}
-class _MedicalInfoPageState extends State<MedicalInfoPage> {
+}class _MedicalInfoPageState extends State<MedicalInfoPage> {
   final Map<String, int> bloodTypeOptions = {
-    'blood_type'.tr: 0,
+    'غير معروف': 0,
     'A+': 1,
     'A-': 2,
     'B+': 3,
@@ -37,9 +36,9 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
   @override
   void initState() {
     super.initState();
-    _currentBloodType = bloodTypeOptions.entries
-        .firstWhere((entry) => entry.value == widget.selectedBloodType,
-        orElse: () => bloodTypeOptions.entries.first)
+    // تعيين القيمة الأولية
+    _currentBloodType = widget.selectedBloodType == 0 ? null : bloodTypeOptions.entries
+        .firstWhere((entry) => entry.value == widget.selectedBloodType)
         .key;
   }
 
@@ -60,32 +59,36 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            DropdownButtonFormField<String>(
-              value: _currentBloodType,
-              decoration: InputDecoration(
-                labelText: 'blood_type'.tr,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                filled: true,
-                fillColor: const Color(0xFFd6dedf),
-              ),
-              items: bloodTypeOptions.keys.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    _currentBloodType = newValue;
-                    widget.onBloodTypeChanged(bloodTypeOptions[newValue]);
-                  });
-                }
-              },
-            ),
+          DropdownButtonFormField<String>(
+        value: _currentBloodType,
+        hint: Text('اختر فصيلة الدم'), // نص تلميحي عندما لا يوجد اختيار
+    decoration: InputDecoration(
+    labelText: 'blood_type'.tr,
+    border: OutlineInputBorder(
+    borderSide: BorderSide.none,
+    borderRadius: BorderRadius.circular(10.0),
+    ),
+    filled: true,
+    fillColor: const Color(0xFFd6dedf),
+    ),
+    items: bloodTypeOptions.entries
+        .where((entry) => entry.value != 0)
+        .map((entry) {
+    return DropdownMenuItem<String>(
+    value: entry.key,
+    child: Text(entry.key),
+    );
+    }).toList(),
+    onChanged: (String? newValue) {
+    setState(() {
+    _currentBloodType = newValue;
+    widget.onBloodTypeChanged(newValue != null ? bloodTypeOptions[newValue] : 0);
+    });
+    }
+
+
+    ),
+
           SizedBox(height: spacing),
             CustomTextField(
               labelText: 'allergies'.tr,

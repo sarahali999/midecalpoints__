@@ -72,10 +72,9 @@ class _LoginState extends State<Login> {
 
           Get.snackbar(
             'success'.tr,
-            'login_success'.tr,
+            'login_success'.tr ,
             backgroundColor: Color(0xFf259e9f),
           );
-
           return token;
         } else {
           print('Login Failed - Server Error Message: ${jsonResponse['message']}');

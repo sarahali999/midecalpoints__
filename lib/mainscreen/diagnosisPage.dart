@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DiagnosisPage extends StatefulWidget {
-  DiagnosisPage({Key? key}) : super(key: key);
-
   @override
   _DiagnosisPageState createState() => _DiagnosisPageState();
 }
@@ -16,12 +13,10 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
   bool isLoading = true;
   String? errorMessage;
   String? jwtToken;
-  late TextDirection textDirection;
 
   @override
   void initState() {
     super.initState();
-    textDirection = TextDirection.ltr;
     fetchJwtToken();
   }
 
@@ -42,9 +37,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
     try {
       final response = await http.get(
         Uri.parse('https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientReceipts'),
-        headers: {
-          'Authorization': 'Bearer $jwtToken',
-        },
+        headers: {'Authorization': 'Bearer $jwtToken'},
       );
 
       if (response.statusCode == 200) {
@@ -69,84 +62,74 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: textDirection,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Text(
-            'الحالة المرضية الكاملة',
-            style: TextStyle(
-              color: Color(0xFf259e9f),
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'الحالة المرضية الكاملة',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF259E9F), Color(0xFF1A7F80)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
           ),
-          elevation: 0,
-          centerTitle: true,
         ),
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : errorMessage != null
-            ? Center(
-          child: Text(
-            errorMessage!,
-            style: TextStyle(color: Colors.red, fontSize: 18),
-            textAlign: TextAlign.center,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : errorMessage != null
+          ? Center(
+        child: Text(
+          errorMessage!,
+          style: TextStyle(color: Colors.red, fontSize: 18),
+        ),
+      )
+          : receipts.isEmpty
+          ? Center(
+        child: Text(
+          'لا يوجد تشخيص',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF259E9F),
           ),
-        )
-            : receipts.isEmpty
-            ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-              Text(
-                'لا يوجد تشخيص',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFf259e9f),
-                ),
-              ),
-            ],
-          ),
-        )
-            : Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: receipts.length,
-            itemBuilder: (context, index) {
-              final receipt = receipts[index];
-              return buildDetailedMedicalCard(receipt);
-            },
-          ),
+        ),
+      )
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView.builder(
+          itemCount: receipts.length,
+          itemBuilder: (context, index) {
+            final receipt = receipts[index];
+            return buildDiagnosisCard(receipt);
+          },
         ),
       ),
     );
   }
 
-  Widget buildDetailedMedicalCard(dynamic receipt) {
+  Widget buildDiagnosisCard(dynamic receipt) {
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      color: Color(0xFFE8F5F3),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'الحالة المرضية',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFf259e9f),
-              ),
-            ),
-            SizedBox(height: 8),
+            buildHeader('الحالة المرضية', Icons.medical_services),
+            SizedBox(height: 10),
             buildInfoRow('التشخيص:', receipt['notes'] ?? 'غير متوفر'),
             buildInfoRow(
               'الطبيب المعالج:',
@@ -163,9 +146,23 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
     );
   }
 
+  Widget buildHeader(String title, IconData icon) {
+    return Row(
+      
+      children: [
+        Icon(icon, color: Color(0xFF259E9F), size: 28),
+        SizedBox(width: 10),
+        Text(
+          title,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF259E9F)),
+        ),
+      ],
+    );
+  }
+
   Widget buildInfoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -184,7 +181,6 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
       ),
     );
   }
-
   String formatDate(String dateString) {
     if (dateString.isEmpty) return 'غير متوفر';
     try {

@@ -453,7 +453,7 @@ class Languages extends Translations {
       'emergencyContactPage.other': 'Other',
       'emergencyContactPage.countriesError': 'Error loading countries list',
       'emergencyContactPage.noCountries': 'No countries available',
-      'diagnosis_notes': 'Diagnosis and Notes',  // English
+      'diagnosis_notes': 'Diagnosis and Notes',
       'medications_list': 'AMPICILLIN\nAMPHOTERICIN\nAMPICILLIN',
       'my_medications': 'My Medications',
 

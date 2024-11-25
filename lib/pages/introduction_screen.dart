@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../languages.dart';
+import '../loading_screen.dart';
 import '../login/verification.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -90,7 +91,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _handleMainButtonPress() {
     if (_currentPage == _contents.length - 1) {
-      _navigateToPhone();
+      _navigateToPhone(
+
+      );
     } else {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
     }

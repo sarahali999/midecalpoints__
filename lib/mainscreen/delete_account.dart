@@ -11,11 +11,11 @@ class DeleteAccount extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Row(
+          title: const Row(
             children: [
-              const Icon(Icons.warning_amber_rounded,
+              Icon(Icons.warning_amber_rounded,
                   color: Colors.red, size: 32),
-              const SizedBox(width: 15),
+              SizedBox(width: 15),
               Text(
                 'تحذير',
                 style: TextStyle(fontSize: 20,color: Colors.white, fontWeight: FontWeight.bold),
@@ -154,7 +154,7 @@ class DeleteAccount extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: Text('إلغاء', style: TextStyle(fontSize: 16)),
+                      child: Text('إلغاء', style: TextStyle(fontSize: 16,color: Colors.white)),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -164,7 +164,7 @@ class DeleteAccount extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => _deleteAccount(context),
-                      child: Text('تأكيد', style: TextStyle(fontSize: 16)),
+                      child: Text('تأكيد', style: TextStyle(fontSize: 16,color: Colors.white)),
                     ),
                   ],
                 ),
