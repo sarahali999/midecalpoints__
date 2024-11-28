@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../languages.dart';
 import 'about.dart';
 import 'delete_account.dart';
 
@@ -35,40 +36,45 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          SizedBox(height: 60),
-          _buildSettingsOption(
-            icon: Icons.language,
-            title: 'language'.tr,
-            trailingText: 'language'.tr,
-            onTap: () => _showLanguageDialog(context),
-          ),
-          SizedBox(height: 20),
-          _buildNotificationOption(),
-          SizedBox(height: 20),
-          _buildSettingsOption(
-            icon: Icons.person,
-            title: 'delete_account'.tr,
-            onTap: () => _showDeleteAccountDialog(context),
-          ),
-          SizedBox(height: 20),
-          _buildSettingsOption(
-            icon: Icons.help_outline,
-            title: 'terms_and_service'.tr,
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Aboutapp()
-                )
+    return Directionality(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: _buildAppBar(),
+        body: Column(
+          children: [
+            SizedBox(height: 60),
+            _buildSettingsOption(
+              icon: Icons.language,
+              title: 'language'.tr,
+              trailingText: 'language'.tr,
+              onTap: () => _showLanguageDialog(context),
             ),
-          ),
-          Spacer(),
-          _buildFooterText(),
-        ],
+            SizedBox(height: 20),
+            _buildNotificationOption(),
+            SizedBox(height: 20),
+            _buildSettingsOption(
+              icon: Icons.person,
+              title: 'delete_account'.tr,
+              onTap: () => _showDeleteAccountDialog(context),
+            ),
+            SizedBox(height: 20),
+            _buildSettingsOption(
+              icon: Icons.help_outline,
+              title: 'terms_and_service'.tr,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Aboutapp()
+                  )
+              ),
+            ),
+            Spacer(),
+            _buildFooterText(),
+          ],
+        ),
       ),
     );
   }

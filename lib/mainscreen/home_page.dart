@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:midecalpoints/mainscreen/top_bar.dart';
 import 'package:latlong2/latlong.dart';
+import '../languages.dart';
 import 'home.dart';
 import 'health_card_page.dart';
 import 'map_page.dart';
@@ -41,8 +44,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     bool isHomePage = _selectedIndex == 0;
     return Directionality(
-      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-      child: WillPopScope(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,      child: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
           appBar: isHomePage ? TopBar() : null,

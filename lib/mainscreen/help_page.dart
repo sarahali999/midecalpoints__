@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../languages.dart';
+
 class QuicksupportnumbersController extends GetxController {
   var supportNumbers = <Map<String, dynamic>>[].obs;
   var isLoading = true.obs;
@@ -60,121 +62,126 @@ class Quicksupportnumbers extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(QuicksupportnumbersController());
 
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Color(0xFF259E9F),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
+    return Directionality(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF259E9F),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
             ),
           ),
-        ),
-        title: Text(
-          'help'.tr,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: Get.width * 0.05,
-            fontWeight: FontWeight.w500,
+          title: Text(
+            'help'.tr,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: Get.width * 0.05,
+              fontWeight: FontWeight.w500,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: Obx(
-            () {
-          if (controller.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
-          }
+        body: Obx(
+              () {
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-          if (controller.errorMessage.value.isNotEmpty) {
-            return Center(child: Text(controller.errorMessage.value));
-          }
+            if (controller.errorMessage.value.isNotEmpty) {
+              return Center(child: Text(controller.errorMessage.value));
+            }
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(Get.width * 0.05),
-                  child: Container(
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
                     padding: EdgeInsets.all(Get.width * 0.05),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                        ),
-                      ],
+                    child: Container(
+                      padding: EdgeInsets.all(Get.width * 0.05),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'support_number_128'.tr,
+                            style: TextStyle(
+                              color: Color(0xFf259e9f),
+                              fontSize: Get.width * 0.12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: Get.height * 0.02),
+                          Text(
+                            'support_number_description'.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: Get.width * 0.04,
+                            ),
+                          ),
+                          SizedBox(height: Get.height * 0.01),
+                          Text(
+                            'service_available'.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: Get.width * 0.04,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(Get.width * 0.05),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'support_number_128'.tr,
+                          'emergency_numbers'.tr,
                           style: TextStyle(
                             color: Color(0xFf259e9f),
-                            fontSize: Get.width * 0.12,
+                            fontSize: Get.width * 0.05,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: Get.height * 0.02),
-                        Text(
-                          'support_number_description'.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: Get.width * 0.04,
-                          ),
-                        ),
-                        SizedBox(height: Get.height * 0.01),
-                        Text(
-                          'service_available'.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: Get.width * 0.04,
-                          ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: controller.supportNumbers.length,
+                          itemBuilder: (context, index) {
+                            final number = controller.supportNumbers[index];
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: Get.height * 0.02),
+                              child: _buildSupportNumberCard(number),
+                            );
+                          },
                         ),
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(Get.width * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'emergency_numbers'.tr,
-                        style: TextStyle(
-                          color: Color(0xFf259e9f),
-                          fontSize: Get.width * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.02),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: controller.supportNumbers.length,
-                        itemBuilder: (context, index) {
-                          final number = controller.supportNumbers[index];
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: Get.height * 0.02),
-                            child: _buildSupportNumberCard(number),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

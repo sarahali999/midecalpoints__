@@ -23,7 +23,7 @@ class MedicalSuppliesController extends GetxController {
       await fetchSupplies();
     } else {
       isLoading.value = false;
-      errorMessage.value = "فشل في جلب رمز JWT";
+      errorMessage.value = "token_fetch_failed".tr;
     }
   }
 
@@ -48,7 +48,7 @@ class MedicalSuppliesController extends GetxController {
         supplies.value = data['value']['items'];
         isLoading.value = false;
       } else {
-        throw Exception('فشل في تحميل المستلزمات الطبية');
+        throw Exception('medical_supplies_load_failed'.tr);
       }
     } catch (e) {
       isLoading.value = false;
@@ -76,7 +76,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
-          'المستلزمات الطبية',
+          'medical_supplies'.tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -86,7 +86,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ),
@@ -144,7 +144,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            'لا توجد مستلزمات طبية مصروفة',
+            'no_medical_supplies'.tr,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -201,7 +201,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          medicalSupply['name'] ?? 'غير محدد',
+                          medicalSupply['name'] ?? 'not_specified'.tr,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'الكمية: ${supply['quantity']}',
+                          '${'quantity'.tr}: ${supply['quantity']}',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -231,19 +231,19 @@ class MedicalSuppliesWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildInfoRow(Icons.inventory, 'القطع في الحزمة', '${medicalSupply['piecesPerPacket']}'),
-                      _buildInfoRow(Icons.inventory_2, 'عدد الحزم', '${medicalSupply['packetCount']}'),
-                      _buildInfoRow(Icons.business, 'المورد', medicalSupply['supplier'] ?? 'غير محدد'),
-                      _buildInfoRow(Icons.factory, 'المنتج', medicalSupply['producer'] ?? 'غير محدد'),
+                      _buildInfoRow(Icons.inventory, 'pieces_per_packet'.tr, '${medicalSupply['piecesPerPacket']}'),
+                      _buildInfoRow(Icons.inventory_2, 'packet_count'.tr, '${medicalSupply['packetCount']}'),
+                      _buildInfoRow(Icons.business, 'supplier'.tr, medicalSupply['supplier'] ?? 'not_specified'.tr),
+                      _buildInfoRow(Icons.factory, 'producer'.tr, medicalSupply['producer'] ?? 'not_specified'.tr),
                       if (medicalSupply['expiryDate'] != null)
                         _buildInfoRow(
                           Icons.event,
-                          'تاريخ انتهاء الصلاحية',
+                          'expiry_date'.tr,
                           DateFormat('yyyy-MM-dd').format(DateTime.parse(medicalSupply['expiryDate'])),
                         ),
                       Divider(height: 24),
                       Text(
-                        'معلومات المركز',
+                        'center_information'.tr,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -251,8 +251,8 @@ class MedicalSuppliesWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8),
-                      _buildInfoRow(Icons.local_hospital, 'اسم المركز', medicalSupply['center']['centerName'] ?? 'غير محدد'),
-                      _buildInfoRow(Icons.location_on, 'العنوان', medicalSupply['center']['addressCenter'] ?? 'غير محدد'),
+                      _buildInfoRow(Icons.local_hospital, 'center_name'.tr, medicalSupply['center']['centerName'] ?? 'not_specified'.tr),
+                      _buildInfoRow(Icons.location_on, 'address'.tr, medicalSupply['center']['addressCenter'] ?? 'not_specified'.tr),
                     ],
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../controller/user_controller.dart';
+import '../languages.dart';
 
 class HealthInfo extends StatelessWidget {
   HealthInfo({Key? key}) : super(key: key);
@@ -10,18 +11,23 @@ class HealthInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserController controller = Get.put(UserController());
-    return Scaffold(
-      backgroundColor: Color(0xFf259e9f),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildAppBar(),
-              SizedBox(height: Get.height * 0.02),
-              _buildUserInfo(controller),
-              SizedBox(height: Get.height * 0.02),
-              _buildQRCodeSection(controller),
-            ],
+    return Directionality(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: Color(0xFf259e9f),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildAppBar(),
+                SizedBox(height: Get.height * 0.02),
+                _buildUserInfo(controller),
+                SizedBox(height: Get.height * 0.02),
+                _buildQRCodeSection(controller),
+              ],
+            ),
           ),
         ),
       ),

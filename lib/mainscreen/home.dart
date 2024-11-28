@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../languages.dart';
 import 'chronic_diseases_page.dart';
 import 'diagnosis_page.dart';
 import 'examination_page.dart';
@@ -55,11 +56,11 @@ class _HomePageState extends State<HomePage> {
 
   String _buildMedicationContent() {
     if (isLoading) {
-      return 'جاري تحميل الأدوية...';
+      return 'loading_medications'.tr;
     }
 
     if (recentMedications.isEmpty) {
-      return 'عرض الادوية المصروفة\nوتفاصيل الصرف';
+      return 'display_dispensed_medications'.tr;
     }
 
     String content = '';
@@ -73,7 +74,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -97,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: SmallCard(
-                        title: 'التشخيص\nوالملاحظات',
+                        title: 'diagnosis_and_notes'.tr,
                         iconPath: 'assets/icons/heart.svg',
                         iconColor: Color(0xFF4CAF50),
                       ),
@@ -113,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: SmallCard(
-                        title: 'الأمراض\nالمزمنة',
+                        title: 'chronic_diseases'.tr,
                         iconPath: 'assets/icons/health.svg',
                         iconColor: Color(0xFF2196F3),
                       ),
@@ -129,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: SmallCard(
-                        title: 'المستلزمات\nالطبية',
+                        title: 'medical_supplies'.tr,
                         iconPath: 'assets/icons/medical.svg',
                         iconColor: Color(0xFFFF5722),
                       ),
@@ -147,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: LargeCard(
                   content: _buildMedicationContent(),
-                  title: 'الادوية المصروفة',
+                  title: 'dispensed_medications'.tr,
                   iconPath: 'assets/icons/pill.svg',
                   iconColor: Color(0xFFFF9800),
                 ),
