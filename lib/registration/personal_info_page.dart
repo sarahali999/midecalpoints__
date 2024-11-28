@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'Countries.dart';
+import 'countries.dart';
 import 'custom.dart';
 
 class PersonalInfoPage extends StatefulWidget {

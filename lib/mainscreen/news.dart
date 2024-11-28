@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'newsDetailPage.dart';
+import 'news_detail_page.dart';
 import 'news_model.dart';
 
-class News extends StatelessWidget {
-
+class News extends StatefulWidget {
   News();
+  @override
+  _NewsState createState() => _NewsState();
+}class _NewsState extends State<News> {
+  int _currentIndex = 0;
+  late Future<List<Article>> _futureArticles;
 
+  @override
+  void initState() {
+    super.initState();
+    _futureArticles = NewsService().fetchArticles();
+  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return FutureBuilder<List<Article>>(
-      future: NewsService().fetchArticles(),
+      future: _futureArticles,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
+
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFf259e9f)),
             ),
@@ -37,22 +47,52 @@ class News extends StatelessWidget {
         }
         else {
           print('Loaded articles: ${snapshot.data}');
-          return CarouselSlider(
-            options: CarouselOptions(
-              height: screenHeight * 0.5,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              viewportFraction: 1,
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: screenHeight * 0.22,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 1.05,
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  ),
+                  items: snapshot.data!.map((article) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return AnimatedNewsCard(article: article);
+                      },
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: snapshot.data!.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    return AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      height: 8,
+                      width: 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentIndex == index
+                            ? Color(0xFF259E9F)
+                            : Colors.grey,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
-            items: snapshot.data!.map((article) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return AnimatedNewsCard(article: article);
-                },
-              );
-            }
-            ).toList(),
           );
         }
       },
@@ -152,27 +192,40 @@ class _AnimatedNewsCardState extends State<AnimatedNewsCard> with SingleTickerPr
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(screenWidth * 0.02),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [Colors.black.withOpacity(0.8), Colors.transparent],
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF259E9F),
                         ),
-                      ),
-                      child: Text(
-                        widget.article.titleNews,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.045,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.article.titleNews,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: screenWidth * 0.040,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Image.asset(
+                              'assets/images/logo.png',
+                              width: screenWidth * 0.08,
+                              height: screenWidth * 0.08,
+                              fit: BoxFit.contain,
+                            ),
+                          ],
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                  )
+
                 ],
               ),
             ),

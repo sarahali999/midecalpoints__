@@ -10,7 +10,6 @@ class QuicksupportnumbersController extends GetxController {
   var supportNumbers = <Map<String, dynamic>>[].obs;
   var isLoading = true.obs;
   var errorMessage = ''.obs;
-
   final String apiUrl = 'https://medicalpoint-api.tatwer.tech/api/Mobile/GetAllCenters';
 
   @override
@@ -30,17 +29,17 @@ class QuicksupportnumbersController extends GetxController {
 
         supportNumbers.value = items.map((item) {
           return {
-            'name': item['centerName'] ?? 'غير محدد',
-            'number': item['phoneNumCenter']?.toString() ?? 'رقم غير متاح',
+            'name': item['centerName'] ?? 'center_not_specified'.tr,
+            'number': item['phoneNumCenter']?.toString() ?? 'number_not_available'.tr,
             'lat': item['lot'],
             'lng': item['lag'],
           };
         }).toList();
       } else {
-        errorMessage.value = 'فشل تحميل أرقام الدعم';
+        errorMessage.value = 'support_numbers_load_error'.tr;
       }
     } catch (e) {
-      errorMessage.value = 'حدث خطأ: $e';
+      errorMessage.value = 'unexpected_error'.tr;
     } finally {
       isLoading(false);
     }
@@ -74,14 +73,13 @@ class Quicksupportnumbers extends StatelessWidget {
           ),
         ),
         title: Text(
-          'مساعدة',
+          'help'.tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: Get.width * 0.05,
             fontWeight: FontWeight.w500,
           ),
         ),
-
         centerTitle: true,
       ),
       body: Obx(
@@ -115,7 +113,7 @@ class Quicksupportnumbers extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          '128',
+                          'support_number_128'.tr,
                           style: TextStyle(
                             color: Color(0xFf259e9f),
                             fontSize: Get.width * 0.12,
@@ -124,7 +122,7 @@ class Quicksupportnumbers extends StatelessWidget {
                         ),
                         SizedBox(height: Get.height * 0.02),
                         Text(
-                          'يستقبل الرقم الاتصال على الرقم 128 من جميع الشبكات مجانا',
+                          'support_number_description'.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[600],
@@ -133,7 +131,7 @@ class Quicksupportnumbers extends StatelessWidget {
                         ),
                         SizedBox(height: Get.height * 0.01),
                         Text(
-                          'الخدمة متوفرة على مدار 24 ساعة',
+                          'service_available'.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[600],
@@ -150,7 +148,7 @@ class Quicksupportnumbers extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ارقام الطوارئ',
+                        'emergency_numbers'.tr,
                         style: TextStyle(
                           color: Color(0xFf259e9f),
                           fontSize: Get.width * 0.05,
@@ -180,6 +178,7 @@ class Quicksupportnumbers extends StatelessWidget {
       ),
     );
   }
+
 
   Widget _buildSupportNumberCard(Map<String, dynamic> number) {
     return Container(

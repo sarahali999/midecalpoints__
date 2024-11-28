@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:get/get.dart';
 
-class LoadingScreen extends StatefulWidget {
+class GlobalLoadingScreen extends StatefulWidget {
+  final VoidCallback? onLoaded;
+
+  const GlobalLoadingScreen({Key? key, this.onLoaded}) : super(key: key);
+
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  _GlobalLoadingScreenState createState() => _GlobalLoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _GlobalLoadingScreenState extends State<GlobalLoadingScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 6), () {
-    }
-    );
+    Future.delayed(const Duration(seconds: 2), () {
+      widget.onLoaded?.call();
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 20),
-            Text('جارٍ التحميل...'),
-          ],
+      body: Container(
+        color: Colors.white,
+        child: Center(
+            child: CircularProgressIndicator()
+
+        // child: Image.asset(
+          //   'assets/images/lod.gif',
+          //   width: 100,
+          //   height: 100,
+          // ),
         ),
       ),
     );

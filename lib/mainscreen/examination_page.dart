@@ -64,32 +64,31 @@ class MedicalSuppliesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF259E9F),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         title: Text(
           'المستلزمات الطبية',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF259E9F),
-                Color(0xFF1A7F80),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
         ),
-        elevation: 0,
-        centerTitle: true,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {

@@ -5,7 +5,8 @@ import 'app_routes.dart';
 import 'languages.dart';
 
 void main() {
-  runApp(const MyApp()); }
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -22,32 +23,12 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _loadSavedLanguage();
   }
-
   Future<void> _loadSavedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedLanguage = prefs.getString('selectedLanguage') ?? 'العربية';
-
-    String languageCode = 'ar';
-    switch (savedLanguage) {
-      case 'العربية':
-        languageCode = 'ar';
-        break;
-      case 'فارسی':
-        languageCode = 'fa';
-        break;
-      case 'كوردي':
-        languageCode = 'ku';
-        break;
-      case 'تركماني':
-        languageCode = 'tk';
-        break;
-      case 'English':
-        languageCode = 'en';
-        break;
-    }
+    final savedLanguageCode = prefs.getString('selectedLanguageCode') ?? 'ar';
 
     setState(() {
-      _locale = Locale(languageCode);
+      _locale = Locale(savedLanguageCode);
     });
   }
 

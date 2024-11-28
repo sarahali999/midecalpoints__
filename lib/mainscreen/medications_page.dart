@@ -74,33 +74,32 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF259E9F),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         title: Text(
-          'قائمة الأدوية',
+          'قائمة الادوية',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFF259E9F),
-                Color(0xFF1A7F80),
-              ],
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
         ),
-        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -227,27 +226,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                                 : "N/A",
                             Icons.event_busy,
                           ),
-                          Divider(height: 32),
-                          _buildSectionTitle('معلومات المريض'),
-                          _buildInfoRow(
-                            'اسم المريض',
-                            '${patient['user']['firstName']} ${patient['user']['secondName']}',
-                            Icons.person_outline,
-                          ),
-                          _buildInfoRow(
-                            'الجنس',
-                            patient['gender'] == 1
-                                ? 'ذكر'
-                                : patient['gender'] == 2
-                                ? 'أنثى'
-                                : 'غير محدد',
-                            Icons.wc,
-                          ),
-                          _buildInfoRow(
-                            'الأمراض المزمنة',
-                            patient['chronicDiseases'] ?? "N/A",
-                            Icons.local_hospital_outlined,
-                          ),
+
                           Divider(height: 32),
                           _buildSectionTitle('معلومات الطبيب'),
                           _buildInfoRow(

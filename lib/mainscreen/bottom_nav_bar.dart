@@ -26,11 +26,11 @@ class BottomNavBar extends StatelessWidget {
         fontWeight: FontWeight.normal,
       ),
       items: [
-        _buildNavItem('assets/icons/home.svg', 'الرئيسية', 0),
-        _buildNavItem('assets/icons/profile.svg', 'الكرت الصحي', 1),
+        _buildNavItem('assets/icons/home.svg', 'home'.tr, 0),
+        _buildNavItem('assets/icons/profile.svg','health_card'.tr, 1),
         _buildMapNavItem(),
-        _buildNavItem('assets/icons/info.svg', 'مساعدة', 3),
-        _buildNavItem('assets/icons/setting.svg', 'إعدادات', 4),
+        _buildNavItem('assets/icons/info.svg', 'support'.tr, 3),
+        _buildNavItem('assets/icons/setting.svg', 'settings'.tr, 4),
       ],
     );
   }
@@ -61,7 +61,7 @@ class BottomNavBar extends StatelessWidget {
           ),
         ),
       ),
-      label: 'الخريطة',
+      label: 'map'.tr,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'Countries.dart';
+import 'countries.dart';
 import 'custom.dart';
 
 class EmergencyContactPage extends StatefulWidget {
@@ -27,8 +27,6 @@ class EmergencyContactPage extends StatefulWidget {
     required this.emergencyContactAlleyController,
     required this.emergencyContactHouseController,
      required this.onRelationshipChanged,
-
-
      Key? key,
   }) : super(key: key);
 
@@ -36,20 +34,18 @@ class EmergencyContactPage extends StatefulWidget {
   _EmergencyContactPageState createState() => _EmergencyContactPageState();
 }
 
-
 class _EmergencyContactPageState extends State<EmergencyContactPage> {
   final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emergencycountryController = TextEditingController();
-  final TextEditingController emergencygovernorateController = TextEditingController();
-  final TextEditingController emergencydistrictController = TextEditingController();
-  final TextEditingController emergencyalleyController = TextEditingController();
-  final TextEditingController emergencyhouseController = TextEditingController();
-  final TextEditingController emergencybirthYearController = TextEditingController();
-  final TextEditingController emergencyphoneNumberController = TextEditingController();
+  final TextEditingController emergencyContactCountryController = TextEditingController();
+  final TextEditingController emergencyContactProvinceController = TextEditingController();
+  final TextEditingController emergencyContactDistrictController = TextEditingController();
+  final TextEditingController emergencyContactAlleyController = TextEditingController();
+  final TextEditingController emergencyContactHouseController = TextEditingController();
+  final TextEditingController emergencyContactPhoneController = TextEditingController();
   String initialCountryCode = 'IQ';
   String completePhoneNumber = '';
   final Map<String, int> relationshipOptions = {
-    'غير معروف': 0,  // تم تغيير النص
+    'غير معروف': 0,
     'emergencyContactPage.father'.tr: 1,
     'emergencyContactPage.mother'.tr: 2,
     'emergencyContactPage.brother'.tr: 3,
@@ -102,9 +98,9 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
       setState(() {
         this.selectedCountry = selectedCountry;
         if (selectedCountry == '1') {
-          emergencycountryController.text = 'emergencyContactPage.iraq'.tr;
+          emergencyContactCountryController.text = 'emergencyContactPage.iraq'.tr;
         } else {
-          emergencycountryController.clear();
+          emergencyContactCountryController.clear();
         }
       });
     }
@@ -164,7 +160,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     maintainState: true,
                     child: CustomTextField(
                       labelText: 'emergencyContactPage.country'.tr,
-                      controller: emergencycountryController,
+                      controller: emergencyContactCountryController,
                     ),
                   ),
                   DropdownButtonFormField<String>(
@@ -181,7 +177,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     onChanged: (value) {
                       setState(() {
                         selectedGovernorate = value;
-                        emergencygovernorateController.text = value ?? '';
+                        emergencyContactProvinceController.text = value ?? '';
                       });
                     },
                     decoration: InputDecoration(
@@ -201,17 +197,17 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.district'.tr,
-                    controller: emergencydistrictController,
+                    controller: emergencyContactDistrictController,
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.alley'.tr,
-                    controller: emergencyalleyController,
+                    controller: emergencyContactAlleyController,
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.house'.tr,
-                    controller: emergencyhouseController,
+                    controller: emergencyContactHouseController,
                   ),
                 ],
               )
@@ -251,15 +247,17 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                         child: Center(
                           child: Text(
                             'emergencyContactPage.countriesError'.tr,
-                            style: TextStyle(color: Colors.red, fontSize: 14),
+                            style: TextStyle(color: Colors.red, fontSize: 14
+                            ),
                           ),
                         ),
                       );
-                    } else if (snapshot.hasData) {
+                    }
+                    else if (snapshot.hasData) {
                       final countries = snapshot.data!;
                       return DropdownButtonFormField<String>(
-                        value: emergencycountryController.text.isNotEmpty
-                            ? emergencycountryController.text
+                        value: emergencyContactCountryController.text.isNotEmpty
+                            ? emergencyContactCountryController.text
                             : null,
                         items: countries.map((country) {
                           return DropdownMenuItem<String>(
@@ -267,13 +265,14 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                             child: Text(
                               country['name']!,
                               style: TextStyle(
-                                  fontSize: 16, color: Colors.black87),
+                                  fontSize: 16, color: Colors.black87
+                              ),
                             ),
                           );
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            emergencycountryController.text = value ?? '';
+                            emergencyContactCountryController.text = value ?? '';
                           });
                         },
                         decoration: InputDecoration(
@@ -341,7 +340,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
 
             SizedBox(height: spacing),
             IntlPhoneField(
-              controller: emergencyphoneNumberController,
+              controller: emergencyContactPhoneController,
               decoration: InputDecoration(
                 labelText: 'emergencyContactPage.phoneNumber'.tr,
                 border: OutlineInputBorder(

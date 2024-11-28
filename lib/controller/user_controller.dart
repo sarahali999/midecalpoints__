@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/UserDetails.dart';
+import '../models/user_details.dart';
 
 class UserController extends GetxController with GetSingleTickerProviderStateMixin {
   static const String API_URL = 'https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientDetails';

@@ -75,6 +75,7 @@ class _PublicnoticesState extends State<Publicnotices> {
       child: Scaffold(
         backgroundColor: Colors.white,
        appBar:    AppBar(
+
        flexibleSpace: Container(
          decoration: BoxDecoration(
            color: Color(0xFF259E9F),
@@ -96,14 +97,20 @@ class _PublicnoticesState extends State<Publicnotices> {
 
           actions: [
             IconButton(
-              icon: Icon(Icons.refresh),
+              icon: Icon(Icons.refresh,color: Colors.white,),
               onPressed: () {
                 setState(() {
                   _loadNotifications();
                 });
               },
             ),
-          ],
+          ], leading: IconButton(
+         icon: Icon(Icons.arrow_back, color: Colors.white),
+         onPressed: () {
+           Navigator.pop(context); // Go back to the previous screen
+         },
+       ),
+
         ),
         body: _notifications.isEmpty
             ? Center(

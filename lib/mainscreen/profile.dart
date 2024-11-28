@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
-import '../models/UserDetails.dart';
+import '../models/user_details.dart';
 import 'edit_information.dart';
 
 class UserProfile extends GetView<UserController> {
@@ -58,6 +58,7 @@ class UserProfile extends GetView<UserController> {
       child: Column(
         children: [
           const SizedBox(height: 50),
+
           Text(
             "${user.user?.firstName ?? ''} ${user.user?.secondName ?? ''} ${user.user?.thirdName ?? ''}",
             style: TextStyle(
@@ -74,7 +75,9 @@ class UserProfile extends GetView<UserController> {
               _buildQuickInfo("${user.birthYear ?? ''}", "العمر", screenWidth),
               _buildQuickInfo(controller.getGender(user.gender), "الجنس", screenWidth),
             ],
+
           ),
+
         ],
       ),
     );
@@ -184,6 +187,7 @@ class UserProfile extends GetView<UserController> {
     );
   }
 }
+
   Widget _buildInfoTile(String title, String value, double screenWidth) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: screenWidth * 0.02),

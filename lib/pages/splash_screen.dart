@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
-import '../mainscreen/homePage.dart';
+import '../mainscreen/home_page.dart';
 import 'introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

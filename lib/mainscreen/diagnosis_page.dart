@@ -64,25 +64,31 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF259E9F),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         title: Text(
           'الحالة المرضية الكاملة',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF259E9F), Color(0xFF1A7F80)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        elevation: 0,
-        centerTitle: true,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -117,30 +123,41 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
     );
   }
 
-  Widget buildDiagnosisCard(dynamic receipt) {
+  Widget buildDiagnosisCard(Map<String, dynamic> receipt) {
     return Card(
-      color: Color(0xFFE8F5F3),
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildHeader('الحالة المرضية', Icons.medical_services),
-            SizedBox(height: 10),
-            buildInfoRow('التشخيص:', receipt['notes'] ?? 'غير متوفر'),
-            buildInfoRow(
-              'الطبيب المعالج:',
-              '${receipt['medicalStaff']?['user']?['firstName'] ?? ''} ${receipt['medicalStaff']?['user']?['secondName'] ?? ''}',
-            ),
-            buildInfoRow('التخصص:', receipt['medicalStaff']?['specialization'] ?? 'غير متوفر'),
-            buildInfoRow('المركز الطبي:', receipt['medicalStaff']?['center']?['centerName'] ?? 'غير متوفر'),
-            buildInfoRow('العنوان:', receipt['medicalStaff']?['center']?['addressCenter'] ?? 'غير متوفر'),
-            buildInfoRow('رقم الهاتف:', receipt['medicalStaff']?['center']?['phoneNumCenter'] ?? 'غير متوفر'),
-            buildInfoRow('تاريخ التشخيص:', formatDate(receipt['createdAt'] ?? '')),
-          ],
+      elevation: 4,
+      margin: EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, Color(0xFFF5F5F5)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildHeader('الحالة المرضية', Icons.medical_services),
+              SizedBox(height: 10),
+              buildInfoRow('التشخيص:', receipt['notes'] ?? 'غير متوفر'),
+              buildInfoRow(
+                'الطبيب المعالج:',
+                '${receipt['medicalStaff']?['user']?['firstName'] ?? ''} ${receipt['medicalStaff']?['user']?['secondName'] ?? ''}',
+              ),
+              buildInfoRow('التخصص:', receipt['medicalStaff']?['specialization'] ?? 'غير متوفر'),
+              buildInfoRow('المركز الطبي:', receipt['medicalStaff']?['center']?['centerName'] ?? 'غير متوفر'),
+              buildInfoRow('العنوان:', receipt['medicalStaff']?['center']?['addressCenter'] ?? 'غير متوفر'),
+              buildInfoRow('رقم الهاتف:', receipt['medicalStaff']?['center']?['phoneNumCenter'] ?? 'غير متوفر'),
+              buildInfoRow('تاريخ التشخيص:', formatDate(receipt['createdAt'] ?? '')),
+            ],
+          ),
         ),
       ),
     );
@@ -148,7 +165,6 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
 
   Widget buildHeader(String title, IconData icon) {
     return Row(
-      
       children: [
         Icon(icon, color: Color(0xFF259E9F), size: 28),
         SizedBox(width: 10),
@@ -181,6 +197,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
       ),
     );
   }
+
   String formatDate(String dateString) {
     if (dateString.isEmpty) return 'غير متوفر';
     try {

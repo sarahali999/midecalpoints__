@@ -54,50 +54,57 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   ];
   void _onLanguageSelected(String language) async {
     final prefs = await SharedPreferences.getInstance();
+
+    String languageCode = 'ar';
+    switch (language) {
+      case 'العربية':
+        languageCode = 'ar';
+        break;
+      case 'فارسی':
+        languageCode = 'fa';
+        break;
+      case 'كوردي':
+        languageCode = 'ku';
+        break;
+      case 'تركماني':
+        languageCode = 'tk';
+        break;
+      case 'English':
+        languageCode = 'en';
+        break;
+    }
+
+    await prefs.setString('selectedLanguageCode', languageCode);
     await prefs.setString('selectedLanguage', language);
 
     setState(() {
       _selectedLanguage = language;
       _showLanguages = false;
 
-      String languageCode = 'ar';
-      switch (language) {
-        case 'العربية':
-          languageCode = 'ar';
-          break;
-        case 'فارسی':
-          languageCode = 'fa';
-          break;
-        case 'كوردي':
-          languageCode = 'ku';
-          break;
-        case 'تركماني':
-          languageCode = 'tk';
-          break;
-        case 'English':
-          languageCode = 'en';
-          break;
-      }
-
       isRTL = Languages.isRTL(languageCode);
       Get.updateLocale(Locale(languageCode));
     });
   }
-
-
   void _toggleLanguages() => setState(() => _showLanguages = !_showLanguages);
 
-  void _navigateToPhone() => Get.to(() => const Login());
-
+  void _navigateToPhone() {
+    Get.to(() => GlobalLoadingScreen(
+      onLoaded: () => Get.to(() => const Login()),
+    ));
+  }
   void _handleMainButtonPress() {
     if (_currentPage == _contents.length - 1) {
-      _navigateToPhone(
-
-      );
+      Get.to(() => GlobalLoadingScreen(
+        onLoaded: () => Get.to(() => const Login()),
+      ));
     } else {
-      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+      _pageController.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.ease
+      );
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -150,7 +157,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Column(
                 children: [
                   _buildHeader(),
-                  Expanded(child: _buildPageView()),
+                  Expanded(child: _buildPageView()
+                  ),
                 ],
               ),
               if (_showLanguages) _buildLanguageOverlay(),

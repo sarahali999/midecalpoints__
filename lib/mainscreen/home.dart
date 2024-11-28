@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'chronicDiseasesPage.dart';
-import 'diagnosisPage.dart';
-import 'medicationsPage.dart';
+import 'chronic_diseases_page.dart';
+import 'diagnosis_page.dart';
+import 'examination_page.dart';
+import 'medications_page.dart';
 import 'news.dart';
 import 'card_widgets.dart';
-import 'examinationPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
+              SizedBox(height: 8),
               Container(
                 height: Get.height * 0.25,
                 child: News(),

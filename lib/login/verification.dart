@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../mainscreen/homePage.dart';
-import '../registration/registrationStepsScreen.dart';
+import '../mainscreen/home_page.dart';
+import '../registration/registration_steps_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

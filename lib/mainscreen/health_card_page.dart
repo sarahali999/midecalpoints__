@@ -10,7 +10,6 @@ class HealthInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserController controller = Get.put(UserController());
-
     return Scaffold(
       backgroundColor: Color(0xFf259e9f),
       body: SafeArea(
@@ -28,6 +27,7 @@ class HealthInfo extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildAppBar() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Get.width * 0.05, vertical: Get.height * 0.02),
@@ -36,7 +36,7 @@ class HealthInfo extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'الكرت الصحي',
+          'health_card'.tr, // Updated to use translation
           style: TextStyle(
             fontSize: Get.width * 0.05,
             fontWeight: FontWeight.bold,
@@ -46,7 +46,6 @@ class HealthInfo extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildUserInfo(UserController controller) {
     return Obx(() {
@@ -63,7 +62,7 @@ class HealthInfo extends StatelessWidget {
   Widget _buildNoDataText() {
     return Center(
       child: Text(
-        'لا توجد بيانات متوفرة',
+        'no_data_available'.tr, // Updated to use translation
         style: TextStyle(color: Colors.white, fontSize: Get.width * 0.04),
       ),
     );
@@ -94,22 +93,22 @@ class HealthInfo extends StatelessWidget {
             style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: Color(0xFf259e9f)),
           ),
           SizedBox(height: Get.height * 0.01),
-          _buildInfoRow(Icons.phone, "رقم الهاتف: ${user?.phoneNumber ?? 'غير متوفر'}"),
+          _buildInfoRow(Icons.phone, "${'phone_number'.tr}: ${user?.phoneNumber ?? 'not_available'.tr}"),
           _buildInfoRow(
             Icons.person,
-            "الجنس: ${controller.getGender(userData?.gender)}",
+            "${'gender'.tr}: ${controller.getGender(userData?.gender)}",
           ),
           _buildInfoRow(
             Icons.water_drop,
-            "فصيلة الدم: ${controller.bloodType(userData?.bloodType)}",
+            "${'blood_type'.tr}: ${controller.bloodType(userData?.bloodType)}",
           ),
           _buildInfoRow(
             Icons.calendar_today,
-            "العمر: ${userData?.birthYear ?? 'غير متوفر'}",
+            "${'age'.tr}: ${userData?.birthYear ?? 'not_available'.tr}",
           ),
           SizedBox(height: Get.height * 0.02),
           Text(
-            'مديرية شؤون الطبابة والمقاتلين والمضحين',
+            'health_directorate'.tr, // Updated to use translation
             style: TextStyle(fontSize: Get.width * 0.04, color: Colors.grey),
           ),
         ],
@@ -148,7 +147,7 @@ class HealthInfo extends StatelessWidget {
   Widget _buildNoQRCodeText() {
     return Center(
       child: Text(
-        'QR Code غير متوفر',
+        'qr_code_unavailable'.tr, // Updated to use translation
         style: TextStyle(color: Colors.white, fontSize: Get.width * 0.04),
       ),
     );
@@ -156,9 +155,8 @@ class HealthInfo extends StatelessWidget {
 
   Widget _buildQrCodeContainer(String? qrData) {
     if (qrData == null || qrData.isEmpty) {
-      return Text('حدث خطا', style: TextStyle(color: Colors.white));
+      return Text('error_occurred'.tr, style: TextStyle(color: Colors.white)); // Updated to use translation
     }
-
     return Container(
       padding: EdgeInsets.all(Get.width * 0.04),
       decoration: BoxDecoration(

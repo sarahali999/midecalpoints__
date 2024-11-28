@@ -82,7 +82,7 @@ class LargeCard extends StatelessWidget {
     double height = Get.height;
 
     double cardWidth = width * 0.9;
-    double cardHeight = height * 0.2;
+    double cardHeight = height * 0.16;
 
     return Container(
       height: cardHeight,
@@ -100,7 +100,8 @@ class LargeCard extends StatelessWidget {
           ),
         ],
       ),
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(8),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +124,7 @@ class LargeCard extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(),
+          SizedBox(height: 4),
           Text(
             content,
             style: TextStyle(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:midecalpoints/registration/personalInfoPage.dart';
+import 'package:midecalpoints/registration/personal_info_page.dart';
 import '../languages.dart';
 import '../login/verification.dart';
-import 'contactInfoPage.dart';
-import 'emergencyContactPage.dart';
-import 'medicalInfoPage.dart';
+import 'contact_info_page.dart';
+import 'emergency_contact_page.dart';
+import 'medical_info_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -95,8 +95,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         'firstName': firstNameController.text,
         'secondName': lastNameController.text,
         'thirdName': middleNameController.text,
-        'gender': _selectedGender,  // سيتم إرسال القيمة الصحيحة (0 أو 1)
-        'bloodType': _selectedBloodType,  // سيتم إرسال القيمة الصحيحة (0 إلى 7)        'address': addressController.text,
+        'gender': _selectedGender,
+        'bloodType': _selectedBloodType,
+        'address': addressController.text,
         'birthYear': selectedYear ?? '',
         'country': countryController.text,
         'province': governorateController.text,
@@ -119,10 +120,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         'phoneNumber': phoneNumberController.text,
         'username': usernameController.text,
       };
-
       request.body = json.encode(requestBody);
       request.headers.addAll(headers);
-
       print('Request URL: ${request.url}');
       print('Request Headers: ${request.headers}');
       print('Request Body: ${request.body}');
@@ -183,7 +182,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
       );
     }
   }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = Get.size.height;
@@ -457,8 +455,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).pop(); // Close dialog
-                                  Navigator.of(context).pop(); // Go back to previous screen
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                               ),
                             ),
@@ -565,13 +563,13 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                             if (value != null) {
                               setState(() {
                                 _selectedGender = value;
-                              });
+                              }
+                             );
                             }
                           },
                           selectedDay: selectedDay,
                           selectedMonth: selectedMonth,
                           selectedYear: selectedYear,
-
                           onDayChanged: (value) =>
                               setState(() => selectedDay = int.parse(value!)),
                           onMonthChanged: (value) =>
@@ -580,7 +578,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           selectedYear = value),
                         ),
                       ),
-
                       SingleChildScrollView(
                         child: MedicalInfoPage(
                           selectedBloodType: _selectedBloodType,
@@ -593,11 +590,10 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           },
                           chronicDiseasesController: chronicDiseasesController,
                           allergiesController: allergiesController,
-
                         ),
                       ),
                       SingleChildScrollView(
-                        child: EmergencyContactPage(
+                        child:EmergencyContactPage(
                           emergencyContactNameController: emergencyContactNameController,
                           emergencyContactAddressController:
                           emergencyContactAddressController,
@@ -605,8 +601,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           onRelationshipChanged: (int newRelationship) {
                             setState(() {
                               selectedRelationship = newRelationship;
-                            });
-                          },
+                            }
+                          );
+                         },
                           emergencyContactPhoneController:
                           emergencyContactPhoneController,
                           emergencyContactCountryController:
