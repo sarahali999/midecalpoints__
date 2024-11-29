@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../languages.dart';
+import '../loading_screen.dart';
 import 'chronic_diseases_page.dart';
 import 'diagnosis_page.dart';
 import 'examination_page.dart';
@@ -92,11 +93,21 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   Expanded(
-                    child: GestureDetector(
+                    child:// For the Diagnosis card
+                    GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DiagnosisPage()),
+                          MaterialPageRoute(
+                            builder: (context) => LoadingScreen(
+                              onLoaded: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => DiagnosisPage()),
+                                );
+                              },
+                            ),
+                          ),
                         );
                       },
                       child: SmallCard(
@@ -108,11 +119,20 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(width: 12),
                   Expanded(
-                    child: GestureDetector(
+                    child:GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ChronicDiseasesPage()),
+                          MaterialPageRoute(
+                            builder: (context) => LoadingScreen(
+                              onLoaded: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ChronicDiseasesPage()),
+                                );
+                              },
+                            ),
+                          ),
                         );
                       },
                       child: SmallCard(
@@ -121,14 +141,24 @@ class _HomePageState extends State<HomePage> {
                         iconColor: Color(0xFF2196F3),
                       ),
                     ),
+
                   ),
                   SizedBox(width: 12),
                   Expanded(
-                    child: GestureDetector(
+                    child:GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MedicalSuppliesWidget()),
+                          MaterialPageRoute(
+                            builder: (context) => LoadingScreen(
+                              onLoaded: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => MedicalSuppliesWidget()),
+                                );
+                              },
+                            ),
+                          ),
                         );
                       },
                       child: SmallCard(
@@ -137,6 +167,7 @@ class _HomePageState extends State<HomePage> {
                         iconColor: Color(0xFFFF5722),
                       ),
                     ),
+
                   ),
                 ],
               ),
@@ -145,7 +176,16 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MedicationListWidget()),
+                    MaterialPageRoute(
+                      builder: (context) => LoadingScreen(
+                        onLoaded: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => MedicationListWidget()),
+                          );
+                        },
+                      ),
+                    ),
                   );
                 },
                 child: LargeCard(

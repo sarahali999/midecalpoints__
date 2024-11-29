@@ -73,6 +73,7 @@ class _LoginState extends State<Login> {
           Get.snackbar(
             'success'.tr,
             'login_success'.tr ,
+            colorText: Colors.white,
             backgroundColor: Color(0xFf259e9f),
           );
           return token;
@@ -112,16 +113,26 @@ class _LoginState extends State<Login> {
     }
     return null;
   }
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = Get.width;
     double screenHeight = Get.height;
-
     return Directionality(
       textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: const Color(0xFf259e9f),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: SafeArea(
           child: Stack(
             children: [
@@ -264,10 +275,7 @@ class _LoginState extends State<Login> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RegistrationStepsScreen()),
-            );
+            Get.to(() => RegistrationStepsScreen());
           },
           child: Text(
             "no_account".tr,

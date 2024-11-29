@@ -5,6 +5,7 @@ import '../controller/user_controller.dart';
 class ChronicDiseasesPage extends GetView<UserController> {
   final UserController controller = Get.put(UserController());
   ChronicDiseasesPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +21,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
           ),
         ),
         title: Text(
-          'الامراض المزمنة والحساسية',
+          'chronic_diseases_and_allergies'.tr, // Translation key
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         centerTitle: true,
@@ -28,12 +29,9 @@ class ChronicDiseasesPage extends GetView<UserController> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        }
+
 
         return RefreshIndicator(
           onRefresh: controller.fetchPatientDetails,
@@ -49,22 +47,25 @@ class ChronicDiseasesPage extends GetView<UserController> {
               ),
               SizedBox(height: 8),
               _buildInfoCard(
-                title: 'مرض مزمن',
+                title: 'chronic_disease'.tr,
                 content: controller.userInfoDetails.value?.data?.chronicDiseases?.isNotEmpty == true
                     ? controller.userInfoDetails.value!.data!.chronicDiseases!
-                    : 'لا يعاني من مرض مزمن',),
+                    : 'no_chronic_disease'.tr,
+              ),
               SizedBox(height: 16),
               _buildInfoCard(
-                title: 'الحساسية',
+                title: 'allergies'.tr,
                 content: controller.userInfoDetails.value?.data?.allergies?.isNotEmpty == true
                     ? controller.userInfoDetails.value!.data!.allergies!
-                    : 'لا يعاني من حساسية',),
+                    : 'no_allergies'.tr,
+              ),
             ],
           ),
         );
       }),
     );
   }
+
   Widget _buildInfoCard({
     required String title,
     required String content,

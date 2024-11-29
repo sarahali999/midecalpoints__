@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 import 'dart:convert';
+
+import '../languages.dart';
 
 class Publicnotices extends StatefulWidget {
   @override
@@ -70,23 +73,26 @@ class _PublicnoticesState extends State<Publicnotices> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine text direction based on current locale
+    final currentLocale = Get.locale?.languageCode ?? 'en';
+    final bool isRightToLeft = Languages.isRTL(currentLocale);
+
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: isRightToLeft ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: Colors.white,
-       appBar:    AppBar(
-
-       flexibleSpace: Container(
-         decoration: BoxDecoration(
-           color: Color(0xFF259E9F),
-           borderRadius: BorderRadius.only(
-             bottomLeft: Radius.circular(20),
-             bottomRight: Radius.circular(20),
-           ),
-         ),
-       ),
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF259E9F),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+          ),
           title: Text(
-            'الإشعارات',
+            'notifications'.tr, // Use translation key
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -94,28 +100,27 @@ class _PublicnoticesState extends State<Publicnotices> {
             ),
           ),
           centerTitle: true,
-
           actions: [
             IconButton(
-              icon: Icon(Icons.refresh,color: Colors.white,),
+              icon: Icon(Icons.refresh, color: Colors.white),
               onPressed: () {
                 setState(() {
                   _loadNotifications();
                 });
               },
             ),
-          ], leading: IconButton(
-         icon: Icon(Icons.arrow_back, color: Colors.white),
-         onPressed: () {
-           Navigator.pop(context); // Go back to the previous screen
-         },
-       ),
-
+          ],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: _notifications.isEmpty
             ? Center(
           child: Text(
-            'لا توجد إشعارات حالياً',
+            'no_notifications'.tr, // Use translation key
             style: TextStyle(fontSize: 18, color: Colors.grey),
           ),
         )
@@ -144,7 +149,7 @@ class _PublicnoticesState extends State<Publicnotices> {
                     color: Color(0xFF5BB9AE),
                   ),
                   title: Text(
-                    notification['body'] ?? 'No Content',
+                    notification['body'] ?? 'no_content'.tr,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,

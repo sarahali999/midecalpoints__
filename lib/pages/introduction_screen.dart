@@ -88,13 +88,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _toggleLanguages() => setState(() => _showLanguages = !_showLanguages);
 
   void _navigateToPhone() {
-    Get.to(() => GlobalLoadingScreen(
+    Get.to(() => LoadingScreen(
       onLoaded: () => Get.to(() => const Login()),
     ));
   }
   void _handleMainButtonPress() {
     if (_currentPage == _contents.length - 1) {
-      Get.to(() => GlobalLoadingScreen(
+      Get.to(() => LoadingScreen(
         onLoaded: () => Get.to(() => const Login()),
       ));
     } else {

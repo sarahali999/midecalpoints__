@@ -108,7 +108,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         'chronicDiseases': chronicDiseasesController.text,
         'allergies': allergiesController.text,
         'emergencyContactFullName': emergencyContactNameController.text,
-        'emergencyContactAddress': emergencyContactAddressController.text,
         'emergencyContactCountry': emergencyContactCountryController.text,
         'emergencyContactProvince': emergencyContactProvinceController.text,
         'emergencyContactDistrict': emergencyContactDistrictController.text,
@@ -594,28 +593,19 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                       ),
                       SingleChildScrollView(
                         child:EmergencyContactPage(
-                          emergencyContactNameController: emergencyContactNameController,
-                          emergencyContactAddressController:
-                          emergencyContactAddressController,
+                          emergencyContactNameController: emergencyContactNameController, // Use the parent's controller
                           emergencyContactRelationship: selectedRelationship,
                           onRelationshipChanged: (int newRelationship) {
                             setState(() {
                               selectedRelationship = newRelationship;
-                            }
-                          );
-                         },
-                          emergencyContactPhoneController:
-                          emergencyContactPhoneController,
-                          emergencyContactCountryController:
-                          emergencyContactCountryController,
-                          emergencyContactProvinceController:
-                          emergencyContactProvinceController,
-                          emergencyContactDistrictController:
-                          emergencyContactDistrictController,
-                          emergencyContactAlleyController:
-                          emergencyContactAlleyController,
-                          emergencyContactHouseController:
-                          emergencyContactHouseController,
+                            });
+                          },
+                          emergencyContactPhoneController: emergencyContactPhoneController,
+                          emergencyContactCountryController: emergencyContactCountryController,
+                          emergencyContactProvinceController: emergencyContactProvinceController,
+                          emergencyContactDistrictController: emergencyContactDistrictController,
+                          emergencyContactAlleyController: emergencyContactAlleyController,
+                          emergencyContactHouseController: emergencyContactHouseController,
                         ),
                       ),
                       SingleChildScrollView(

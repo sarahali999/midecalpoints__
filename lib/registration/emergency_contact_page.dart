@@ -6,28 +6,25 @@ import 'custom.dart';
 
 class EmergencyContactPage extends StatefulWidget {
   final TextEditingController emergencyContactNameController;
-  final TextEditingController emergencyContactAddressController;
-  final int emergencyContactRelationship;
   final TextEditingController emergencyContactPhoneController;
   final TextEditingController emergencyContactCountryController;
   final TextEditingController emergencyContactProvinceController;
   final TextEditingController emergencyContactDistrictController;
   final TextEditingController emergencyContactAlleyController;
-  final TextEditingController emergencyContactHouseController;
+  final TextEditingController emergencyContactHouseController;  final int emergencyContactRelationship;
   final Function(int) onRelationshipChanged;
 
    EmergencyContactPage({
-    required this.emergencyContactNameController,
-    required this.emergencyContactAddressController,
-    required this.emergencyContactRelationship,
-    required this.emergencyContactPhoneController,
-    required this.emergencyContactCountryController,
-    required this.emergencyContactProvinceController,
-    required this.emergencyContactDistrictController,
-    required this.emergencyContactAlleyController,
-    required this.emergencyContactHouseController,
-     required this.onRelationshipChanged,
      Key? key,
+     required this.emergencyContactNameController,
+     required this.emergencyContactPhoneController,
+     required this.emergencyContactCountryController,
+     required this.emergencyContactProvinceController,
+     required this.emergencyContactDistrictController,
+     required this.emergencyContactAlleyController,
+     required this.emergencyContactHouseController,
+     required this.emergencyContactRelationship,
+     required this.onRelationshipChanged,
   }) : super(key: key);
 
   @override
@@ -35,7 +32,7 @@ class EmergencyContactPage extends StatefulWidget {
 }
 
 class _EmergencyContactPageState extends State<EmergencyContactPage> {
-  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emergencyContactNameController = TextEditingController();
   final TextEditingController emergencyContactCountryController = TextEditingController();
   final TextEditingController emergencyContactProvinceController = TextEditingController();
   final TextEditingController emergencyContactDistrictController = TextEditingController();
@@ -98,9 +95,9 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
       setState(() {
         this.selectedCountry = selectedCountry;
         if (selectedCountry == '1') {
-          emergencyContactCountryController.text = 'emergencyContactPage.iraq'.tr;
+          widget.emergencyContactCountryController.text = 'emergencyContactPage.iraq'.tr;
         } else {
-          emergencyContactCountryController.clear();
+         widget. emergencyContactCountryController.clear();
         }
       });
     }
@@ -122,7 +119,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
           children: [
             CustomTextField(
                 labelText: 'emergencyContactPage.fullName'.tr,
-                controller: fullNameController
+              controller: widget.emergencyContactNameController,
             ),
             SizedBox(height: spacing),
             DropdownButtonFormField<String>(
@@ -160,7 +157,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     maintainState: true,
                     child: CustomTextField(
                       labelText: 'emergencyContactPage.country'.tr,
-                      controller: emergencyContactCountryController,
+                      controller: widget.emergencyContactCountryController,
                     ),
                   ),
                   DropdownButtonFormField<String>(
@@ -177,7 +174,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     onChanged: (value) {
                       setState(() {
                         selectedGovernorate = value;
-                        emergencyContactProvinceController.text = value ?? '';
+                        widget. emergencyContactProvinceController.text = value ?? '';
                       });
                     },
                     decoration: InputDecoration(
@@ -197,17 +194,17 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.district'.tr,
-                    controller: emergencyContactDistrictController,
+                    controller: widget.emergencyContactDistrictController,
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.alley'.tr,
-                    controller: emergencyContactAlleyController,
+                    controller: widget.emergencyContactAlleyController,
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.house'.tr,
-                    controller: emergencyContactHouseController,
+                    controller: widget.emergencyContactHouseController,
                   ),
                 ],
               )
@@ -256,8 +253,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     else if (snapshot.hasData) {
                       final countries = snapshot.data!;
                       return DropdownButtonFormField<String>(
-                        value: emergencyContactCountryController.text.isNotEmpty
-                            ? emergencyContactCountryController.text
+                        value:widget. emergencyContactCountryController.text.isNotEmpty
+                            ? widget.emergencyContactCountryController.text
                             : null,
                         items: countries.map((country) {
                           return DropdownMenuItem<String>(
@@ -272,7 +269,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            emergencyContactCountryController.text = value ?? '';
+                            widget.emergencyContactCountryController.text = value ?? '';
                           });
                         },
                         decoration: InputDecoration(
@@ -340,7 +337,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
 
             SizedBox(height: spacing),
             IntlPhoneField(
-              controller: emergencyContactPhoneController,
+              controller: widget.emergencyContactPhoneController,
               decoration: InputDecoration(
                 labelText: 'emergencyContactPage.phoneNumber'.tr,
                 border: OutlineInputBorder(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +29,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
     } else {
       setState(() {
         isLoading = false;
-        errorMessage = "فشل في جلب رمز JWT.";
+        errorMessage = "jwt_token_fetch_failed".tr;
       });
     }
   }
@@ -60,7 +61,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
       } else {
         setState(() {
           isLoading = false;
-          errorMessage = 'فشل في تحميل الأدوية';
+          errorMessage = 'medication_load_failed'.tr;
         });
       }
     } catch (e) {
@@ -74,7 +75,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
             color: Color(0xFF259E9F),
@@ -87,7 +88,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
-          'قائمة الادوية',
+          'medication_list'.tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -107,9 +108,6 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
         ),
         child: isLoading
             ? Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF259E9F)),
-          ),
         )
             : errorMessage != null
             ? Center(
@@ -197,19 +195,19 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionTitle('معلومات الدواء'),
+                          _buildSectionTitle('medication_info'.tr),
                           _buildInfoRow(
-                            'الاسم العام',
+                            'generic_name'.tr,
                             details['genericName'],
                             Icons.label_outline,
                           ),
                           _buildInfoRow(
-                            'الشكل الجرعي',
+                            'dosage_form'.tr,
                             details['dosageForm'],
                             Icons.medical_services_outlined,
                           ),
                           _buildInfoRow(
-                            'تاريخ الإنتاج',
+                            'production_date'.tr,
                             details['productionDate'] != null
                                 ? DateFormat('yyyy-MM-dd').format(
                                 DateTime.parse(
@@ -218,7 +216,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                             Icons.calendar_today,
                           ),
                           _buildInfoRow(
-                            'تاريخ انتهاء الصلاحية',
+                            'expiry_date'.tr,
                             details['expiryDate'] != null
                                 ? DateFormat('yyyy-MM-dd').format(
                                 DateTime.parse(
@@ -226,16 +224,15 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                                 : "N/A",
                             Icons.event_busy,
                           ),
-
                           Divider(height: 32),
-                          _buildSectionTitle('معلومات الطبيب'),
+                          _buildSectionTitle('doctor_info'.tr),
                           _buildInfoRow(
-                            'التخصص',
+                            'specialization'.tr,
                             medicalStaff['specialization'],
                             Icons.work_outline,
                           ),
                           _buildInfoRow(
-                            'المركز الطبي',
+                            'medical_center'.tr,
                             medicalStaff['center']['centerName'],
                             Icons.business,
                           ),
@@ -291,7 +288,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  value ?? 'N/A',
+                  value ?? 'not_available'.tr,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black87,

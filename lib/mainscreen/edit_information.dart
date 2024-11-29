@@ -491,7 +491,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
 
   }
-
   Widget _buildCountryDropdown({
     required TextEditingController controller,
     required String labelText,
@@ -506,7 +505,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           } else if (snapshot.hasError) {
             return TextFormField(
               controller: controller,
-
               decoration: InputDecoration(
                 labelText: '${labelText} (Failed to load)',
                 border: OutlineInputBorder(
@@ -520,12 +518,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             );
           } else if (snapshot.hasData) {
-            final countries = snapshot.data!;
-            return DropdownButtonFormField<String>(
-              value: controller.text.isNotEmpty ? controller.text : null,
-              isExpanded: true,
+            // More robust deduplication using a Set
+            final uniqueCountries = <String>{};
+            final filteredCountries = snapshot.data!
+                .where((country) => uniqueCountries.add(country['name']))
+                .toList();
 
-              items: countries.map((country) {
+            return DropdownButtonFormField<String>(
+              value: filteredCountries.any((country) => country['name'] == controller.text)
+                  ? controller.text
+                  : null,
+              isExpanded: true,
+              items: filteredCountries.map((country) {
                 return DropdownMenuItem<String>(
                   value: country['name'],
                   child: Text(
@@ -550,15 +554,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   borderSide: BorderSide(color: _primaryColor),
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a country';
+                }
+                return null;
+              },
             );
           }
           return Container();
         },
-      ),
-    ).animate().fadeIn(duration: Duration(milliseconds: 500), delay: Duration(milliseconds: 100))
-        .slideX(begin: 0.2, end: 0);
+      ).animate().fadeIn(duration: Duration(milliseconds: 500), delay: Duration(milliseconds: 100))
+          .slideX(begin: 0.2, end: 0),
+    );
   }
-
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -23,7 +23,7 @@ class UserProfile extends GetView<UserController> {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           } else if (controller.userInfoDetails.value == null) {
-            return const Center(child: Text("لا تتوفر بيانات في الوقت الحالي"));
+            return Center(child: Text('no_data_available'.tr));
           } else {
             return CustomScrollView(
               slivers: [
@@ -33,7 +33,6 @@ class UserProfile extends GetView<UserController> {
                       _buildProfileHeader(controller.userInfoDetails.value!.data!, screenWidth, screenHeight),
                       _buildPersonalInfo(controller.userInfoDetails.value!.data!, screenWidth),
                       _buildEditProfileButton(screenWidth),
-
                     ],
                   ),
                 ),
@@ -71,13 +70,11 @@ class UserProfile extends GetView<UserController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildQuickInfo(controller.bloodType(user.bloodType), "فصيلة الدم", screenWidth),
-              _buildQuickInfo("${user.birthYear ?? ''}", "العمر", screenWidth),
-              _buildQuickInfo(controller.getGender(user.gender), "الجنس", screenWidth),
+              _buildQuickInfo(controller.bloodType(user.bloodType), 'blood_type'.tr, screenWidth),
+              _buildQuickInfo("${user.birthYear ?? ''}", 'year'.tr, screenWidth),
+              _buildQuickInfo(controller.getGender(user.gender), 'gender'.tr, screenWidth),
             ],
-
           ),
-
         ],
       ),
     );
@@ -112,48 +109,49 @@ class UserProfile extends GetView<UserController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "معلومات المستخدم",
+          Text(
+            'user_information'.tr,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          _buildInfoTile("الاسم الكامل", "${user.user?.firstName ?? ''} ${user.user?.secondName ?? ''} ${user.user?.thirdName ?? ''}", screenWidth),
-          _buildInfoTile("اسم المستخدم", user.user?.username ?? '', screenWidth),
-          _buildInfoTile("البريد الإلكتروني", user.user?.email ?? '', screenWidth),
-          _buildInfoTile("رقم الهاتف", user.user?.phoneNumber ?? '', screenWidth),
-           const SizedBox(height: 16),
-          const Text(
-            "عنوان المستخدم",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          _buildInfoTile("البلد", user.country ?? '', screenWidth),
-          _buildInfoTile("المحافظة", user.province ?? '', screenWidth),
-          _buildInfoTile("المحلة", user.district ?? '', screenWidth),
-          _buildInfoTile("الزقاق", user.alley ?? '', screenWidth),
-          _buildInfoTile("الدار", user.house ?? '', screenWidth),
+          _buildInfoTile('full_name'.tr, "${user.user?.firstName ?? ''} ${user.user?.secondName ?? ''} ${user.user?.thirdName ?? ''}", screenWidth),
+          _buildInfoTile('username'.tr, user.user?.username ?? '', screenWidth),
+          _buildInfoTile('email'.tr, user.user?.email ?? '', screenWidth),
+          _buildInfoTile('phone_number'.tr, user.user?.phoneNumber ?? '', screenWidth),
           const SizedBox(height: 16),
-          const Text(
-            "معلومات الشخص المقرب",
+          Text(
+            'user_address'.tr,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          _buildInfoTile("اسم الشخص المقرب", user.emergencyContactFullName ?? '', screenWidth),
-          _buildInfoTile("رقم هاتف الشخص المقرب", user.emergencyContactPhoneNumber ?? '', screenWidth),
-          _buildInfoTile("صلة القرابة", controller.getEmergencyContactRelationship(user.emergencyContactRelationship), screenWidth),
+          _buildInfoTile('country'.tr, user.country ?? '', screenWidth),
+          _buildInfoTile('province'.tr, user.province ?? '', screenWidth),
+          _buildInfoTile('district'.tr, user.district ?? '', screenWidth),
+          _buildInfoTile('alley'.tr, user.alley ?? '', screenWidth),
+          _buildInfoTile('house'.tr, user.house ?? '', screenWidth),
           const SizedBox(height: 16),
-          const Text(
-            "عنوان الشخص المقرب",
+          Text(
+            'emergency_contact_information'.tr,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          _buildInfoTile("بلد الشخص المقرب", user.emergencyContactCountry ?? '', screenWidth),
-          _buildInfoTile("محافظة الشخص المقرب", user.emergencyContactProvince ?? '', screenWidth),
-          _buildInfoTile("محلة الشخص المقرب", user.emergencyContactDistrict ?? '', screenWidth),
-          _buildInfoTile("زقاق الشخص المقرب", user.emergencyContactAlley ?? '', screenWidth),
-          _buildInfoTile("دار الشخص المقرب", user.emergencyContactHouse ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.fullName'.tr, user.emergencyContactFullName ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.phoneNumber'.tr, user.emergencyContactPhoneNumber ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.relationship'.tr, controller.getEmergencyContactRelationship(user.emergencyContactRelationship), screenWidth),
           const SizedBox(height: 16),
-          _buildInfoTile("الرمز العشوائي", user.randomCode ?? '', screenWidth),
+          Text(
+            'emergency_contact_address'.tr,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          _buildInfoTile('emergencyContactPage.country'.tr, user.emergencyContactCountry ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.province'.tr, user.emergencyContactProvince ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.district'.tr, user.emergencyContactDistrict ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.alley'.tr, user.emergencyContactAlley ?? '', screenWidth),
+          _buildInfoTile('emergencyContactPage.house'.tr, user.emergencyContactHouse ?? '', screenWidth),
+          const SizedBox(height: 16),
+          _buildInfoTile('random_code'.tr, user.randomCode ?? '', screenWidth),
         ],
       ),
     );
   }
+
   Widget _buildEditProfileButton(double screenWidth) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -162,8 +160,7 @@ class UserProfile extends GetView<UserController> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          Get.to(() => EditProfilePage( userData: controller.userInfoDetails.value!.data!,
-              ));
+          Get.to(() => EditProfilePage(userData: controller.userInfoDetails.value!.data!));
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFf259e9f),
@@ -176,7 +173,7 @@ class UserProfile extends GetView<UserController> {
           ),
         ),
         child: Text(
-          'تعديل المعلومات الشخصية',
+          'edit_personal_information'.tr,
           style: TextStyle(
             fontSize: screenWidth * 0.045,
             color: Colors.white,
@@ -186,7 +183,6 @@ class UserProfile extends GetView<UserController> {
       ),
     );
   }
-}
 
   Widget _buildInfoTile(String title, String value, double screenWidth) {
     return Container(
@@ -212,4 +208,4 @@ class UserProfile extends GetView<UserController> {
       ),
     );
   }
-
+}

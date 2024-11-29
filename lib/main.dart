@@ -5,7 +5,9 @@ import 'app_routes.dart';
 import 'languages.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+
+      const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -37,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xfff6f6f6),
         fontFamily: 'Cairo',
       ),
       translations: Languages(),

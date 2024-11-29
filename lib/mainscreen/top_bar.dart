@@ -17,7 +17,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           : TextDirection.ltr,
       child: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfff6f6f6),
         elevation: 0,
         title: Padding(
           padding: EdgeInsets.only(top: Get.height * 0.01),

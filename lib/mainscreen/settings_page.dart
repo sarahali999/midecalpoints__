@@ -41,7 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ? TextDirection.rtl
           : TextDirection.ltr,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: _buildAppBar(),
         body: Column(
           children: [

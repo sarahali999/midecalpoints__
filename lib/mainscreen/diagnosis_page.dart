@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class DiagnosisPage extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
       fetchPatientReceipts();
     } else {
       setState(() {
-        errorMessage = 'لم يتم العثور على الرمز المميز. يرجى تسجيل الدخول.';
+        errorMessage = 'no_jwt_token'.tr;
         isLoading = false;
       });
     }
@@ -39,7 +40,6 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
         Uri.parse('https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientReceipts'),
         headers: {'Authorization': 'Bearer $jwtToken'},
       );
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
@@ -48,13 +48,13 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
         });
       } else {
         setState(() {
-          errorMessage = 'حدث خطأ أثناء تحميل البيانات. الرجاء المحاولة لاحقاً.';
+          errorMessage = 'data_load_error'.tr;
           isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'خطأ في الاتصال: $e';
+        errorMessage = 'connection_error'.tr + ': $e';
         isLoading = false;
       });
     }
@@ -76,7 +76,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
-          'الحالة المرضية الكاملة',
+          'complete_medical_status'.tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -102,7 +102,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
           : receipts.isEmpty
           ? Center(
         child: Text(
-          'لا يوجد تشخيص',
+          'no_diagnosis'.tr,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -144,18 +144,18 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildHeader('الحالة المرضية', Icons.medical_services),
+              buildHeader('medical_status'.tr, Icons.medical_services),
               SizedBox(height: 10),
-              buildInfoRow('التشخيص:', receipt['notes'] ?? 'غير متوفر'),
+              buildInfoRow('diagnosis_label'.tr, receipt['notes'] ?? 'not_available'.tr),
               buildInfoRow(
-                'الطبيب المعالج:',
+                'treating_doctor_label'.tr,
                 '${receipt['medicalStaff']?['user']?['firstName'] ?? ''} ${receipt['medicalStaff']?['user']?['secondName'] ?? ''}',
               ),
-              buildInfoRow('التخصص:', receipt['medicalStaff']?['specialization'] ?? 'غير متوفر'),
-              buildInfoRow('المركز الطبي:', receipt['medicalStaff']?['center']?['centerName'] ?? 'غير متوفر'),
-              buildInfoRow('العنوان:', receipt['medicalStaff']?['center']?['addressCenter'] ?? 'غير متوفر'),
-              buildInfoRow('رقم الهاتف:', receipt['medicalStaff']?['center']?['phoneNumCenter'] ?? 'غير متوفر'),
-              buildInfoRow('تاريخ التشخيص:', formatDate(receipt['createdAt'] ?? '')),
+              buildInfoRow('specialization_label'.tr, receipt['medicalStaff']?['specialization'] ?? 'not_available'.tr),
+              buildInfoRow('medical_center_label'.tr, receipt['medicalStaff']?['center']?['centerName'] ?? 'not_available'.tr),
+              buildInfoRow('address_label'.tr, receipt['medicalStaff']?['center']?['addressCenter'] ?? 'not_available'.tr),
+              buildInfoRow('phone_label'.tr, receipt['medicalStaff']?['center']?['phoneNumCenter'] ?? 'not_available'.tr),
+              buildInfoRow('diagnosis_date_label'.tr, formatDate(receipt['createdAt'] ?? '')),
             ],
           ),
         ),
@@ -189,7 +189,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
           SizedBox(width: 8),
           Expanded(
             child: Text(
-              value.isNotEmpty ? value : 'غير متوفر',
+              value.isNotEmpty ? value : 'not_available'.tr,
               style: TextStyle(color: Colors.black54),
             ),
           ),
@@ -199,12 +199,12 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
   }
 
   String formatDate(String dateString) {
-    if (dateString.isEmpty) return 'غير متوفر';
+    if (dateString.isEmpty) return 'not_available'.tr;
     try {
       DateTime dateTime = DateTime.parse(dateString);
       return "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
     } catch (e) {
-      return 'غير متوفر';
+      return 'not_available'.tr;
     }
   }
 }

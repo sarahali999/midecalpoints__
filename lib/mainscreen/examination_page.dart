@@ -90,21 +90,6 @@ class MedicalSuppliesWidget extends StatelessWidget {
           },
         ),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF259E9F)),
-            ),
-          );
-        } else if (controller.errorMessage.value.isNotEmpty) {
-          return _buildErrorView(controller.errorMessage.value);
-        } else if (controller.supplies.isEmpty) {
-          return _buildEmptyView();
-        } else {
-          return _buildSuppliesList();
-        }
-      }),
     );
   }
 

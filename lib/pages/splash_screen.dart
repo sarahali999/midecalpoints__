@@ -110,16 +110,14 @@ class AppTitle extends StatelessWidget {
 
 class FooterText extends StatelessWidget {
   final double screenWidth;
-
   const FooterText({Key? key, required this.screenWidth}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final double fontSize = (screenWidth * 0.038).clamp(12.0, 18.0);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Text(
-        'معاونية شؤون الطلبة والمقاتلين والمضحين',
+        'معاونية شؤون الطبابة والمقاتلين والمضحين',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,

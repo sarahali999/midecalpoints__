@@ -85,8 +85,6 @@ class MedicalInfoPage extends StatefulWidget {
     widget.onBloodTypeChanged(newValue != null ? bloodTypeOptions[newValue] : 0);
     });
     }
-
-
     ),
 
           SizedBox(height: spacing),
