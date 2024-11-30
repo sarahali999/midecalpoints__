@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'all_news_page.dart';
 import 'news_detail_page.dart';
 import 'news_model.dart';
 
@@ -7,7 +8,8 @@ class News extends StatefulWidget {
   News();
   @override
   _NewsState createState() => _NewsState();
-}class _NewsState extends State<News> {
+}
+class _NewsState extends State<News> {
   int _currentIndex = 0;
   late Future<List<Article>> _futureArticles;
 
@@ -15,16 +17,16 @@ class News extends StatefulWidget {
   void initState() {
     super.initState();
     _futureArticles = NewsService().fetchArticles();
-  }
-  @override
+  }@override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return FutureBuilder<List<Article>>(
       future: _futureArticles,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFf259e9f)),
             ),
@@ -47,58 +49,92 @@ class News extends StatefulWidget {
         }
         else {
           print('Loaded articles: ${snapshot.data}');
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: screenHeight * 0.22,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    viewportFraction: 1.05,
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: screenHeight * 0.22,
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  viewportFraction: 1.05,
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+                items: snapshot.data!.map((article) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return AnimatedNewsCard(article: article);
                     },
-                  ),
-                  items: snapshot.data!.map((article) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return AnimatedNewsCard(article: article);
-                      },
-                    );
-                  }).toList(),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 5),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => AllNewsPopup(articles: snapshot.data!),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF259E9F),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            'عرض الكل',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 1),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: snapshot.data!.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 5),
+                          height: 8,
+                          width: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentIndex == index
+                                ? Color(0xFF259E9F)
+                                : Colors.grey,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: snapshot.data!.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    return AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                      height: 8,
-                      width: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentIndex == index
-                            ? Color(0xFF259E9F)
-                            : Colors.grey,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         }
       },
     );
-  }
-}
+  }}
 
 class AnimatedNewsCard extends StatefulWidget {
   final Article article;

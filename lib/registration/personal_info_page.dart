@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'Searchable_country.dart';
 import 'countries.dart';
 import 'custom.dart';
 
@@ -326,28 +327,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 } else if (snapshot.hasError) {
                   return Text('countries_error'.tr);
                 } else if (snapshot.hasData) {
-                  return DropdownButtonFormField<String>(
-                    value: widget.countryController.text.isNotEmpty ? widget.countryController.text : null,
-                    items: snapshot.data!.map((country) {
-                      return DropdownMenuItem<String>(
-                        value: country['name'],
-                        child: Text(country['name']!),
-                      );
-                    }).toList(),
+                  return SearchableDropdown(
+                    items: snapshot.data!,
+                    value: widget.countryController.text.isNotEmpty
+                        ? widget.countryController.text
+                        : null,
+                    labelText: 'country'.tr,
                     onChanged: (value) {
                       setState(() {
                         widget.countryController.text = value ?? '';
                       });
                     },
-                    decoration: InputDecoration(
-                      labelText: 'country'.tr,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFFd6dedf),
-                    ),
                   );
                 }
                 return Container();

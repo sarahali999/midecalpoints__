@@ -5,9 +5,20 @@ import '../languages.dart';
 import 'notifications_page.dart';
 import 'profile.dart';
 
-class TopBar extends StatelessWidget implements PreferredSizeWidget {
+class TopBar extends StatefulWidget implements PreferredSizeWidget {
+  final Function(String)? onSearch; // Callback for search
+
+  const TopBar({Key? key, this.onSearch}) : super(key: key);
+
   @override
   Size get preferredSize => Size.fromHeight(140.0);
+
+  @override
+  _TopBarState createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +46,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                   Get.to(() => Publicnotices());
                 },
               ),
-
               // Center - App icon
               Image.asset(
                 'assets/images/logo.png',
                 width: Get.width * 0.12,
                 color: Color(0xFF259E9F),
               ),
-
               // Right side - Profile icon
               GestureDetector(
                 onTap: () {
@@ -74,8 +83,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget buildSearchField() {
     return TextField(
+
+      controller: _searchController,
       decoration: InputDecoration(
-        hintText: 'search_hint'.tr, // Uses GetX translation
+        hintText: 'search_hint'.tr,
         prefixIcon: Padding(
           padding: EdgeInsets.all(Get.width * 0.015),
           child: Icon(
@@ -96,6 +107,18 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       style: TextStyle(fontSize: Get.width * 0.045),
+      onSubmitted: (value) {
+        // Trigger global location search when submitted
+        if (widget.onSearch != null) {
+          widget.onSearch!(value);
+        }
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }

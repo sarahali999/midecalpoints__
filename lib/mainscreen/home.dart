@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               SizedBox(height: 8),
               Container(
-                height: Get.height * 0.25,
+                height: Get.height *0.3,
                 child: News(),
               ),
               SizedBox(height: 24),

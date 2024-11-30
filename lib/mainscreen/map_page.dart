@@ -189,13 +189,15 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     }
     markerInfos.sort((a, b) => a.distance.compareTo(b.distance));
   }
+  Future<void> _searchAndNavigate([String? query]) async {
+    // If no query is provided, use the search controller's text
+    final searchQuery = query ?? searchController.text;
 
-  Future<void> _searchAndNavigate() async {
-    if (searchController.text.isEmpty) return;
-    final query = searchController.text;
+    if (searchQuery.isEmpty) return;
+
     final apiKey = '48b0594741134ba7a54846c836ba8935';
     final url = Uri.parse(
-        'https://api.opencagedata.com/geocode/v1/json?q=$query&key=$apiKey'
+        'https://api.opencagedata.com/geocode/v1/json?q=$searchQuery&key=$apiKey'
     );
 
     try {
@@ -207,6 +209,10 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         final searchLocation = LatLng(lat, lng);
 
         setState(() {
+          // Clear existing markers if needed
+          markers.removeWhere((marker) => marker.child is Icon);
+
+          // Add a new marker for the searched location
           markers.add(
             Marker(
               point: searchLocation,
@@ -216,15 +222,31 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             ),
           );
 
+          // Move the map to the new location
           _mapController.move(searchLocation, 15.0);
+
+          // Update route from current location to the searched location
           _updateRoute(currentLocation, searchLocation);
         });
+      } else {
+        // Show a snackbar if no location is found
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No location found for: $searchQuery'),
+              duration: const Duration(seconds: 2),
+            )
+        );
       }
     } catch (e) {
       debugPrint("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error searching for location: $e'),
+            duration: const Duration(seconds: 2),
+          )
+      );
     }
   }
-
   void _smoothAnimateToMarker(LatLng target) {
     final latTween = Tween<double>(
         begin: _mapController.camera.center.latitude,
@@ -323,7 +345,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       floatingActionButton: _buildFloatingActionButtons(),
     );
   }
-
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -351,9 +372,16 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       iconTheme: const IconThemeData(color: Colors.white),
+      actions: [
+        // If you want to add a search functionality in the AppBar,
+        // you can add an IconButton here that triggers _searchAndNavigate
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () => _searchAndNavigate(),
+        ),
+      ],
     );
   }
-
   Widget _buildMap() {
     return FlutterMap(
       mapController: _mapController,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'Searchable_country.dart';
 import 'countries.dart';
 import 'custom.dart';
 
@@ -227,8 +228,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                             height: 24,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.blue),
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                             ),
                           ),
                         ),
@@ -244,47 +244,22 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                         child: Center(
                           child: Text(
                             'emergencyContactPage.countriesError'.tr,
-                            style: TextStyle(color: Colors.red, fontSize: 14
-                            ),
+                            style: TextStyle(color: Colors.red, fontSize: 14),
                           ),
                         ),
                       );
-                    }
-                    else if (snapshot.hasData) {
-                      final countries = snapshot.data!;
-                      return DropdownButtonFormField<String>(
-                        value:widget. emergencyContactCountryController.text.isNotEmpty
+                    } else if (snapshot.hasData) {
+                      return SearchableDropdown(
+                        items: snapshot.data!,
+                        value: widget.emergencyContactCountryController.text.isNotEmpty
                             ? widget.emergencyContactCountryController.text
                             : null,
-                        items: countries.map((country) {
-                          return DropdownMenuItem<String>(
-                            value: country['name'],
-                            child: Text(
-                              country['name']!,
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                        labelText: 'emergencyContactPage.country'.tr,
                         onChanged: (value) {
                           setState(() {
                             widget.emergencyContactCountryController.text = value ?? '';
                           });
                         },
-                        decoration: InputDecoration(
-                          labelText: 'emergencyContactPage.country'.tr,
-                          labelStyle: TextStyle(color: Colors.grey[600],
-                              fontSize: 14),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          filled: true,
-                          fillColor: Color(0xFFd6dedf),
-                          contentPadding: EdgeInsets.symmetric(vertical: 16,
-                              horizontal: 16),
-                        ),
                       );
                     } else {
                       return Container(
@@ -297,8 +272,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                         child: Center(
                           child: Text(
                             'emergencyContactPage.noCountries'.tr,
-                            style: TextStyle(
-                                color: Colors.grey[600], fontSize: 14),
+                            style: TextStyle(color: Colors.grey[600], fontSize: 14),
                           ),
                         ),
                       );
