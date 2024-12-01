@@ -19,7 +19,6 @@ class _LoginState extends State<Login> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool isRTL = true;
-
   Future<String?> login() async {
     try {
       if (phoneController.text.isEmpty || passwordController.text.isEmpty) {

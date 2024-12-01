@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import '../languages.dart';
 
 class QuicksupportnumbersController extends GetxController {
@@ -13,7 +12,6 @@ class QuicksupportnumbersController extends GetxController {
   var isLoading = true.obs;
   var errorMessage = ''.obs;
   final String apiUrl = 'https://medicalpoint-api.tatwer.tech/api/Mobile/GetAllCenters';
-
   @override
   void onInit() {
     super.onInit();
@@ -185,8 +183,6 @@ class Quicksupportnumbers extends StatelessWidget {
       ),
     );
   }
-
-
   Widget _buildSupportNumberCard(Map<String, dynamic> number) {
     return Container(
       decoration: BoxDecoration(

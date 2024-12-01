@@ -112,8 +112,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: SmallCard(
                         title: 'diagnosis_and_notes'.tr,
-                        iconPath: 'assets/icons/heart.svg',
-                        iconColor: Color(0xFF4CAF50),
+                        iconPath: 'assets/icons/Medical.png',
                       ),
                     ),
                   ),
@@ -137,11 +136,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: SmallCard(
                         title: 'chronic_diseases'.tr,
-                        iconPath: 'assets/icons/health.svg',
-                        iconColor: Color(0xFF2196F3),
+                        iconPath: 'assets/icons/health.png',
                       ),
                     ),
-
                   ),
                   SizedBox(width: 12),
                   Expanded(
@@ -163,11 +160,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: SmallCard(
                         title: 'medical_supplies'.tr,
-                        iconPath: 'assets/icons/medical.svg',
-                        iconColor: Color(0xFFFF5722),
+                        iconPath: 'assets/icons/heart.png',
                       ),
                     ),
-
                   ),
                 ],
               ),
@@ -191,8 +186,7 @@ class _HomePageState extends State<HomePage> {
                 child: LargeCard(
                   content: _buildMedicationContent(),
                   title: 'dispensed_medications'.tr,
-                  iconPath: 'assets/icons/pill.svg',
-                  iconColor: Color(0xFFFF9800),
+                  iconPath: 'assets/icons/pill.png',
                 ),
               ),
             ],

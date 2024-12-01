@@ -9,7 +9,6 @@ class UserProfile extends GetView<UserController> {
   final UserController controller = Get.put(UserController());
 
   UserProfile({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -19,6 +18,20 @@ class UserProfile extends GetView<UserController> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFf259e9f),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Text(
+            'user_profile'.tr,
+            style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.05),
+          ),
+        ),
         body: Obx(() {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
@@ -30,8 +43,12 @@ class UserProfile extends GetView<UserController> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      _buildProfileHeader(controller.userInfoDetails.value!.data!, screenWidth, screenHeight),
-                      _buildPersonalInfo(controller.userInfoDetails.value!.data!, screenWidth),
+                      _buildProfileHeader(
+                          controller.userInfoDetails.value!.data!,
+                          screenWidth,
+                          screenHeight),
+                      _buildPersonalInfo(
+                          controller.userInfoDetails.value!.data!, screenWidth),
                       _buildEditProfileButton(screenWidth),
                     ],
                   ),
