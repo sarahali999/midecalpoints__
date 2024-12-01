@@ -9,6 +9,7 @@ class UserProfile extends GetView<UserController> {
   final UserController controller = Get.put(UserController());
 
   UserProfile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -17,21 +18,8 @@ class UserProfile extends GetView<UserController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: const Color(0xFf259e9f),
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-          title: Text(
-            'user_profile'.tr,
-            style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.05),
-          ),
-        ),
         body: Obx(() {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
@@ -43,12 +31,8 @@ class UserProfile extends GetView<UserController> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      _buildProfileHeader(
-                          controller.userInfoDetails.value!.data!,
-                          screenWidth,
-                          screenHeight),
-                      _buildPersonalInfo(
-                          controller.userInfoDetails.value!.data!, screenWidth),
+                      _buildProfileHeader(controller.userInfoDetails.value!.data!, screenWidth, screenHeight),
+                      _buildPersonalInfo(controller.userInfoDetails.value!.data!, screenWidth),
                       _buildEditProfileButton(screenWidth),
                     ],
                   ),
@@ -60,11 +44,10 @@ class UserProfile extends GetView<UserController> {
       ),
     );
   }
-
   Widget _buildProfileHeader(Data user, double screenWidth, double screenHeight) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFf259e9f),
+        color: Color(0xFF259E9F),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
       padding: EdgeInsets.symmetric(
@@ -73,8 +56,16 @@ class UserProfile extends GetView<UserController> {
       ),
       child: Column(
         children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+              onPressed: () {
+                Get.back(); // Navigates back to the previous page
+              },
+            ),
+          ),
           const SizedBox(height: 50),
-
           Text(
             "${user.user?.firstName ?? ''} ${user.user?.secondName ?? ''} ${user.user?.thirdName ?? ''}",
             style: TextStyle(
@@ -96,6 +87,7 @@ class UserProfile extends GetView<UserController> {
       ),
     );
   }
+
 
   Widget _buildQuickInfo(String value, String label, double screenWidth) {
     return Column(
