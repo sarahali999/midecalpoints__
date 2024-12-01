@@ -188,7 +188,7 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            String? selectedLanguage = 'ar'; // يمكنك استبدالها بالقيمة المحفوظة.
+            String? selectedLanguage = 'ar';
 
             return AlertDialog(
               title: Text(
@@ -235,7 +235,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           selectedLanguage = language['code'];
                         });
-                        Navigator.of(context).pop(); // غلق النافذة.
+                        Navigator.of(context).pop();
                       },
                     ),
                   );

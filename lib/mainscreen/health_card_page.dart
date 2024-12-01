@@ -42,7 +42,7 @@ class HealthInfo extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'health_card'.tr, // Updated to use translation
+          'health_card'.tr,
           style: TextStyle(
             fontSize: Get.width * 0.05,
             fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class HealthInfo extends StatelessWidget {
   Widget _buildNoDataText() {
     return Center(
       child: Text(
-        'no_data_available'.tr, // Updated to use translation
+        'no_data_available'.tr,
         style: TextStyle(color: Colors.white, fontSize: Get.width * 0.04),
       ),
     );
@@ -114,7 +114,7 @@ class HealthInfo extends StatelessWidget {
           ),
           SizedBox(height: Get.height * 0.02),
           Text(
-            'health_directorate'.tr, // Updated to use translation
+            'health_directorate'.tr,
             style: TextStyle(fontSize: Get.width * 0.04, color: Colors.grey),
           ),
         ],
@@ -153,7 +153,7 @@ class HealthInfo extends StatelessWidget {
   Widget _buildNoQRCodeText() {
     return Center(
       child: Text(
-        'qr_code_unavailable'.tr, // Updated to use translation
+        'qr_code_unavailable'.tr,
         style: TextStyle(color: Colors.white, fontSize: Get.width * 0.04),
       ),
     );
@@ -161,7 +161,7 @@ class HealthInfo extends StatelessWidget {
 
   Widget _buildQrCodeContainer(String? qrData) {
     if (qrData == null || qrData.isEmpty) {
-      return Text('error_occurred'.tr, style: TextStyle(color: Colors.white)); // Updated to use translation
+      return Text('error_occurred'.tr, style: TextStyle(color: Colors.white));
     }
     return Container(
       padding: EdgeInsets.all(Get.width * 0.04),

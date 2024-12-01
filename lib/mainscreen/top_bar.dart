@@ -36,12 +36,11 @@ class _TopBarState extends State<TopBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Left side - Notification icon
               IconButton(
-                icon: SvgPicture.asset(
-                  'assets/icons/notification.svg',
+                icon: Image.asset(
+                  'assets/icons/notifications.png',
                   color: const Color(0xFF259E9F),
-                  width: Get.width * 0.07,
+                  width: Get.width * 0.08,
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -56,13 +55,11 @@ class _TopBarState extends State<TopBar> {
                   );
                 },
               ),
-              // Center - App icon
               Image.asset(
                 'assets/images/logo.png',
                 width: Get.width * 0.12,
                 color: const Color(0xFF259E9F),
               ),
-              // Right side - Profile icon
               GestureDetector(
                 onTap: () {
                   Navigator.push(

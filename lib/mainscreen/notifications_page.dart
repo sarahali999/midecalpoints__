@@ -92,7 +92,7 @@ class _PublicnoticesState extends State<Publicnotices> {
             ),
           ),
           title: Text(
-            'notifications'.tr, // Use translation key
+            'notifications'.tr,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -120,7 +120,7 @@ class _PublicnoticesState extends State<Publicnotices> {
         body: _notifications.isEmpty
             ? Center(
           child: Text(
-            'no_notifications'.tr, // Use translation key
+            'no_notifications'.tr,
             style: TextStyle(fontSize: 18, color: Colors.grey),
           ),
         )

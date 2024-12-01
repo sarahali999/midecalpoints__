@@ -358,7 +358,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     fillColor: Color(0xFFd6dedf),
     ),
     items: genderOptions.entries
-        .where((entry) => entry.value != 0) // استثناء القيمة 0
+        .where((entry) => entry.value != 0)
         .map((entry) {
     return DropdownMenuItem<String>(
     value: entry.key,

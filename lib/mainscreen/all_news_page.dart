@@ -24,7 +24,6 @@ class AllNewsPopup extends StatelessWidget {
             ),
             child: Column(
               children: [
-                // Popup handle
                 Container(
                   width: 50,
                   height: 6,
@@ -46,7 +45,6 @@ class AllNewsPopup extends StatelessWidget {
                   ),
                 ),
 
-                // News List
                 Expanded(
                   child: ListView.builder(
                     controller: scrollController,
@@ -85,7 +83,6 @@ class AllNewsPopup extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              // Image
                               ClipRRect(
                                 borderRadius: BorderRadius.horizontal(right: Radius.circular(15)),
                                 child: Image.network(
@@ -104,7 +101,6 @@ class AllNewsPopup extends StatelessWidget {
                                 ),
                               ),
 
-                              // Title and details
                               Expanded(
                                 child: Padding(
                                   padding: EdgeInsets.all(10),

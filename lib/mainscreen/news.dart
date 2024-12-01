@@ -50,9 +50,9 @@ class _NewsState extends State<News> {
         }
         else {
           return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: screenHeight * 0.3), // Limit max height
+            constraints: BoxConstraints(maxHeight: screenHeight * 0.3),
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Use min size to prevent overflow
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CarouselSlider(
@@ -77,7 +77,7 @@ class _NewsState extends State<News> {
                   }).toList(),
                 ),
                 SizedBox(height: 5),
-                Expanded( // Wrap in Expanded
+                Expanded(
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: SingleChildScrollView(

@@ -593,7 +593,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                       ),
                       SingleChildScrollView(
                         child:EmergencyContactPage(
-                          emergencyContactNameController: emergencyContactNameController, // Use the parent's controller
+                          emergencyContactNameController: emergencyContactNameController,
                           emergencyContactRelationship: selectedRelationship,
                           onRelationshipChanged: (int newRelationship) {
                             setState(() {

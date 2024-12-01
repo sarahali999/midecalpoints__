@@ -35,7 +35,6 @@ class _LanguageDialogState extends State<LanguageDialog> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', languageCode);
 
-    // Update app language
     Locale newLocale = Locale(languageCode);
     Get.updateLocale(newLocale);
 
@@ -43,7 +42,6 @@ class _LanguageDialogState extends State<LanguageDialog> {
       _selectedLanguage = languageCode;
     });
 
-    // Close the dialog
     Navigator.of(context).pop();
   }
 

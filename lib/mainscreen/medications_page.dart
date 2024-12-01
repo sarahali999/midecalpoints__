@@ -98,7 +98,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ),

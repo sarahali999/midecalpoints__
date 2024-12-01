@@ -381,7 +381,6 @@ class Languages extends Translations {
       'finish': 'تەواو',
       'fill_required_fields': 'تکایە هەموو خانەکان پڕ بکەوە',
       'registration_success': 'تۆمارکردن سەرکەوتوو بوو',
-      // Existing translations...
       'username': 'ناوی بەکارهێنەر',
       'email': 'ئیمەیل',
       'enter_password': 'وشەی نهێنی بنووسە',

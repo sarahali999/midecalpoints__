@@ -112,9 +112,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void _disposeControllers() {
-    _selectedGender = widget.userData.gender ?? 1; // Provide a default value
-    _selectedBloodType = widget.userData.bloodType ?? 1; // Provide a default value
-    _selectedEmergencyContactRelationship = widget.userData.emergencyContactRelationship ?? 1; // Provide a default value
+    _selectedGender = widget.userData.gender ?? 1;
+    _selectedBloodType = widget.userData.bloodType ?? 1;
+    _selectedEmergencyContactRelationship = widget.userData.emergencyContactRelationship ?? 1;
     _firstNameController.dispose();
     _secondNameController.dispose();
     _thirdNameController.dispose();
@@ -160,7 +160,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           "firstName": _firstNameController.text,
           "secondName": _secondNameController.text,
           "thirdName": _thirdNameController.text,
-          "gender": _selectedGender ?? 1, // Ensure it's never 0
+          "gender": _selectedGender ?? 1,
           "address": _addressController.text,
           "birthYear": _birthYearController.text,
           "country": _countryController.text,
@@ -252,7 +252,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ),
@@ -518,7 +518,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             );
           } else if (snapshot.hasData) {
-            // More robust deduplication using a Set
             final uniqueCountries = <String>{};
             final filteredCountries = snapshot.data!
                 .where((country) => uniqueCountries.add(country['name']))

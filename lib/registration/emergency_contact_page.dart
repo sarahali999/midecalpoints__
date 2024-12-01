@@ -282,7 +282,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
             SizedBox(height: spacing),
     DropdownButtonFormField<String>(
     value: _currentRelationship,
-    hint: Text('اختر صلة القرابة'), // نص تلميحي عندما لا يوجد اختيار
+    hint: Text('اختر صلة القرابة'),
     decoration: InputDecoration(
     labelText: 'emergencyContactPage.relationship'.tr,
     border: OutlineInputBorder(

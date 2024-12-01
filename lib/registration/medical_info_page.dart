@@ -36,7 +36,6 @@ class MedicalInfoPage extends StatefulWidget {
   @override
   void initState() {
     super.initState();
-    // تعيين القيمة الأولية
     _currentBloodType = widget.selectedBloodType == 0 ? null : bloodTypeOptions.entries
         .firstWhere((entry) => entry.value == widget.selectedBloodType)
         .key;
@@ -61,7 +60,7 @@ class MedicalInfoPage extends StatefulWidget {
           children: [
           DropdownButtonFormField<String>(
         value: _currentBloodType,
-        hint: Text('اختر فصيلة الدم'), // نص تلميحي عندما لا يوجد اختيار
+        hint: Text('اختر فصيلة الدم'),
     decoration: InputDecoration(
     labelText: 'blood_type'.tr,
     border: OutlineInputBorder(

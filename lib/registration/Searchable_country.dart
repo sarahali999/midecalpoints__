@@ -93,7 +93,7 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: 250, // Adjust as needed
+                    maxHeight: 250,
                   ),
                   child: ListView.builder(
                     shrinkWrap: true,

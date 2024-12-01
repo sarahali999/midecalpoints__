@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   Expanded(
-                    child:// For the Diagnosis card
+                    child:
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
