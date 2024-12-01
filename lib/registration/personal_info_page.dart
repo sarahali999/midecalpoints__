@@ -272,7 +272,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             ),
           ),
           SizedBox(height: spacing),
-
           if (selectedCountry == '1') ...[
             DropdownButtonFormField<String>(
               value: selectedGovernorate,

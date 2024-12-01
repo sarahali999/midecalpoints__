@@ -31,7 +31,6 @@ class MedicalSuppliesController extends GetxController {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     jwtToken.value = prefs.getString('token') ?? '';
   }
-
   Future<void> fetchSupplies() async {
     try {
       final response = await http.get(
@@ -40,17 +39,22 @@ class MedicalSuppliesController extends GetxController {
         ),
         headers: {
           'Authorization': 'Bearer ${jwtToken.value}',
+          'Content-Type': 'application/json',
         },
       );
 
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        supplies.value = data['value']['items'];
+        supplies.value = data['value']['items'] ?? [];
         isLoading.value = false;
       } else {
-        throw Exception('medical_supplies_load_failed'.tr);
+        throw Exception('Failed to load medical supplies: ${response.statusCode}');
       }
     } catch (e) {
+      print('Error fetching supplies: $e');
       isLoading.value = false;
       errorMessage.value = e.toString();
     }
@@ -59,7 +63,6 @@ class MedicalSuppliesController extends GetxController {
 
 class MedicalSuppliesWidget extends StatelessWidget {
   final MedicalSuppliesController controller = Get.put(MedicalSuppliesController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +93,21 @@ class MedicalSuppliesWidget extends StatelessWidget {
           },
         ),
       ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (controller.errorMessage.value.isNotEmpty) {
+          return _buildErrorView(controller.errorMessage.value);
+        }
+
+        if (controller.supplies.isEmpty) {
+          return _buildEmptyView();
+        }
+
+        return _buildSuppliesList();
+      }),
     );
   }
 

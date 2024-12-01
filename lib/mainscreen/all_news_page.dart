@@ -4,9 +4,7 @@ import 'news_detail_page.dart';
 
 class AllNewsPopup extends StatelessWidget {
   final List<Article> articles;
-
   const AllNewsPopup({Key? key, required this.articles}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -18,7 +16,7 @@ class AllNewsPopup extends StatelessWidget {
         builder: (context, scrollController) {
           return Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(0xfff6f6f6),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),

@@ -8,6 +8,12 @@ class Aboutapp extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.grey[50],
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           backgroundColor: Color(0xFF259E9F),
           elevation: 0,
           centerTitle: true,
@@ -140,6 +146,7 @@ class Aboutapp extends StatelessWidget {
           _buildServiceItem('أماكن طبية مجهزة داخل الحرم الشريف', Icons.place),
         ],
       ),
+
     );
   }
 

@@ -372,14 +372,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       iconTheme: const IconThemeData(color: Colors.white),
-      actions: [
-        // If you want to add a search functionality in the AppBar,
-        // you can add an IconButton here that triggers _searchAndNavigate
-        IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () => _searchAndNavigate(),
-        ),
-      ],
     );
   }
   Widget _buildMap() {

@@ -80,7 +80,7 @@ class _NewsState extends State<News> {
                 Expanded( // Wrap in Expanded
                   child: Directionality(
                     textDirection: TextDirection.rtl,
-                    child: SingleChildScrollView( // Add scrolling capability
+                    child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisSize: MainAxisSize.min,
@@ -88,8 +88,8 @@ class _NewsState extends State<News> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
+                              GestureDetector(
+                                onTap: () {
                                   showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,
@@ -97,17 +97,12 @@ class _NewsState extends State<News> {
                                     builder: (context) => AllNewsPopup(articles: snapshot.data!),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF259E9F),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
                                 child: Text(
                                   'عرض الكل',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ),

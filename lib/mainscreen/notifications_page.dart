@@ -73,7 +73,7 @@ class _PublicnoticesState extends State<Publicnotices> {
 
   @override
   Widget build(BuildContext context) {
-    // Determine text direction based on current locale
+
     final currentLocale = Get.locale?.languageCode ?? 'en';
     final bool isRightToLeft = Languages.isRTL(currentLocale);
 
