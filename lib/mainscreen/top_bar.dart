@@ -6,7 +6,7 @@ import 'notifications_page.dart';
 import 'profile.dart';
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
-  final Function(String)? onSearch; // Callback for search
+  final Function(String)? onSearch;
 
   const TopBar({Key? key, this.onSearch}) : super(key: key);
 

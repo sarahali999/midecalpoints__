@@ -17,7 +17,9 @@ class _NewsState extends State<News> {
   void initState() {
     super.initState();
     _futureArticles = NewsService().fetchArticles();
-  }@override
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -32,7 +34,6 @@ class _NewsState extends State<News> {
             ),
           );
         } else if (snapshot.hasError) {
-          print('Error: ${snapshot.error}');
           return Center(
             child: Text(
               'فشل في تحميل الأخبار',
@@ -48,93 +49,102 @@ class _NewsState extends State<News> {
           );
         }
         else {
-          print('Loaded articles: ${snapshot.data}');
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: screenHeight * 0.22,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  viewportFraction: 1.05,
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                ),
-                items: snapshot.data!.map((article) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return AnimatedNewsCard(article: article);
+          return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: screenHeight * 0.3), // Limit max height
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Use min size to prevent overflow
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: screenHeight * 0.22,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 1.05,
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
                     },
-                  );
-                }).toList(),
-              ),
-              SizedBox(height: 5),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) => AllNewsPopup(articles: snapshot.data!),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF259E9F),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            'عرض الكل',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 1),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: snapshot.data!.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        return AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          height: 8,
-                          width: 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _currentIndex == index
-                                ? Color(0xFF259E9F)
-                                : Colors.grey,
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                  ),
+                  items: snapshot.data!.map((article) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return AnimatedNewsCard(article: article);
+                      },
+                    );
+                  }).toList(),
                 ),
-              ),
-            ],
+                SizedBox(height: 5),
+                Expanded( // Wrap in Expanded
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: SingleChildScrollView( // Add scrolling capability
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) => AllNewsPopup(articles: snapshot.data!),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF259E9F),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  'عرض الكل',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 1),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: snapshot.data!.asMap().entries.map((entry) {
+                              int index = entry.key;
+                              return AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                height: 8,
+                                width: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _currentIndex == index
+                                      ? Color(0xFF259E9F)
+                                      : Colors.grey,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         }
       },
     );
-  }}
+  }
+}
 
 class AnimatedNewsCard extends StatefulWidget {
   final Article article;
