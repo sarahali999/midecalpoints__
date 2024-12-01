@@ -9,16 +9,13 @@ class UserProfile extends GetView<UserController> {
   final UserController controller = Get.put(UserController());
 
   UserProfile({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-
         backgroundColor: Colors.white,
         body: Obx(() {
           if (controller.isLoading.value) {
@@ -61,7 +58,7 @@ class UserProfile extends GetView<UserController> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
               onPressed: () {
-                Get.back(); // Navigates back to the previous page
+                Get.back();
               },
             ),
           ),
