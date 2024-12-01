@@ -100,7 +100,7 @@ class _NewsState extends State<News> {
                                 child: Text(
                                   'عرض الكل',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.black54,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
