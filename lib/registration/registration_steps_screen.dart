@@ -78,7 +78,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
           'fill_required_fields'.tr,
           backgroundColor: Colors.red[400],
           colorText: Colors.white,
-          duration: Duration(seconds: 3),
         );
         return;
       }
@@ -131,7 +130,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
       print('Response Status Code: ${response.statusCode}');
       print('Response Headers: ${response.headers}');
       print('Response Body: $responseBody');
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('Registration Successful');
         Get.snackbar(
@@ -139,9 +137,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
           'registration_success'.tr,
           backgroundColor: Color(0xFf259e9f),
           colorText: Colors.white,
-          duration: Duration(seconds: 2),
         );
-        await Future.delayed(Duration(seconds: 2));
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => Login())
@@ -157,7 +153,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
             'رقم الهاتف موجود مسبقا',
             backgroundColor: Colors.red[400],
             colorText: Colors.white,
-            duration: Duration(seconds: 3),
             snackPosition: SnackPosition.BOTTOM,
           );
         } else {
@@ -166,18 +161,17 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
             errorMessage,
             backgroundColor: Colors.red[400],
             colorText: Colors.white,
-            duration: Duration(seconds: 3),
           );
         }
       }
-    } catch (e, stackTrace) {
+    }
+    catch (e, stackTrace) {
       print('Exception occurred during registration: $e');
       Get.snackbar(
         'error'.tr,
         'something_went_wrong'.tr,
         backgroundColor: Colors.red[400],
         colorText: Colors.white,
-        duration: Duration(seconds: 3),
       );
     }
   }

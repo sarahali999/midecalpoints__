@@ -10,12 +10,11 @@ class LoadingScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 2), () {
       onLoaded();
     });
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:Colors.white,
       body: Center(
         child: Image.asset(
-          'assets/images/lod.gif',
+          'assets/images/lord.gif',
           width: 250.0,
           height: 250.0,
         ),
