@@ -15,6 +15,7 @@ class ContactInfoPage extends StatelessWidget {
     required this.emailController,
     required this.usernameController,
     required this.passwordController,
+
   }) : super(key: key);
 
   @override
@@ -22,7 +23,6 @@ class ContactInfoPage extends StatelessWidget {
     double screenHeight = Get.height;
     double screenWidth = Get.width;
     double spacing = screenHeight * 0.02;
-
     EdgeInsets padding = EdgeInsets.symmetric(
       horizontal: screenWidth * 0.05,
       vertical: spacing,
@@ -34,15 +34,14 @@ class ContactInfoPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomTextField(
-            labelText: 'username'.tr, // استخدام الترجمة للنص
+            labelText: 'username'.tr,
             controller: usernameController,
           ),
           SizedBox(height: spacing),
-
           IntlPhoneField(
             controller: phoneController,
             decoration: InputDecoration(
-              labelText: 'phone_number'.tr, // استخدام الترجمة للنص
+              labelText: 'phone_number'.tr,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10.0),
@@ -52,21 +51,19 @@ class ContactInfoPage extends StatelessWidget {
             ),
             initialCountryCode: 'IQ',
             textAlign: TextAlign.right,
-            invalidNumberMessage: 'invalid_phone'.tr, // استخدام الترجمة للنص
+            invalidNumberMessage: 'invalid_phone'.tr,
             onChanged: (phone) {
               print(phone.completeNumber);
             },
           ),
           SizedBox(height: spacing),
-
           CustomTextField(
-            labelText: 'email'.tr, // استخدام الترجمة للنص
+            labelText: 'email'.tr,
             controller: emailController,
           ),
           SizedBox(height: spacing),
-
           CustomTextField(
-            labelText: 'enter_password'.tr, // استخدام الترجمة للنص
+            labelText: 'enter_password'.tr,
             controller: passwordController,
             isPassword: true,
           ),
