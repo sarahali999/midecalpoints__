@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/user_controller.dart';
@@ -206,12 +207,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
         print('تم إرسال الطلب بنجاح.');
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
-
         if (response.statusCode == 200) {
           UserInfoController.fetchPatientDetails();
           print('تم تحديث الملف الشخصي بنجاح.');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('تم تحديث الملف الشخصي بنجاح')),
+            SnackBar(content: Text('تم تحديث الملف الشخصي بنجاح',style: TextStyle(color: Colors.white),),
+              backgroundColor: Color(0xFF259E9F),
+            ),
           );
           Navigator.pop(context, true);
         } else {
@@ -390,9 +392,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: _emergencyContactNameController,
                         labelText: "اسمه",
                       ),
-                      _buildTextField(
-                        controller: _emergencyContactPhoneController,
-                        labelText: "رقم هاتفه",
+                      IntlPhoneField(
+                        initialValue : _emergencyContactPhoneController.text,
+                        decoration: InputDecoration(
+                          labelText: 'phone_number'.tr,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFd6dedf),
+                        ),
+                        initialCountryCode: 'IQ',
+                        textAlign: TextAlign.right,
+                        invalidNumberMessage: 'invalid_phone'.tr,
+                        onChanged: (phone) {
+                          _emergencyContactPhoneController.text = phone.completeNumber;
+                          print(phone.completeNumber);
+                        },
                       ),
                       _buildCountryDropdown(
                         controller: _emergencyContactCountryController,
@@ -457,9 +474,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: _emailController,
                         labelText: "البريد الالكتروني",
                       ),
-                      _buildTextField(
-                        controller: _phoneController,
-                        labelText:"رقم الهاتف",
+                      IntlPhoneField(
+                        initialValue : _phoneController.text,
+                        decoration: InputDecoration(
+                          labelText: 'phone_number'.tr,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFd6dedf),
+                        ),
+                        initialCountryCode: 'IQ',
+                        textAlign: TextAlign.right,
+                        invalidNumberMessage: 'invalid_phone'.tr,
+                        onChanged: (phone) {
+                          _phoneController.text = phone.completeNumber;
+                          print(phone.completeNumber);
+                        },
                       ),
                       _buildTextField(
                         controller: _usernameController,
@@ -560,12 +592,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   borderSide: BorderSide(color: _primaryColor),
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select a country';
-                }
-                return null;
-              },
             );
           }
           return Container();

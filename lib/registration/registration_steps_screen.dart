@@ -62,7 +62,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     'medical_info'.tr,
     'emergency_contact'.tr,
     'contact_info'.tr,
-
   ];
 
   @override

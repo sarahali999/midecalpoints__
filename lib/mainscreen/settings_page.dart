@@ -57,12 +57,6 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(height: 20),
             _buildSettingsOption(
               icon: Icons.person,
-              title: 'delete_account'.tr,
-              onTap: () => _showDeleteAccountDialog(context),
-            ),
-            SizedBox(height: 20),
-            _buildSettingsOption(
-              icon: Icons.person,
               title: 'user_information'.tr,
               onTap: () => Navigator.push(
                   context,
@@ -79,8 +73,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Aboutapp()
-                  )
+                )
               ),
+            ),
+            SizedBox(height: 20),
+            _buildSettingsOption(
+              icon: Icons.dangerous,
+              title: 'delete_account'.tr,
+              onTap: () => _showDeleteAccountDialog(context),
             ),
             Spacer(),
             _buildFooterText(),

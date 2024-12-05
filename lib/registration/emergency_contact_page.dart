@@ -307,11 +307,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     });
     },
     ),
-
-
             SizedBox(height: spacing),
             IntlPhoneField(
-              controller: widget.emergencyContactPhoneController,
               decoration: InputDecoration(
                 labelText: 'emergencyContactPage.phoneNumber'.tr,
                 border: OutlineInputBorder(
@@ -327,7 +324,8 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
               textAlign: TextAlign.right,
               style: TextStyle(fontSize: 16, color: Colors.black87),
               onChanged: (phone) {
-                completePhoneNumber = phone.completeNumber;
+                widget.emergencyContactPhoneController.text = phone.completeNumber;
+                print(phone.completeNumber);
               },
               onCountryChanged: (country) {
                 setState(() {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../loading_screen.dart';
 import '../mainscreen/home_page.dart';
 import '../registration/registration_steps_screen.dart';
 
@@ -15,12 +16,16 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   bool _isPasswordVisible = false;
   bool isLoading = false;
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+
   bool isRTL = true;
   Future<String?> login() async {
+
     try {
       if (phoneController.text.isEmpty || passwordController.text.isEmpty) {
 
@@ -227,8 +232,8 @@ class _LoginState extends State<Login> {
         fillColor: const Color(0xffecf0f1),
       ),
       initialCountryCode: 'IQ',
-      controller: phoneController,
       onChanged: (phone) {
+        phoneController.text = phone.completeNumber;
         print(phone.completeNumber);
       },
     );
@@ -273,18 +278,25 @@ class _LoginState extends State<Login> {
           ),
         ),
         TextButton(
-          onPressed: () {
-            Get.to(() => RegistrationStepsScreen());
+          onPressed: () async {
+            Get.to(() => LoadingScreen(onLoaded: () {  },));
+
+            await Future.delayed(const Duration(seconds: 2));
+
+            Get.off(() => RegistrationStepsScreen());
           },
           child: Text(
             "no_account".tr,
-            style: TextStyle(color: const Color(0xFf259e9f), fontSize: Get.width * 0.035),
+            style: TextStyle(
+              color: const Color(0xFf259e9f),
+              fontSize: Get.width * 0.035,
+            ),
           ),
         ),
+
       ],
     );
   }
-
   Widget _buildLoginButton() {
     return SizedBox(
       width: double.infinity,
@@ -301,15 +313,12 @@ class _LoginState extends State<Login> {
             : () async {
           final token = await login();
           if (token != null) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MainScreen()),
-            );
+            Get.to(() => LoadingScreen(onLoaded: () {}));
+            await Future.delayed(const Duration(seconds: 2));
+            Get.off(() => MainScreen());
           }
         },
-        child: isLoading
-            ? const CircularProgressIndicator(color: Colors.white)
-            : Text(
+        child: Text(
           "enter".tr,
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),

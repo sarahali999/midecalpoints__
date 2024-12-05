@@ -9,6 +9,7 @@ class ContactInfoPage extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
 
+
   const ContactInfoPage({
     Key? key,
     required this.phoneController,
@@ -30,6 +31,8 @@ class ContactInfoPage extends StatelessWidget {
 
     return Padding(
       padding: padding,
+
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -39,7 +42,6 @@ class ContactInfoPage extends StatelessWidget {
           ),
           SizedBox(height: spacing),
           IntlPhoneField(
-            controller: phoneController,
             decoration: InputDecoration(
               labelText: 'phone_number'.tr,
               border: OutlineInputBorder(
@@ -52,6 +54,10 @@ class ContactInfoPage extends StatelessWidget {
             initialCountryCode: 'IQ',
             textAlign: TextAlign.right,
             invalidNumberMessage: 'invalid_phone'.tr,
+            onChanged: (phone) {
+              phoneController.text = phone.completeNumber;
+              print(phone.completeNumber);
+            },
           ),
           SizedBox(height: spacing),
           CustomTextField(

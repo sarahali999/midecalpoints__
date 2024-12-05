@@ -13,7 +13,7 @@ class _LanguageDialogState extends State<LanguageDialog> {
     {'code': 'en', 'name': 'English'},
     {'code': 'fa', 'name': 'فارسی'},
     {'code': 'ku', 'name': 'کوردی'},
-    {'code': 'tk', 'name': 'تركمانجي'},
+    {'code': 'tk', 'name': 'تركماني'},
   ];
 
   String? _selectedLanguage;

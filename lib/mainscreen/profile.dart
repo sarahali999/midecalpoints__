@@ -19,7 +19,9 @@ class UserProfile extends GetView<UserController> {
         backgroundColor: Colors.white,
         body: Obx(() {
           if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(
+              color: Color(0xFf259e9f),
+            ));
           } else if (controller.userInfoDetails.value == null) {
             return Center(child: Text('no_data_available'.tr));
           } else {
