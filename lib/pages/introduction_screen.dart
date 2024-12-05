@@ -88,14 +88,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _toggleLanguages() => setState(() => _showLanguages = !_showLanguages);
 
   void _navigateToPhone() {
-    Get.to(() => LoadingScreen(
-      onLoaded: () => Get.to(() => const Login()),
+    Get.off(() => LoadingScreen(
+      onLoaded: () => Get.off(() => const Login()),
     ));
   }
-  void _handleMainButtonPress() {
+  void _handleMainButtonPress() async {
+    final prefs = await SharedPreferences.getInstance();
+
     if (_currentPage == _contents.length - 1) {
-      Get.to(() => LoadingScreen(
-        onLoaded: () => Get.to(() => const Login()),
+      await prefs.setBool('onboardingCompleted', true);
+
+      Get.off(() => LoadingScreen(
+        onLoaded: () => Get.off(() => const Login()),
       ));
     } else {
       _pageController.nextPage(

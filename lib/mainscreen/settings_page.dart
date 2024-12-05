@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:midecalpoints/mainscreen/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../languages.dart';
 import 'about.dart';
@@ -58,6 +59,17 @@ class _SettingsPageState extends State<SettingsPage> {
               icon: Icons.person,
               title: 'delete_account'.tr,
               onTap: () => _showDeleteAccountDialog(context),
+            ),
+            SizedBox(height: 20),
+            _buildSettingsOption(
+              icon: Icons.person,
+              title: 'user_information'.tr,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserProfile()
+                  )
+              ),
             ),
             SizedBox(height: 20),
             _buildSettingsOption(

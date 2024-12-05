@@ -7,7 +7,6 @@ import '../languages.dart';
 
 class HealthInfo extends StatelessWidget {
   HealthInfo({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final UserController controller = Get.put(UserController());

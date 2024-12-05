@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -127,7 +128,7 @@ class _LoginState extends State<Login> {
               color: const Color(0xFf259e9f),
             ),
             onPressed: () {
-              Navigator.pop(context);
+              SystemNavigator.pop();
             },
           ),
         ),

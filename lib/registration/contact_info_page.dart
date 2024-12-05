@@ -52,9 +52,6 @@ class ContactInfoPage extends StatelessWidget {
             initialCountryCode: 'IQ',
             textAlign: TextAlign.right,
             invalidNumberMessage: 'invalid_phone'.tr,
-            onChanged: (phone) {
-              print(phone.completeNumber);
-            },
           ),
           SizedBox(height: spacing),
           CustomTextField(

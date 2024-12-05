@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../controller/user_controller.dart';
 import '../models/user_details.dart';
 import '../registration/countries.dart';
 
@@ -17,6 +20,8 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
+  final UserController UserInfoController = Get.put(UserController());
+
   late TextEditingController _firstNameController;
   late TextEditingController _secondNameController;
   late TextEditingController _thirdNameController;
@@ -140,6 +145,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _usernameController.dispose();
     _passwordController.dispose();
   }
+
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
@@ -202,6 +208,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         print('Response body: ${response.body}');
 
         if (response.statusCode == 200) {
+          UserInfoController.fetchPatientDetails();
           print('تم تحديث الملف الشخصي بنجاح.');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('تم تحديث الملف الشخصي بنجاح')),
