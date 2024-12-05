@@ -506,7 +506,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       Center(
                         child: ElevatedButton(
                           onPressed: _updateProfile,
-
                           child: Text("حفظ التغييرات",style: TextStyle(color: Colors.white),),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
