@@ -94,10 +94,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
   void _handleMainButtonPress() async {
     final prefs = await SharedPreferences.getInstance();
-
     if (_currentPage == _contents.length - 1) {
       await prefs.setBool('onboardingCompleted', true);
-
       Get.off(() => LoadingScreen(
         onLoaded: () => Get.off(() => const Login()),
       ));
@@ -118,9 +116,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _loadSavedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final savedLanguage = prefs.getString('selectedLanguage') ?? 'العربية';
+
     _onLanguageSelected(savedLanguage);
-  }
-  @override
+  }  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
