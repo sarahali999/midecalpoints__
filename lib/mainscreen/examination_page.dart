@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -116,10 +117,10 @@ class MedicalSuppliesWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 60,
-            color: Colors.red,
+          SvgPicture.asset(
+            'assets/icons/warning.svg',
+            height: 180,
+            width: 200,
           ),
           SizedBox(height: 16),
           Text(
@@ -140,10 +141,10 @@ class MedicalSuppliesWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.medical_services_outlined,
-            size: 60,
-            color: Color(0xFF259E9F),
+          SvgPicture.asset(
+            'assets/icons/nodata.svg', // أيقونة لا توجد بيانات
+            height: 180,
+            width: 200,
           ),
           SizedBox(height: 16),
           Text(

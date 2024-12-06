@@ -154,7 +154,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
       } else {
         Map<String, dynamic> errorResponse = json.decode(responseBody);
         String errorMessage = errorResponse['message'] ?? 'unknown_error'.tr;
-
         if (errorMessage.toLowerCase().contains('phone') ||
             errorMessage.toLowerCase().contains('already exists')) {
           Get.snackbar(
@@ -243,7 +242,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                         ),
                         SizedBox(width: 12),
                         Text(
-                          'تنبيه'.tr,
+                          'alert'.tr,  // Use translation key instead of 'تنبيه'
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -254,7 +253,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'هل تريد إلغاء عملية التسجيل؟'.tr,
+                      'cancel_registration_confirm'.tr,  // Use translation key instead of 'هل تريد إلغاء عملية التسجيل؟'
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.black54,
@@ -274,7 +273,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                               ),
                             ),
                             child: Text(
-                              'لا'.tr,
+                              'no'.tr,  // Use translation key instead of 'لا'
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -295,7 +294,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                               ),
                             ),
                             child: Text(
-                              'نعم'.tr,
+                              'yes'.tr,  // Use translation key instead of 'نعم'
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,

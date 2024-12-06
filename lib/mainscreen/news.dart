@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
 import 'all_news_page.dart';
 import 'news_detail_page.dart';
 import 'news_model.dart';
@@ -36,14 +37,14 @@ class _NewsState extends State<News> {
         } else if (snapshot.hasError) {
           return Center(
             child: Text(
-              'فشل في تحميل الأخبار',
+              'loading_news'.tr, // Add this key to the Languages class
               style: TextStyle(color: Colors.black),
             ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: Text(
-              'لا توجد أخبار متاحة',
+              'no_news_available'.tr, // Add this key to the Languages class
               style: TextStyle(color: Colors.black),
             ),
           );
@@ -98,7 +99,7 @@ class _NewsState extends State<News> {
                                   );
                                 },
                                 child: Text(
-                                  'عرض الكل',
+                                  'view_all'.tr, // Add this key to the Languages class
                                   style: TextStyle(
                                     color: Colors.black54,
                                     fontWeight: FontWeight.bold,

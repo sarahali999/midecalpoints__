@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DiagnosisPage extends StatefulWidget {
   @override
@@ -94,20 +95,38 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
           ? Center(child: CircularProgressIndicator())
           : errorMessage != null
           ? Center(
-        child: Text(
-          errorMessage!,
-          style: TextStyle(color: Colors.red, fontSize: 18),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/warning.svg',
+              height: 180,
+              width: 200,
+            ),
+            SizedBox(height: 16),
+
+          ],
         ),
       )
           : receipts.isEmpty
           ? Center(
-        child: Text(
-          'no_diagnosis'.tr,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF259E9F),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/nodata.svg', // أيقونة لا توجد بيانات
+              height: 180,
+              width: 200,            ),
+            SizedBox(height: 16),
+            Text(
+              'no_diagnosis'.tr,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF259E9F),
+              ),
+            ),
+          ],
         ),
       )
           : Padding(

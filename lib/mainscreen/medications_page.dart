@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MedicationListWidget extends StatefulWidget {
   @override
@@ -44,9 +45,7 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
   Future<void> fetchMedications() async {
     try {
       final response = await http.get(
-        Uri.parse(
-          'https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientDispenseMedications?PageNumber=1&PageSize=11',
-        ),
+        Uri.parse('https://medicalpoint-api.tatwer.tech/api/Mobile/GetPatientDispenseMedications?PageNumber=1&PageSize=11'),
         headers: {
           'Authorization': 'Bearer $jwtToken',
         },
@@ -107,25 +106,29 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
           color: Colors.grey[100],
         ),
         child: isLoading
-            ? Center(
-        )
+            ? Center(child: CircularProgressIndicator())
             : errorMessage != null
             ? Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
+              SvgPicture.asset(
+                'assets/icons/warning.svg',
+                height: 180,
+                width: 200,
               ),
-              SizedBox(height: 16),
-              Text(
-                errorMessage!,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.red[700],
-                ),
+            ],
+          ),
+        )
+            : medications.isEmpty
+            ? Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/icons/nodata.svg',
+                height: 180,
+                width: 200,
               ),
             ],
           ),
@@ -136,7 +139,6 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
           itemBuilder: (context, index) {
             final medication = medications[index];
             final details = medication['medication'];
-            final patient = medication['patient'];
             final medicalStaff = medication['medicalStaff'];
 
             return Card(
@@ -209,18 +211,14 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                           _buildInfoRow(
                             'production_date'.tr,
                             details['productionDate'] != null
-                                ? DateFormat('yyyy-MM-dd').format(
-                                DateTime.parse(
-                                    details['productionDate']))
+                                ? DateFormat('yyyy-MM-dd').format(DateTime.parse(details['productionDate']))
                                 : "N/A",
                             Icons.calendar_today,
                           ),
                           _buildInfoRow(
                             'expiry_date'.tr,
                             details['expiryDate'] != null
-                                ? DateFormat('yyyy-MM-dd').format(
-                                DateTime.parse(
-                                    details['expiryDate']))
+                                ? DateFormat('yyyy-MM-dd').format(DateTime.parse(details['expiryDate']))
                                 : "N/A",
                             Icons.event_busy,
                           ),

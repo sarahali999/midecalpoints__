@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/introduction_screen.dart';
@@ -11,25 +12,29 @@ class DeleteAccount extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Row(
+          title:  Row(
             children: [
               Icon(Icons.warning_amber_rounded,
                   color: Colors.red, size: 32),
               SizedBox(width: 15),
               Text(
-                'تحذير',
-                style: TextStyle(fontSize: 20,color: Colors.white, fontWeight: FontWeight.bold),
+                'warning'.tr,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
           content: Text(
-            'هل أنت متأكد أنك تريد حذف الحساب؟',
+            'confirm_account_deletion'.tr, // Add this key to the Languages class
             style: TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
             TextButton(
               child: Text(
-                'إلغاء',
+                'cancel'.tr, // Add this key to the Languages class
                 style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
               onPressed: () => Navigator.of(context).pop(false),
@@ -44,7 +49,7 @@ class DeleteAccount extends StatelessWidget {
                 elevation: 5,
               ),
               child: Text(
-                'تأكيد',
+                'confirm'.tr, // Add this key to the Languages class
                 style: TextStyle(color: Colors.white, fontSize: 16,
                     fontWeight: FontWeight.bold),
               ),
@@ -138,7 +143,7 @@ class DeleteAccount extends StatelessWidget {
                 Icon(Icons.warning_amber_rounded, color: Colors.red, size: 40),
                 SizedBox(height: 10),
                 Text(
-                  'هل أنت متأكد أنك تريد حذف الحساب؟',
+                  'confirm_account_deletion'.tr,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
@@ -154,7 +159,7 @@ class DeleteAccount extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: Text('إلغاء', style: TextStyle(fontSize: 16,color: Colors.white)),
+                      child: Text('cancel'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -164,7 +169,7 @@ class DeleteAccount extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => _deleteAccount(context),
-                      child: Text('تأكيد', style: TextStyle(fontSize: 16,color: Colors.white)),
+                      child: Text('confirm'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
                     ),
                   ],
                 ),

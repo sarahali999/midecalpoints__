@@ -189,6 +189,29 @@ class _HomePageState extends State<HomePage> {
                   iconPath: 'assets/icons/pill.png',
                 ),
               ),
+              // SizedBox(height: 24),
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => LoadingScreen(
+              //           onLoaded: () {
+              //             Navigator.pushReplacement(
+              //               context,
+              //               MaterialPageRoute(builder: (context) => MedicationListWidget()),
+              //             );
+              //           },
+              //         ),
+              //       ),
+              //     );
+              //   },
+              //   child: LargeCard(
+              //     content: _buildMedicationContent(),
+              //     title: 'dispensed_medications'.tr,
+              //     iconPath: 'assets/icons/pill.png',
+              //   ),
+              // ),
             ],
           ),
         ),
