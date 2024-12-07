@@ -117,6 +117,15 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
                 height: 180,
                 width: 200,
               ),
+              SizedBox(height: 16),
+              Text(
+                "connection_error".tr,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.red[700],
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         )

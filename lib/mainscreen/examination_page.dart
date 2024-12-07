@@ -124,7 +124,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            error,
+            "connection_error".tr,
             style: TextStyle(
               fontSize: 18,
               color: Colors.red[700],

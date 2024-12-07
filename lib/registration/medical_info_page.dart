@@ -30,7 +30,6 @@ class MedicalInfoPage extends StatefulWidget {
     'O+': 7,
     'O-': 8,
   };
-
   String? _currentBloodType;
 
   @override

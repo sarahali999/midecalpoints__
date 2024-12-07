@@ -110,7 +110,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _selectedEmergencyContactRelationship =
         widget.userData.emergencyContactRelationship;
   }
+  final List<Map<String, String>> countryOptions = [
+    {'id': '1', 'name': 'iraq'.tr},
+    {'id': '2', 'name': 'other_country'.tr}
+  ];
 
+  final List<Map<String, String>> iraqGovernorates = [
+    {'id': '1', 'name': 'بغداد'},
+    {'id': '2', 'name': 'البصرة'},
+    {'id': '3', 'name': 'نينوى'},
+    {'id': '4', 'name': 'الأنبار'},
+    {'id': '5', 'name': 'بابل'},
+    {'id': '6', 'name': 'ديالى'},
+    {'id': '7', 'name': 'القادسية'},
+    {'id': '8', 'name': 'ذي قار'},
+    {'id': '9', 'name': 'السليمانية'},
+    {'id': '10', 'name': 'صلاح الدين'},
+    {'id': '11', 'name': 'كربلاء'},
+    {'id': '12', 'name': 'كركوك'},
+    {'id': '13', 'name': 'ميسان'},
+    {'id': '14', 'name': 'المثنى'},
+    {'id': '15', 'name': 'النجف'},
+    {'id': '16', 'name': 'واسط'},
+    {'id': '17', 'name': 'أربيل'},
+    {'id': '18', 'name': 'دهوك'},
+  ];
   @override
   void dispose() {
     _disposeControllers();
@@ -304,16 +328,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: _countryController,
                         labelText: "البلد",
                       ),
-                      _buildTextField(
-                        controller: _provinceController,
-                        labelText: "المحافظة",),
+                      _buildProvinceDropdown(),
                       _buildTextField(
                         controller: _districtController,
-                        labelText: "المحلة",
+                        labelText: "القضاء",
                       ),
                       _buildTextField(
                         controller: _alleyController,
-                        labelText: "الزقاق",
+                        labelText: "المحلة",
                       ),
                       _buildTextField(
                         controller: _houseController,
@@ -395,13 +417,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       IntlPhoneField(
                         initialValue : _emergencyContactPhoneController.text,
                         decoration: InputDecoration(
-                          labelText: 'phone_number'.tr,
+                          labelText: "رقم الهاتف",
                           border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          filled: true,
-                          fillColor: const Color(0xFFd6dedf),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: _primaryColor),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                         ),
                         initialCountryCode: 'IQ',
                         textAlign: TextAlign.right,
@@ -415,13 +439,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: _emergencyContactCountryController,
                         labelText: "البلد",
                       ),
-                      _buildTextField(
-                        controller: _emergencyContactProvinceController,
-                        labelText: "المحافظة",
-                      ),
+                      _buildEmergencyContactProvinceDropdown(),
                       _buildTextField(
                         controller: _emergencyContactDistrictController,
+                        labelText:"القضاء",
+                      ), _buildTextField(
+                        controller: _emergencyContactAlleyController,
                         labelText:"المحلة",
+                      ), _buildTextField(
+                        controller: _emergencyContactHouseController,
+                        labelText:"الدار",
                       ),
                       _buildDropdown(
                         value: _selectedEmergencyContactRelationship == 0 ? 1 : _selectedEmergencyContactRelationship,
@@ -477,13 +504,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       IntlPhoneField(
                         initialValue : _phoneController.text,
                         decoration: InputDecoration(
-                          labelText: 'phone_number'.tr,
+                          labelText: "رقم الهاتف",
                           border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          filled: true,
-                          fillColor: const Color(0xFFd6dedf),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: _primaryColor),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                         ),
                         initialCountryCode: 'IQ',
                         textAlign: TextAlign.right,
@@ -641,6 +670,68 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideX(
         begin: 0.2, end: 0);
   }
+Widget _buildProvinceDropdown() {
+  return DropdownButtonFormField<String>(
+    value: _provinceController.text.isNotEmpty ? _provinceController.text : null,
+    decoration: InputDecoration(
+      labelText: 'المحافظة',
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ),
+    items: iraqGovernorates.map((governorate) {
+      return DropdownMenuItem<String>(
+        value: governorate['name'],
+        child: Text(governorate['name']!),
+      );
+    }).toList(),
+    onChanged: (newValue) {
+      setState(() {
+        _provinceController.text = newValue ?? '';
+      });
+    },
+    icon: Icon(Icons.arrow_drop_down,
+        color: _primaryColor),
+    // validator: (value) {
+    //   if (value == null || value.isEmpty) {
+    //     return 'الرجاء اختيار المحافظة';
+    //   }
+    //   return null;
+    // },
+  );
+}
+Widget _buildEmergencyContactProvinceDropdown() {
+  return DropdownButtonFormField<String>(
+    value: _emergencyContactProvinceController.text.isNotEmpty
+        ? _emergencyContactProvinceController.text
+        : null,
+    decoration: InputDecoration(
+      labelText: 'المحافظة',
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ),
+    items: iraqGovernorates.map((governorate) {
+      return DropdownMenuItem<String>(
+        value: governorate['name'],
+        child: Text(governorate['name']!),
+      );
+    }).toList(),
+    onChanged: (newValue) {
+      setState(() {
+        _emergencyContactProvinceController.text = newValue ?? '';
+      });
+    },
+    icon: Icon(Icons.arrow_drop_down,
+        color: _primaryColor),
+    // validator: (value) {
+    //   if (value == null || value.isEmpty) {
+    //     return 'الرجاء اختيار المحافظة';
+    //   }
+    //   return null;
+    // },
+  );
+}
 
   Widget _buildDropdown({
     required int? value,
@@ -665,7 +756,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         items: items,
         onChanged: onChanged,
-        icon: Icon(Icons.arrow_drop_down, color: _primaryColor),
+        icon: Icon(Icons.arrow_drop_down,
+            color: _primaryColor),
         isExpanded: true,
         dropdownColor: _accentColor,
         style: TextStyle(color: _secondaryColor),

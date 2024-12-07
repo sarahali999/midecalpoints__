@@ -78,7 +78,7 @@ class UserProfile extends GetView<UserController> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildQuickInfo(controller.bloodType(user.bloodType), 'blood_type'.tr, screenWidth),
-              _buildQuickInfo("${user.birthYear ?? ''}", 'year'.tr, screenWidth),
+              _buildQuickInfo("${user.birthYear ?? ''}", 'age'.tr, screenWidth),
               _buildQuickInfo(controller.getGender(user.gender), 'gender'.tr, screenWidth),
             ],
           ),

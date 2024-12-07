@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../languages.dart';
 import '../loading_screen.dart';
+import 'map_page.dart';
 import 'notifications_page.dart';
 import 'profile.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
   final Function(String)? onSearch;
@@ -20,6 +24,62 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _TopBarState extends State<TopBar> {
   final TextEditingController _searchController = TextEditingController();
+  bool isLoading = false;
+
+  Future<void> _searchAndNavigate(String query) async {
+    if (query.isEmpty) return;
+    setState(() => isLoading = true);
+
+    final apiKey = '48b0594741134ba7a54846c836ba8935'; // Replace with your API key
+    final url = Uri.parse(
+        'https://api.opencagedata.com/geocode/v1/json?q=$query&key=$apiKey'
+    );
+
+    try {
+      final response = await http.get(url);
+      debugPrint("Response status: ${response.statusCode}");
+      debugPrint("Response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data['results']?.isNotEmpty ?? false) {
+          final lat = data['results'][0]['geometry']['lat'];
+          final lng = data['results'][0]['geometry']['lng'];
+          final searchLocation = LatLng(lat, lng);
+
+          // Navigate to MapPage
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MapPage(
+                initialLocation: searchLocation,
+                locationName: query,
+              ),
+            ),
+          );
+        } else {
+          _showSnackBar('No matching locations found for: $query');
+        }
+      } else {
+        _showSnackBar('Failed to connect to server: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      _showSnackBar('An error occurred during the search: $e');
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +156,7 @@ class _TopBarState extends State<TopBar> {
       ),
     );
   }
+
   Widget buildSearchField() {
     return TextField(
       controller: _searchController,
@@ -122,8 +183,10 @@ class _TopBarState extends State<TopBar> {
       ),
       style: TextStyle(fontSize: Get.width * 0.045),
       onSubmitted: (value) {
-        if (widget.onSearch != null) {
-          widget.onSearch!(value);
+        if (value.isNotEmpty) {
+          _searchAndNavigate(value);
+        } else {
+          _showSnackBar('Please enter a location to search.');
         }
       },
     );

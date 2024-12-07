@@ -104,7 +104,15 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
               width: 200,
             ),
             SizedBox(height: 16),
-
+            SizedBox(height: 16),
+            Text(
+              "connection_error".tr,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.red[700],
+              ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       )

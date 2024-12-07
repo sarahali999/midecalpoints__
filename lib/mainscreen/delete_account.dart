@@ -116,66 +116,59 @@ class DeleteAccount extends StatelessWidget {
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _deleteAccount(context),
-      child: Material(
-        color: Colors.transparent,
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
+    return Center(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 4),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.warning_amber_rounded, color: Colors.red, size: 40),
+            SizedBox(height: 10),
+            Text(
+              'confirm_account_deletion'.tr,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(Icons.warning_amber_rounded, color: Colors.red, size: 40),
-                SizedBox(height: 10),
-                Text(
-                  'confirm_account_deletion'.tr,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-                  textAlign: TextAlign.center,
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text('cancel'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: Text('cancel'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () => _deleteAccount(context),
-                      child: Text('confirm'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
-                    ),
-                  ],
+                  ),
+                  onPressed: () => _deleteAccount(context),
+                  child: Text('confirm'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

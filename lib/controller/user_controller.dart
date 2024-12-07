@@ -57,13 +57,13 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
       case 4:
         return "B-";
       case 5:
-        return "O+";
-      case 6:
-        return "O-";
-      case 7:
         return "AB+";
-      case 8:
+      case 6:
         return "AB-";
+      case 7:
+        return "o+";
+      case 8:
+        return "o-";
       default:
         return "غير معروف";
     }

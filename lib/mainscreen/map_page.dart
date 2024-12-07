@@ -44,7 +44,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
   late AnimationController _zoomAnimationController;
-
   @override
   void initState() {
     super.initState();
@@ -60,10 +59,18 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    _locateUser();
-    _fetchMarkersFromApi();
-  }
 
+
+
+    // _locateUser();
+    //////////////////////////////////////////////
+
+    _fetchMarkersFromApi();
+
+    if (widget.initialLocation != const LatLng(0, 0)) {
+      _updateRoute(currentLocation, widget.initialLocation);
+    }
+  }
   @override
   void dispose() {
     _animationController.dispose();
@@ -71,60 +78,105 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     searchController.dispose();
     super.dispose();
   }
-
-  void _updateRoute(LatLng start, LatLng end) {
+  Future<void> _updateRoute(LatLng start, LatLng end) async {
     setState(() {
       polylines.clear();
       routePoints.clear();
-
-      List<LatLng> routePointsList = [start, end];
-
-      polylines.add(
-        Polyline(
-          points: routePointsList,
-          color: const Color(0xFf259e9f).withOpacity(0.8),
-          strokeWidth: 4.0,
-          borderColor: Colors.white.withOpacity(0.5),
-          borderStrokeWidth: 2.0,
-        ),
-      );
-
-      polylines.add(
-        Polyline(
-          points: routePointsList,
-          color: Colors.black.withOpacity(0.2),
-          strokeWidth: 6.0,
-          borderStrokeWidth: 0,
-        ),
-      );
-
-      routePoints = routePointsList.map((point) =>
-          Marker(
-            point: point,
-            width: 12.0,
-            height: 12.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFf259e9f),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2.0,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 4,
-                    spreadRadius: 1,
-                  ),
-                ],
-              ),
-            ),
-          )
-      ).toList();
     });
+
+    final url = Uri.parse(
+        'https://router.project-osrm.org/route/v1/driving/'
+            '${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson'
+    );
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['routes'] != null && data['routes'].isNotEmpty) {
+          final List<dynamic> coordinates = data['routes'][0]['geometry']['coordinates'];
+
+          final List<LatLng> routePointsList = coordinates.map((coord) =>
+              LatLng(coord[1], coord[0])
+          ).toList();
+
+          final List<LatLng> reducedRoutePoints = _reducePoints(routePointsList);
+
+          setState(() {
+            polylines.add(
+              Polyline(
+                points: reducedRoutePoints,
+                color: const Color(0xFf259e9f).withOpacity(0.8),
+                strokeWidth: 4.0,
+                borderColor: Colors.white.withOpacity(0.5),
+                borderStrokeWidth: 2.0,
+              ),
+            );
+
+            polylines.add(
+              Polyline(
+                points: reducedRoutePoints,
+                color: Colors.black.withOpacity(0.2),
+                strokeWidth: 6.0,
+                borderStrokeWidth: 0,
+              ),
+            );
+
+            routePoints = reducedRoutePoints.map((point) =>
+                Marker(
+                  point: point,
+                  width: 12.0,
+                  height: 12.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFf259e9f),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+            ).toList();
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint("Error fetching route: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error calculating route: $e'),
+            duration: const Duration(seconds: 2),
+          )
+      );
+    }
   }
 
+  List<LatLng> _reducePoints(List<LatLng> points, {int maxPoints = 10}) {
+    if (points.length <= maxPoints) return points;
+
+    List<LatLng> reducedPoints = [];
+    int step = (points.length / maxPoints).ceil();
+
+    for (int i = 0; i < points.length; i += step) {
+      reducedPoints.add(points[i]);
+    }
+    if (reducedPoints.last != points.last) {
+      reducedPoints.add(points.last);
+    }
+
+    return reducedPoints;
+  }
   Future<void> _fetchMarkersFromApi() async {
     final url = Uri.parse('http://medicalpoint-api.tatwer.tech/api/Mobile/CenterMap');
     try {
@@ -372,8 +424,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     return FlutterMap(
       mapController: _mapController,
       options: MapOptions(
-        initialCenter: currentLocation,
-        initialZoom: 3.0,
+        initialCenter: widget.initialLocation,
+        initialZoom: 15.0,
         onTap: (_, __) => _clearSelection(),
       ),
       children: [
@@ -384,6 +436,16 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         PolylineLayer(polylines: polylines),
         MarkerLayer(markers: [...markers, ...routePoints]),
         MarkerLayer(markers: [
+          Marker(
+            point: widget.initialLocation,
+            width: 50.0,
+            height: 50.0,
+            child: const Icon(
+                Icons.location_pin,
+                color: Colors.red,
+                size: 40
+            ),
+          ),
           if (userLocationMarker != null) userLocationMarker!,
           ...markers,
           ...routePoints
@@ -391,7 +453,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       ],
     );
   }
-
   Widget _buildSearchBar() {
     return Positioned(
       top: kToolbarHeight + MediaQuery.of(context).padding.top + 10,

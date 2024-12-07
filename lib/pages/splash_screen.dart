@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(flex: 4),
+                const Spacer(flex: 3),
                 AppLogo(screenWidth: screenWidth),
                 const SizedBox(height: 16),
                 AppTitle(screenWidth: screenWidth),
@@ -71,7 +71,7 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double logoSize = (screenWidth * 0.28).clamp(70.0, 150.0);
+    final double logoSize = (screenWidth * 0.35).clamp(70.0, 150.0);
     return SizedBox(
       width: logoSize,
       height: logoSize,
@@ -95,7 +95,7 @@ class AppTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fontSize = (screenWidth * 0.06).clamp(20.0, 32.0);
+    final double fontSize = (screenWidth * 0.09).clamp(20.0, 32.0);
     return Text(
       'طب الحشود',
       style: TextStyle(

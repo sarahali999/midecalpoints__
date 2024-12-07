@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Aboutapp extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class Aboutapp extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            'الشروط والخدمة',
+            'about_app.title'.tr,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class Aboutapp extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            'مرحبًا بك في تطبيقنا الطبي الخدمي!',
+            'about_app.welcome_message'.tr,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 22,
@@ -99,7 +100,7 @@ class Aboutapp extends StatelessWidget {
         ],
       ),
       child: Text(
-        'يهدف تطبيقنا إلى توفير خدمات طبية متكاملة للزوار الوافدين من داخل وخارج العراق لزيارة مقام الإمام الحسين وأخيه العباس عليهما السلام.',
+        'about_app.description'.tr,
         style: TextStyle(
           fontSize: 16,
           height: 1.6,
@@ -129,7 +130,7 @@ class Aboutapp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'خدماتنا الطبية',
+            'about_app.services_title'.tr,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -137,16 +138,15 @@ class Aboutapp extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16),
-          _buildServiceItem('رعاية طبية طارئة داخل الموقع', Icons.local_hospital),
-          _buildServiceItem('استشارات طبية مع أطباء مختصين', Icons.people),
-          _buildServiceItem('توفير أدوية ومستلزمات طبية أساسية', Icons.medical_services),
-          _buildServiceItem('خدمات الإسعاف والنقل الطبي', Icons.airport_shuttle),
-          _buildServiceItem('دعم نفسي للزوار', Icons.psychology),
-          _buildServiceItem('إرشادات طبية وقائية', Icons.health_and_safety),
-          _buildServiceItem('أماكن طبية مجهزة داخل الحرم الشريف', Icons.place),
+          _buildServiceItem('about_app.services.emergency_care'.tr, Icons.local_hospital),
+          _buildServiceItem('about_app.services.medical_consultation'.tr, Icons.people),
+          _buildServiceItem('about_app.services.basic_medical_supplies'.tr, Icons.medical_services),
+          _buildServiceItem('about_app.services.ambulance'.tr, Icons.airport_shuttle),
+          _buildServiceItem('about_app.services.psychological_support'.tr, Icons.psychology),
+          _buildServiceItem('about_app.services.preventive_guidance'.tr, Icons.health_and_safety),
+          _buildServiceItem('about_app.services.medical_facilities'.tr, Icons.place),
         ],
       ),
-
     );
   }
 
@@ -169,7 +169,7 @@ class Aboutapp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'كيفية استخدام التطبيق',
+            'about_app.how_to_use_title'.tr,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -179,15 +179,15 @@ class Aboutapp extends StatelessWidget {
           SizedBox(height: 16),
           _buildStepItem(
             '١',
-            'يمكنك طلب المساعدة الطبية في أي وقت عبر التطبيق',
+            'about_app.steps.step1'.tr,
           ),
           _buildStepItem(
             '٢',
-            'يمكنك العثور على أقرب نقطة طبية عبر الخريطة',
+            'about_app.steps.step2'.tr,
           ),
           _buildStepItem(
             '٣',
-            'في حال الطوارئ، يتم التواصل مع فريق الإسعاف فورًا',
+            'about_app.steps.step3'.tr,
           ),
         ],
       ),
@@ -203,7 +203,7 @@ class Aboutapp extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
-        'نحن نولي أهمية كبيرة لصحة الزوار، ونسعى لضمان راحتهم وأمنهم أثناء زيارتهم.',
+        'about_app.footer_message'.tr,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 16,

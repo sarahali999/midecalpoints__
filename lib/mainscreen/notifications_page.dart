@@ -36,12 +36,12 @@ class _PublicnoticesState extends State<Publicnotices> {
       _addNotification(event.notification);
     });
   }
-
   void _addNotification(OSNotification notification) {
     final Map<String, dynamic> notificationMap = {
       'title': notification.title ?? 'No Title',
       'body': notification.body ?? 'No Content',
-      'timestamp': DateTime.now().toIso8601String(),
+      // Use bigPicture for image
+      'image': notification.bigPicture ?? 'No Content',
     };
 
     setState(() {
@@ -50,7 +50,6 @@ class _PublicnoticesState extends State<Publicnotices> {
 
     _saveNotifications();
   }
-
   void _loadNotifications() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? notificationStrings = prefs.getStringList('notifications');
@@ -143,7 +142,20 @@ class _PublicnoticesState extends State<Publicnotices> {
                   ],
                 ),
                 child: ListTile(
-                  leading: Icon(
+                  leading: notification['image'] != null && notification['image'] != 'No Content'
+                      ? Image.network(
+                    notification['image'],
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.notifications,
+                        color: Color(0xFF5BB9AE),
+                      );
+                    },
+                  )
+                      : Icon(
                     Icons.notifications,
                     color: Color(0xFF5BB9AE),
                   ),
@@ -155,8 +167,11 @@ class _PublicnoticesState extends State<Publicnotices> {
                     ),
                   ),
                   subtitle: Text(
-                    notification['timestamp']?.split('T').first ?? '',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                    notification['title'] ?? 'No Title',
+                    style: TextStyle(
+                      color: Colors.grey[60],
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
