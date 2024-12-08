@@ -193,8 +193,17 @@ class Languages extends Translations {
       'about_app.steps.step1': 'يمكنك طلب المساعدة الطبية في أي وقت عبر التطبيق',
       'about_app.steps.step2': 'يمكنك العثور على أقرب نقطة طبية عبر الخريطة',
       'about_app.steps.step3': 'في حال الطوارئ، يتم التواصل مع فريق الإسعاف فورًا',
-      'about_app.footer_message': 'نحن نولي أهمية كبيرة لصحة الزوار، ونسعى لضمان راحتهم وأمنهم أثناء زيارتهم.'
-
+      'about_app.footer_message': 'نحن نولي أهمية كبيرة لصحة الزوار، ونسعى لضمان راحتهم وأمنهم أثناء زيارتهم.',
+  'map_title': 'الخريطة',
+  'search_hintmap': 'ابحث',
+  'medical_markers': 'المفارز الطبية',
+  'distance': 'المسافة',
+      'save_changes': 'حفظ التغييرات',
+      'request_sent_success': 'تم إرسال الطلب بنجاح.',
+      'profile_update_success': 'تم تحديث الملف الشخصي بنجاح.',
+      'profile_update_success_snackbar': 'تم تحديث الملف الشخصي بنجاح',
+      'profile_update_error': 'فشل تحديث الملف الشخصي',
+      'update_process_completed': 'تم إنهاء عملية التحديث.',
     },
 
     'fa': {
@@ -389,8 +398,17 @@ class Languages extends Translations {
       'about_app.steps.step1': 'می‌توانید در هر زمان از طریق اپلیکیشن درخواست کمک پزشکی کنید',
       'about_app.steps.step2': 'می‌توانید نزدیک‌ترین نقطه پزشکی را از طریق نقشه پیدا کنید',
       'about_app.steps.step3': 'در صورت اورژانس، تیم اورژانس بلافاصله تماس خواهد گرفت',
-      'about_app.footer_message': 'ما اهمیت زیادی برای سلامت زائران قائل هستیم و تلاش می‌کنیم راحتی و امنیت آنها را در طول بازدیدشان تضمین کنیم.'
-
+      'about_app.footer_message': 'ما اهمیت زیادی برای سلامت زائران قائل هستیم و تلاش می‌کنیم راحتی و امنیت آنها را در طول بازدیدشان تضمین کنیم.',
+  'map_title': 'نقشه',
+  'search_hintmap': 'جستجو',
+  'medical_markers': 'نشانگرهای پزشکی',
+  'distance': 'فاصله',
+      'save_changes': 'ذخیره تغییرات',
+      'request_sent_success': 'درخواست با موفقیت ارسال شد.',
+      'profile_update_success': 'پروفایل با موفقیت به‌روز شد.',
+      'profile_update_success_snackbar': 'پروفایل با موفقیت به‌روز شد',
+      'profile_update_error': 'خطا در به‌روزرسانی پروفایل',
+      'update_process_completed': 'فرآیند به‌روزرسانی تکمیل شد.',
     },
     'ku': {
       'crowd_medicine': 'پزیشکی جەماوەر',
@@ -585,7 +603,18 @@ class Languages extends Translations {
       'about_app.steps.step1': 'دەتوانیت داوای یارمەتی پزیشکی بکەیت لە هەر کاتێکدا لە ڕێگەی ئەپڵیکەیشنەوە',
       'about_app.steps.step2': 'دەتوانیت نزیکترین خاڵی پزیشکی بدۆزیتەوە لە ڕێگەی نەخشەوە',
       'about_app.steps.step3': 'لە کاتی کارەساتدا، تیمی ئەمبولانس بەپەلە پەیوەندی پێوە دەکرێت',
-      'about_app.footer_message': 'ئێمە گرنگی زۆر بە تەندروستی سەردانکەران دەدەین و هەوڵ دەدەین ئاسوودەیی و سەلامەتییان دابین بکەین لە کاتی سەردانەکەیاندا.'
+      'about_app.footer_message': 'ئێمە گرنگی زۆر بە تەندروستی سەردانکەران دەدەین و هەوڵ دەدەین ئاسوودەیی و سەلامەتییان دابین بکەین لە کاتی سەردانەکەیاندا.',
+      'map_title': 'نەخشە',
+      'search_hintmap': 'گەڕان',
+      'medical_markers': 'نیشانکارە پزیشکیەکان',
+      'distance': 'دووری',
+      'save_changes': 'پاشکەوتنی گۆڕانکاریەکان',
+      'request_sent_success': 'داواکاری بە سەرکەوتووی نێردرا.',
+      'profile_update_success': 'پڕۆفایل بە سەرکەوتووی نوێکرایەوە.',
+      'profile_update_success_snackbar': 'پڕۆفایل بە سەرکەوتووی نوێکرایەوە',
+      'profile_update_error': 'هەڵە لە نوێکردنەوەی پڕۆفایل',
+      'update_process_completed': 'پڕۆسەی نوێکردنەوە تەواو بوو.',
+
     },
     'tk': {
       'crowd_medicine': 'كوتله طبي',
@@ -779,7 +808,17 @@ class Languages extends Translations {
       'about_app.steps.step1': 'آپلیکاسیون واسطاسی بیلن هر واختدا طبی یاردام ایستیه بیلرسیز',
       'about_app.steps.step2': 'خاریتا واسطاسی بیلن اِڭ یاخین طبی نقطانی تاپا بیلرسیز',
       'about_app.steps.step3': 'اکستری وئزیئتده، آمبولانس طرفی دئرحال آرادا باغلانار',
-      'about_app.footer_message': 'بیز زیارتچیلرین ساغلامچیلیغینا چوخ اهمیئت بئریریک و اونلارین زیارتلری واختیندا رحاتلیغینی و ساغلیغینی تمین ائتمگه چالیشیریق.'
+      'about_app.footer_message': 'بیز زیارتچیلرین ساغلامچیلیغینا چوخ اهمیئت بئریریک و اونلارین زیارتلری واختیندا رحاتلیغینی و ساغلیغینی تمین ائتمگه چالیشیریق.',
+      'map_title': 'خاریتا',
+      'search_hintmap': 'آختار',
+      'medical_markers': 'طبی ایشاره‌لر',
+      'distance': 'مسافه',
+      'save_changes': 'ؤزگەرتمه‌لری ساقلاماق',
+      'request_sent_success': 'إستек سانلی گوندریلدی.',
+      'profile_update_success': 'پروفایل سانلی یاڭیلاندی.',
+      'profile_update_success_snackbar': 'پروفایل سانلی یاڭیلاندی',
+      'profile_update_error': 'پروفایلی یاڭیلامادا خاتالیق',
+      'update_process_completed': 'یاڭیلاما پروسسی تامام بولدی.',
     },
     'en': {
       'crowd_medicine': 'Crowd Medicine',
@@ -973,7 +1012,17 @@ class Languages extends Translations {
       'about_app.steps.step1': 'You can request medical assistance at any time through the app',
       'about_app.steps.step2': 'You can find the nearest medical point via the map',
       'about_app.steps.step3': 'In case of emergency, the ambulance team will be contacted immediately',
-      'about_app.footer_message': 'We place great importance on the health of visitors and strive to ensure their comfort and safety during their visit.'
+      'about_app.footer_message': 'We place great importance on the health of visitors and strive to ensure their comfort and safety during their visit.',
+  'map_title': 'Map',
+  'search_hintmap': 'Search',
+  'medical_markers': 'Medical Markers',
+  'distance': 'Distance',
+      'save_changes': 'Save Changes',
+      'request_sent_success': 'Request sent successfully.',
+      'profile_update_success': 'Profile updated successfully.',
+      'profile_update_success_snackbar': 'Profile updated successfully',
+      'profile_update_error': 'Error updating profile',
+      'update_process_completed': 'Update process completed.',
     },
   };
 }

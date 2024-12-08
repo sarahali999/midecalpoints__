@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import '../languages.dart';
 import 'all_news_page.dart';
 import 'news_detail_page.dart';
 import 'news_model.dart';
@@ -80,8 +81,9 @@ class _NewsState extends State<News> {
                 SizedBox(height: 5),
                 Expanded(
                   child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: SingleChildScrollView(
+                    textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+                        ? TextDirection.rtl
+                        : TextDirection.ltr,                    child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisSize: MainAxisSize.min,

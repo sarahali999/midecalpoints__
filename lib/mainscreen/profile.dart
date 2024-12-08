@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
+import '../languages.dart';
 import '../models/user_details.dart';
 import 'edit_information.dart';
 
@@ -14,8 +15,9 @@ class UserProfile extends GetView<UserController> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,      child: Scaffold(
         backgroundColor: Colors.white,
         body: Obx(() {
           if (controller.isLoading.value) {

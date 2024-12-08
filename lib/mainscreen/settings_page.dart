@@ -192,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
       {'code': 'en', 'name': 'English'},
       {'code': 'fa', 'name': 'فارسی'},
       {'code': 'ku', 'name': 'کوردی'},
-      {'code': 'tk', 'name': 'تركمانجي'},
+      {'code': 'tk', 'name': 'تركماني'},
     ];
     showDialog(
       context: context,
@@ -203,64 +203,69 @@ class _SettingsPageState extends State<SettingsPage> {
               future: _getCurrentLanguage(),
               builder: (context, snapshot) {
                 String? selectedLanguage = snapshot.data ?? '';
-                return AlertDialog(
-                  title: Text(
-                    'language'.tr,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF259E9F),
-                    ),
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: languages.map((language) {
-                      bool isSelected = selectedLanguage == language['code'];
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? Color(0xFF259E9F).withOpacity(0.1)
-                              : Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            language['name']!,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: isSelected
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: isSelected
-                                  ? Color(0xFF259E9F)
-                                  : Colors.black,
-                            ),
-                          ),
-                          trailing: isSelected
-                              ? Icon(Icons.check, color: Color(0xFF259E9F))
-                              : null,
-                          onTap: () async {
-                            SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                            await prefs.setString('language', language['code']!);
-                            Get.updateLocale(Locale(language['code']!));
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(
-                        'cancel'.tr,
-                        style: TextStyle(color: Color(0xFF259E9F)),
+                return Directionality(
+                  textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+                      ? TextDirection.rtl
+                      : TextDirection.ltr,
+                  child: AlertDialog(
+                    title: Text(
+                      'language'.tr,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF259E9F),
                       ),
                     ),
-                  ],
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: languages.map((language) {
+                        bool isSelected = selectedLanguage == language['code'];
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Color(0xFF259E9F).withOpacity(0.1)
+                                : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              language['name']!,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: isSelected
+                                    ? Color(0xFF259E9F)
+                                    : Colors.black,
+                              ),
+                            ),
+                            trailing: isSelected
+                                ? Icon(Icons.check, color: Color(0xFF259E9F))
+                                : null,
+                            onTap: () async {
+                              SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                              await prefs.setString('language', language['code']!);
+                              Get.updateLocale(Locale(language['code']!));
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          'cancel'.tr,
+                          style: TextStyle(color: Color(0xFF259E9F)),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             );

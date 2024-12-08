@@ -28,7 +28,6 @@ class _TopBarState extends State<TopBar> {
 
   Future<void> _searchAndNavigate(String query) async {
     if (query.isEmpty) return;
-    setState(() => isLoading = true);
 
     final apiKey = '48b0594741134ba7a54846c836ba8935';
     final url = Uri.parse(
@@ -36,25 +35,24 @@ class _TopBarState extends State<TopBar> {
     );
     try {
       final response = await http.get(url);
-      debugPrint("Response status: ${response.statusCode}");
-      debugPrint("Response body: ${response.body}");
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data['results']?.isNotEmpty ?? false) {
+        if (data['results'].isNotEmpty) {
           final lat = data['results'][0]['geometry']['lat'];
           final lng = data['results'][0]['geometry']['lng'];
           final searchLocation = LatLng(lat, lng);
-          print(searchLocation);
-           Navigator.push(
+
+          Navigator.push(
             context,
-             MaterialPageRoute(
+            MaterialPageRoute(
               builder: (context) => MapPage(
                 initialLocation: searchLocation,
-               locationName: query,
-               isSearchEntry: true,
+                locationName: query,
+                isSearchEntry: true,
               ),
-             ),
-           );
+            ),
+          );
+
         } else {
           _showSnackBar('No matching locations found for: $query');
         }
@@ -64,8 +62,6 @@ class _TopBarState extends State<TopBar> {
     } catch (e) {
       debugPrint("Error: $e");
       _showSnackBar('An error occurred during the search: $e');
-    } finally {
-      setState(() => isLoading = false);
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/user_controller.dart';
+import '../languages.dart';
 import '../models/user_details.dart';
 import '../registration/countries.dart';
 
@@ -186,7 +187,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           throw Exception('JWT token is missing');
         }
         print('تم جلب JWT token بنجاح.');
-
         final Map<String, dynamic> requestBody = {
           "firstName": _firstNameController.text,
           "secondName": _secondNameController.text,
@@ -216,26 +216,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
           "username": _usernameController.text,
           "password": _passwordController.text.isNotEmpty ? _passwordController.text : ""
         };
-
         print('تم تجهيز البيانات المرسلة: $requestBody');
-
         final response = await http.put(
           Uri.parse('https://medicalpoint-api.tatwer.tech/api/Mobile/UpdatePatientDetails'),
           headers: {
             'Authorization': 'Bearer $jwtToken',
             'Content-Type': 'application/json',
           },
-          body: json.encode(requestBody),
+          body:json.encode(requestBody),
         );
-
-        print('تم إرسال الطلب بنجاح.');
+        print('request_sent_success'.tr);
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
         if (response.statusCode == 200) {
           UserInfoController.fetchPatientDetails();
-          print('تم تحديث الملف الشخصي بنجاح.');
+          print('profile_update_success'.tr);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('تم تحديث الملف الشخصي بنجاح',style: TextStyle(color: Colors.white),),
+             SnackBar(content: Text('profile_update_success'.tr,style: TextStyle(color: Colors.white),),
               backgroundColor: Color(0xFF259E9F),
             ),
           );
@@ -247,7 +244,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       } catch (e) {
         print('خطأ أثناء تحديث الملف الشخصي: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('فشل تحديث الملف الشخصي: $e')),
+          SnackBar(content: Text('profile_update_error: $e'.tr)),
         );
       } finally {
         print('تم إنهاء عملية التحديث.');
@@ -260,299 +257,306 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar:AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Color(0xFF259E9F),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
+    return Directionality(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: Colors.grey[100],
+        appBar:AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF259E9F),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
             ),
           ),
-        ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          'تعديل المعلومات الشخصية',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text(
+            'edit_personal_information'.tr,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Column(
-          children: [
-            Expanded(
-              child: _isLoading
-                  ? Center(
-                  child: CircularProgressIndicator(color: _primaryColor))
-                  : SingleChildScrollView(
-                padding: EdgeInsets.all(16),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSectionHeader(
-                          "المعلومات الشخصية"),
-                      _buildTextField(
-                        controller: _firstNameController,
-                        labelText:"الاسم الاول",
-                      ),
-                      _buildTextField(
-                        controller: _secondNameController,
-                        labelText: "الاسم الثاني",
-                      ),
-                      _buildTextField(
-                        controller: _thirdNameController,
-                        labelText: "الاسم الثالث",
-                      ),
-
-
-                      _buildTextField(
-                        controller: _birthYearController,
-                        labelText:"العمر",
-                      ),
-                      _buildCountryDropdown(
-                        controller: _countryController,
-                        labelText: "البلد",
-                      ),
-                      _buildProvinceDropdown(),
-                      _buildTextField(
-                        controller: _districtController,
-                        labelText: "القضاء",
-                      ),
-                      _buildTextField(
-                        controller: _alleyController,
-                        labelText: "المحلة",
-                      ),
-                      _buildTextField(
-                        controller: _houseController,
-                        labelText: "الدار",
-                      ),
-                      _buildDropdown(
-                        value: _selectedGender == 0 ? 1 : _selectedGender,
-                        label: "الجنس",
-                        items: [
-                          DropdownMenuItem(
-                            value: 1,
-                            child: Text(_translateGender(1)),
-                          ),
-                          DropdownMenuItem(
-                            value: 2,
-                            child: Text(_translateGender(2)),
-                          ),
-                        ],
-                        onChanged: (value) => setState(() => _selectedGender = value ?? 1),
-                      ),
-
-                      SizedBox(height: 20),
-                      _buildSectionHeader(
-                          "المعلومات الطبية"
-                      ),
-                      _buildDropdown(
-                        value: _selectedBloodType == 0 ? 1 : _selectedBloodType,
-                        label: "فصيلة الدم",
-                        items: [
-                          DropdownMenuItem(
-                            value: 1,
-                            child: Text(_translateBloodType(1)),
-                          ),
-                          DropdownMenuItem(
-                            value: 2,
-                            child: Text(_translateBloodType(2)),
-                          ),
-                          DropdownMenuItem(
-                            value: 3,
-                            child: Text(_translateBloodType(3)),
-                          ),
-                          DropdownMenuItem(
-                            value: 4,
-                            child: Text(_translateBloodType(4)),
-                          ),
-                          DropdownMenuItem(
-                            value: 5,
-                            child: Text(_translateBloodType(5)),
-                          ),
-                          DropdownMenuItem(
-                            value: 6,
-                            child: Text(_translateBloodType(6)),
-                          ),
-                          DropdownMenuItem(
-                            value: 7,
-                            child: Text(_translateBloodType(7)),
-                          ),
-                          DropdownMenuItem(
-                            value: 8,
-                            child: Text(_translateBloodType(8)),
-                          ),
-                        ],
-                        onChanged: (value) => setState(() => _selectedBloodType = value ?? 1),
-                      ),
-                      _buildTextField(
-                        controller: _chronicDiseasesController,
-                        labelText: "الامراض المزمنة",
-                      ),
-                      _buildTextField(
-                        controller: _allergiesController,
-                        labelText: "الحساسية",
-                      ),
-                      SizedBox(height: 20),
-                      _buildSectionHeader("معلومات الاتصال الطارئة"),
-                      _buildTextField(
-                        controller: _emergencyContactNameController,
-                        labelText: "اسمه",
-                      ),
-                      IntlPhoneField(
-                        initialValue : _emergencyContactPhoneController.text,
-                        decoration: InputDecoration(
-                          labelText: "رقم الهاتف",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: _primaryColor),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        body: Directionality(
+          textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+              ? TextDirection.rtl
+              : TextDirection.ltr,
+          child: Column(
+            children: [
+              Expanded(
+                child: _isLoading
+                    ? Center(
+                    child: CircularProgressIndicator(color: _primaryColor))
+                    : SingleChildScrollView(
+                  padding: EdgeInsets.all(16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSectionHeader(
+                            "personal_info".tr),
+                        _buildTextField(
+                          controller: _firstNameController,
+                          labelText:"first_name".tr,
                         ),
-                        initialCountryCode: 'IQ',
-                        textAlign: TextAlign.right,
-                        invalidNumberMessage: 'invalid_phone'.tr,
-                        onChanged: (phone) {
-                          _emergencyContactPhoneController.text = phone.completeNumber;
-                          print(phone.completeNumber);
-                        },
-                      ),
-                      _buildCountryDropdown(
-                        controller: _emergencyContactCountryController,
-                        labelText: "البلد",
-                      ),
-                      _buildEmergencyContactProvinceDropdown(),
-                      _buildTextField(
-                        controller: _emergencyContactDistrictController,
-                        labelText:"القضاء",
-                      ), _buildTextField(
-                        controller: _emergencyContactAlleyController,
-                        labelText:"المحلة",
-                      ), _buildTextField(
-                        controller: _emergencyContactHouseController,
-                        labelText:"الدار",
-                      ),
-                      _buildDropdown(
-                        value: _selectedEmergencyContactRelationship == 0 ? 1 : _selectedEmergencyContactRelationship,
-                        label: "صلة القرابة",
-                        items: [
-                          DropdownMenuItem(
-                            value: 1,
-                            child: Text(_translateEmergencyContactRelationship(1)),
-                          ),
-                          DropdownMenuItem(
-                            value: 2,
-                            child: Text(_translateEmergencyContactRelationship(2)),
-                          ),
-                          DropdownMenuItem(
-                            value: 3,
-                            child: Text(_translateEmergencyContactRelationship(3)),
-                          ),
-                          DropdownMenuItem(
-                            value: 4,
-                            child: Text(_translateEmergencyContactRelationship(4)),
-                          ),
-                          DropdownMenuItem(
-                            value: 5,
-                            child: Text(_translateEmergencyContactRelationship(5)),
-                          ),
-                          DropdownMenuItem(
-                            value: 6,
-                            child: Text(_translateEmergencyContactRelationship(6)),
-                          ),
-                          DropdownMenuItem(
-                            value: 7,
-                            child: Text(_translateEmergencyContactRelationship(7)),
-                          ),
-                          DropdownMenuItem(
-                            value: 8,
-                            child: Text(_translateEmergencyContactRelationship(8)),
-                          ),
-                          DropdownMenuItem(
-                            value: 9,
-                            child: Text(_translateEmergencyContactRelationship(9)),
-                          ),
-                        ],
-                        onChanged: (value) => setState(() => _selectedEmergencyContactRelationship = value),
-                      ),
-                      SizedBox(height: 20),
-                      _buildSectionHeader(
-                          "معلومات الحساب"
-                      ),
-                      _buildTextField(
-                        controller: _emailController,
-                        labelText: "البريد الالكتروني",
-                      ),
-                      IntlPhoneField(
-                        initialValue : _phoneController.text,
-                        decoration: InputDecoration(
-                          labelText: "رقم الهاتف",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: _primaryColor),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        _buildTextField(
+                          controller: _secondNameController,
+                          labelText: "middle_name".tr,
                         ),
-                        initialCountryCode: 'IQ',
-                        textAlign: TextAlign.right,
-                        invalidNumberMessage: 'invalid_phone'.tr,
-                        onChanged: (phone) {
-                          _phoneController.text = phone.completeNumber;
-                          print(phone.completeNumber);
-                        },
-                      ),
-                      _buildTextField(
-                        controller: _usernameController,
-                        labelText: "اسم المستخدم",
-                      ),
-                      _buildTextField(
-                        controller: _passwordController,
-                        labelText: "كلمة السر",
-                        obscureText: true,
-                      ),
-                      SizedBox(height: 30),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: _updateProfile,
-                          child: Text("حفظ التغييرات",style: TextStyle(color: Colors.white),),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _primaryColor,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                        _buildTextField(
+                          controller: _thirdNameController,
+                          labelText: "last_name".tr,
+                        ),
+
+
+                        _buildTextField(
+                          controller: _birthYearController,
+                          labelText:"age".tr,
+                        ),
+                        _buildCountryDropdown(
+                          controller: _countryController,
+                          labelText: "country".tr,
+                        ),
+                        _buildProvinceDropdown(),
+                        _buildTextField(
+                          controller: _districtController,
+                          labelText: "district".tr,
+                        ),
+                        _buildTextField(
+                          controller: _alleyController,
+                          labelText: "المحلة",
+                        ),
+                        _buildTextField(
+                          controller: _houseController,
+                          labelText: "alley".tr,
+                        ),
+                        _buildDropdown(
+                          value: _selectedGender == 0 ? 1 : _selectedGender,
+                          label: "gender".tr,
+                          items: [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(_translateGender(1)),
                             ),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text(_translateGender(2)),
+                            ),
+                          ],
+                          onChanged: (value) => setState(() => _selectedGender = value ?? 1),
+                        ),
+
+                        SizedBox(height: 20),
+                        _buildSectionHeader(
+                            "medical_info".tr
+                        ),
+                        _buildDropdown(
+                          value: _selectedBloodType == 0 ? 1 : _selectedBloodType,
+                          label: "blood_type".tr,
+                          items: [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(_translateBloodType(1)),
+                            ),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text(_translateBloodType(2)),
+                            ),
+                            DropdownMenuItem(
+                              value: 3,
+                              child: Text(_translateBloodType(3)),
+                            ),
+                            DropdownMenuItem(
+                              value: 4,
+                              child: Text(_translateBloodType(4)),
+                            ),
+                            DropdownMenuItem(
+                              value: 5,
+                              child: Text(_translateBloodType(5)),
+                            ),
+                            DropdownMenuItem(
+                              value: 6,
+                              child: Text(_translateBloodType(6)),
+                            ),
+                            DropdownMenuItem(
+                              value: 7,
+                              child: Text(_translateBloodType(7)),
+                            ),
+                            DropdownMenuItem(
+                              value: 8,
+                              child: Text(_translateBloodType(8)),
+                            ),
+                          ],
+                          onChanged: (value) => setState(() => _selectedBloodType = value ?? 1),
+                        ),
+                        _buildTextField(
+                          controller: _chronicDiseasesController,
+                          labelText: "chronic_diseases".tr,
+                        ),
+                        _buildTextField(
+                          controller: _allergiesController,
+                          labelText: "allergies".tr,
+                        ),
+                        SizedBox(height: 20),
+                        _buildSectionHeader("emergency_contact".tr),
+                        _buildTextField(
+                          controller: _emergencyContactNameController,
+                          labelText: 'emergencyContactPage.fullName'.tr,
+                        ),
+                        IntlPhoneField(
+                          initialValue : _emergencyContactPhoneController.text,
+                          decoration: InputDecoration(
+                            labelText: "phone_number".tr,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: _primaryColor),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                           ),
-                        ).animate().scale(
-                            duration: 300.ms, curve: Curves.easeInOut),
-                      ),
-                    ],
+                          initialCountryCode: 'IQ',
+                          textAlign: TextAlign.right,
+                          invalidNumberMessage: 'invalid_phone'.tr,
+                          onChanged: (phone) {
+                            _emergencyContactPhoneController.text = phone.completeNumber;
+                            print(phone.completeNumber);
+                          },
+                        ),
+                        _buildCountryDropdown(
+                          controller: _emergencyContactCountryController,
+                          labelText: "country".tr,
+                        ),
+                        _buildEmergencyContactProvinceDropdown(),
+                        _buildTextField(
+                          controller: _emergencyContactDistrictController,
+                          labelText:"district".tr,
+                        ), _buildTextField(
+                          controller: _emergencyContactAlleyController,
+                          labelText:"المحلة",
+                        ), _buildTextField(
+                          controller: _emergencyContactHouseController,
+                          labelText:"alley".tr,
+                        ),
+                        _buildDropdown(
+                          value: _selectedEmergencyContactRelationship == 0 ? 1 : _selectedEmergencyContactRelationship,
+                          label: "emergencyContactPage.relationship".tr,
+                          items: [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(_translateEmergencyContactRelationship(1)),
+                            ),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text(_translateEmergencyContactRelationship(2)),
+                            ),
+                            DropdownMenuItem(
+                              value: 3,
+                              child: Text(_translateEmergencyContactRelationship(3)),
+                            ),
+                            DropdownMenuItem(
+                              value: 4,
+                              child: Text(_translateEmergencyContactRelationship(4)),
+                            ),
+                            DropdownMenuItem(
+                              value: 5,
+                              child: Text(_translateEmergencyContactRelationship(5)),
+                            ),
+                            DropdownMenuItem(
+                              value: 6,
+                              child: Text(_translateEmergencyContactRelationship(6)),
+                            ),
+                            DropdownMenuItem(
+                              value: 7,
+                              child: Text(_translateEmergencyContactRelationship(7)),
+                            ),
+                            DropdownMenuItem(
+                              value: 8,
+                              child: Text(_translateEmergencyContactRelationship(8)),
+                            ),
+                            DropdownMenuItem(
+                              value: 9,
+                              child: Text(_translateEmergencyContactRelationship(9)),
+                            ),
+                          ],
+                          onChanged: (value) => setState(() => _selectedEmergencyContactRelationship = value),
+                        ),
+                        SizedBox(height: 20),
+                        _buildSectionHeader(
+                            "contact_info".tr
+                        ),
+                        _buildTextField(
+                          controller: _emailController,
+                          labelText: "email".tr,
+                        ),
+                        IntlPhoneField(
+                          initialValue : _phoneController.text,
+                          decoration: InputDecoration(
+                            labelText: "phone_number".tr,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: _primaryColor),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          ),
+                          initialCountryCode: 'IQ',
+                          textAlign: TextAlign.right,
+                          invalidNumberMessage: 'invalid_phone'.tr,
+                          onChanged: (phone) {
+                            _phoneController.text = phone.completeNumber;
+                            print(phone.completeNumber);
+                          },
+                        ),
+                        _buildTextField(
+                          controller: _usernameController,
+                          labelText: "username".tr,
+                        ),
+                        _buildTextField(
+                          controller: _passwordController,
+                          labelText: "password".tr,
+                          obscureText: true,
+                        ),
+                        SizedBox(height: 30),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: _updateProfile,
+                            child: Text('save_changes'.tr,style: TextStyle(color: Colors.white),),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _primaryColor,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          ).animate().scale(
+                              duration: 300.ms, curve: Curves.easeInOut),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -674,7 +678,7 @@ Widget _buildProvinceDropdown() {
   return DropdownButtonFormField<String>(
     value: _provinceController.text.isNotEmpty ? _provinceController.text : null,
     decoration: InputDecoration(
-      labelText: 'المحافظة',
+      labelText: 'province'.tr,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -706,7 +710,7 @@ Widget _buildEmergencyContactProvinceDropdown() {
         ? _emergencyContactProvinceController.text
         : null,
     decoration: InputDecoration(
-      labelText: 'المحافظة',
+      labelText: 'province'.tr,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -766,7 +770,7 @@ Widget _buildEmergencyContactProvinceDropdown() {
         begin: -0.2, end: 0);
   }
   String _translateBloodType(int? type) {
-    if (type == null) return "غير معروف";
+    if (type == null)  return 'not_specified'.tr;
 
     switch (type) {
       case 1:
@@ -786,47 +790,47 @@ Widget _buildEmergencyContactProvinceDropdown() {
       case 8:
         return "AB-";
       default:
-        return "غير معروف";
+        return 'not_specified'.tr;
     }
   }
 
   String _translateEmergencyContactRelationship(int? relationship) {
-    if (relationship == null) return "غير معروف";
+    if (relationship == null)         return 'not_specified'.tr;;
 
     switch (relationship) {
       case 1:
-        return 'اب';
+        return 'emergencyContactPage.father'.tr;
       case 2:
-        return 'ام';
+        return 'emergencyContactPage.mother'.tr;
       case 3:
-        return 'اخ';
+        return 'emergencyContactPage.brother'.tr;
       case 4:
-        return 'اخت';
+        return 'mergencyContactPage.sister'.tr;
       case 5:
-        return 'ابن';
+        return 'emergencyContactPage.son'.tr;
       case 6:
-        return 'ابنة';
+        return 'emergencyContactPage.daughter';
       case 7:
-        return 'زوج';
+        return 'emergencyContactPage.husband'.tr;
       case 8:
-        return 'زوجة';
+        return 'emergencyContactPage.wife'.tr;
       case 9:
-        return 'أخرى';
+        return 'emergencyContactPage.other'.tr;
       default:
-        return 'غير معروف';
+        return 'not_specified'.tr;
     }
   }
 
   String _translateGender(int? gender) {
-    if (gender == null) return "غير معروف";
+    if (gender == null)         return 'not_specified'.tr;;
 
     switch (gender) {
       case 1:
-        return 'ذكر';
+        return 'male'.tr;
       case 2:
-        return 'أنثى';
+        return 'female'.tr;
       default:
-        return 'غير معروف';
+        return 'not_specified'.tr;
     }
   }
 }

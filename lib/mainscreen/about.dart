@@ -22,7 +22,6 @@ class Aboutapp extends StatelessWidget {
             'about_app.title'.tr,
             style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
@@ -75,7 +74,6 @@ class Aboutapp extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 22,
-              fontWeight: FontWeight.bold,
               color: Color(0xFF259E9F),
             ),
           ),
@@ -133,7 +131,6 @@ class Aboutapp extends StatelessWidget {
             'about_app.services_title'.tr,
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
               color: Color(0xFF259E9F),
             ),
           ),
@@ -172,7 +169,6 @@ class Aboutapp extends StatelessWidget {
             'about_app.how_to_use_title'.tr,
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
               color: Color(0xFF259E9F),
             ),
           ),
@@ -207,7 +203,6 @@ class Aboutapp extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 16,
-          fontStyle: FontStyle.italic,
           color: Color(0xFF259E9F),
           height: 1.6,
         ),
@@ -258,7 +253,6 @@ class Aboutapp extends StatelessWidget {
               number,
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),

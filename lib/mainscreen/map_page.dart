@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+import '../languages.dart';
 
 class MarkerInfo {
   final LatLng point;
@@ -14,6 +17,7 @@ class MarkerInfo {
   double distance = 0;
   MarkerInfo({required this.point, required this.name});
 }
+
 class MapPage extends StatefulWidget {
   final LatLng initialLocation;
   final String locationName;
@@ -242,7 +246,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   }
   Future<void> _searchAndNavigate([String? query]) async {
     final searchQuery = query ?? searchController.text;
-
     if (searchQuery.isEmpty) return;
 
     final apiKey = '48b0594741134ba7a54846c836ba8935';
@@ -260,7 +263,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
         setState(() {
           markers.removeWhere((marker) => marker.child is Icon);
-
           markers.add(
             Marker(
               point: searchLocation,
@@ -269,9 +271,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
               child: const Icon(Icons.place, color: Colors.red, size: 40),
             ),
           );
-
           _mapController.move(searchLocation, 15.0);
-
           _updateRoute(currentLocation, searchLocation);
         });
       } else {
@@ -378,18 +378,23 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: _buildAppBar(),
-      body: Stack(
-        children: [
-          _buildMap(),
-          _buildSearchBar(),
-          if (isMarkerListVisible) _buildFloatingMarkerList(),
-          if (selectedMarker != null) _buildSelectedMarkerInfo(),
-        ],
+    return Directionality(
+      textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: _buildAppBar(),
+        body: Stack(
+          children: [
+            _buildMap(),
+            _buildSearchBar(),
+            if (isMarkerListVisible) _buildFloatingMarkerList(),
+            if (selectedMarker != null) _buildSelectedMarkerInfo(),
+          ],
+        ),
+        floatingActionButton: _buildFloatingActionButtons(),
       ),
-      floatingActionButton: _buildFloatingActionButtons(),
     );
   }
   PreferredSizeWidget _buildAppBar() {
@@ -414,15 +419,13 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           ),
         ),
       ),
-      title: const Text(
-        'الخريطة',
+      title:  Text(
+        'map_title'.tr,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       iconTheme: const IconThemeData(color: Colors.white),
     );
   }
-
-
   Widget _buildMap() {
     return FlutterMap(
       mapController: _mapController,
@@ -468,7 +471,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         child: TextField(
           controller: searchController,
           decoration: InputDecoration(
-            hintText: 'ابحث',
+            hintText: 'search_hintmap'.tr, // استخدام مفتاح اللغة
             suffixIcon: IconButton(
               icon: const Icon(Icons.search, color: Colors.blue),
               onPressed: _searchAndNavigate,
@@ -509,8 +512,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                 color: Colors.blue,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              child: const Text(
-                'المفارز الطبية',
+              child:  Text(
+                'medical_markers'.tr, // استخدام مفتاح اللغة
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -591,7 +594,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'المسافة: ${_getFormattedDistance()}',
+                      'distance'.tr + ': ${_getFormattedDistance()}',
                       style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white
