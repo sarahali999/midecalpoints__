@@ -25,6 +25,7 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 class _TopBarState extends State<TopBar> {
   final TextEditingController _searchController = TextEditingController();
   bool isLoading = false;
+
   Future<void> _searchAndNavigate(String query) async {
     if (query.isEmpty) return;
     setState(() => isLoading = true);
@@ -33,30 +34,27 @@ class _TopBarState extends State<TopBar> {
     final url = Uri.parse(
         'https://api.opencagedata.com/geocode/v1/json?q=$query&key=$apiKey'
     );
-
     try {
       final response = await http.get(url);
       debugPrint("Response status: ${response.statusCode}");
       debugPrint("Response body: ${response.body}");
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
         if (data['results']?.isNotEmpty ?? false) {
           final lat = data['results'][0]['geometry']['lat'];
           final lng = data['results'][0]['geometry']['lng'];
           final searchLocation = LatLng(lat, lng);
-
-          Navigator.push(
+          print(searchLocation);
+           Navigator.push(
             context,
-            MaterialPageRoute(
+             MaterialPageRoute(
               builder: (context) => MapPage(
                 initialLocation: searchLocation,
-                locationName: query,
-                isSearchEntry: true,
+               locationName: query,
+               isSearchEntry: true,
               ),
-            ),
-          );
+             ),
+           );
         } else {
           _showSnackBar('No matching locations found for: $query');
         }

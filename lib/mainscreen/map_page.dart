@@ -60,7 +60,14 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    _locateUser();
+
+     if(widget.isSearchEntry) {
+       searchController.text = widget.locationName;
+       _searchAndNavigate();
+     }else {
+       _locateUser();
+     }
+     widget.isSearchEntry ? print("formSearch") :
     _fetchMarkersFromApi();
   }
 
@@ -79,8 +86,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
     final url = Uri.parse(
         'https://router.project-osrm.org/route/v1/driving/'
-            '${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson'
-    );
+            '${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson');
 
     try {
       final response = await http.get(url);
@@ -282,7 +288,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           SnackBar(
             content: Text('Error searching for location: $e'),
             duration: const Duration(seconds: 2),
-          )
+         )
       );
     }
   }
@@ -330,11 +336,9 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     });
   }
   Future<void> _locateUser() async {
-    // إذا كان الدخول عبر البحث، نتجاهل تحديد الموقع
     if (widget.isSearchEntry) {
       return;
     }
-
     try {
       var location = Location();
       bool serviceEnabled = await location.serviceEnabled();
@@ -417,6 +421,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       iconTheme: const IconThemeData(color: Colors.white),
     );
   }
+
+
   Widget _buildMap() {
     return FlutterMap(
       mapController: _mapController,
