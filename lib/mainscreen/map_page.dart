@@ -14,21 +14,21 @@ class MarkerInfo {
   double distance = 0;
   MarkerInfo({required this.point, required this.name});
 }
-
 class MapPage extends StatefulWidget {
   final LatLng initialLocation;
   final String locationName;
+  final bool isSearchEntry;
 
   const MapPage({
     Key? key,
     required this.initialLocation,
     required this.locationName,
+    this.isSearchEntry = false,
   }) : super(key: key);
 
   @override
   _MapPageState createState() => _MapPageState();
 }
-
 class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   final MapController _mapController = MapController();
   LatLng currentLocation = const LatLng(0, 0);
@@ -44,6 +44,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
   late AnimationController _zoomAnimationController;
+
   @override
   void initState() {
     super.initState();
@@ -59,18 +60,10 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-
-
-
-    // _locateUser();
-    //////////////////////////////////////////////
-
+    _locateUser();
     _fetchMarkersFromApi();
-
-    if (widget.initialLocation != const LatLng(0, 0)) {
-      _updateRoute(currentLocation, widget.initialLocation);
-    }
   }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -336,8 +329,12 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       );
     });
   }
-
   Future<void> _locateUser() async {
+    // إذا كان الدخول عبر البحث، نتجاهل تحديد الموقع
+    if (widget.isSearchEntry) {
+      return;
+    }
+
     try {
       var location = Location();
       bool serviceEnabled = await location.serviceEnabled();
@@ -424,8 +421,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     return FlutterMap(
       mapController: _mapController,
       options: MapOptions(
-        initialCenter: widget.initialLocation,
-        initialZoom: 15.0,
+        initialCenter: currentLocation,
+        initialZoom: 3.0,
         onTap: (_, __) => _clearSelection(),
       ),
       children: [
@@ -436,16 +433,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         PolylineLayer(polylines: polylines),
         MarkerLayer(markers: [...markers, ...routePoints]),
         MarkerLayer(markers: [
-          Marker(
-            point: widget.initialLocation,
-            width: 50.0,
-            height: 50.0,
-            child: const Icon(
-                Icons.location_pin,
-                color: Colors.red,
-                size: 40
-            ),
-          ),
           if (userLocationMarker != null) userLocationMarker!,
           ...markers,
           ...routePoints
@@ -453,6 +440,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       ],
     );
   }
+
   Widget _buildSearchBar() {
     return Positioned(
       top: kToolbarHeight + MediaQuery.of(context).padding.top + 10,

@@ -25,12 +25,11 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 class _TopBarState extends State<TopBar> {
   final TextEditingController _searchController = TextEditingController();
   bool isLoading = false;
-
   Future<void> _searchAndNavigate(String query) async {
     if (query.isEmpty) return;
     setState(() => isLoading = true);
 
-    final apiKey = '48b0594741134ba7a54846c836ba8935'; // Replace with your API key
+    final apiKey = '48b0594741134ba7a54846c836ba8935';
     final url = Uri.parse(
         'https://api.opencagedata.com/geocode/v1/json?q=$query&key=$apiKey'
     );
@@ -48,13 +47,13 @@ class _TopBarState extends State<TopBar> {
           final lng = data['results'][0]['geometry']['lng'];
           final searchLocation = LatLng(lat, lng);
 
-          // Navigate to MapPage
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => MapPage(
                 initialLocation: searchLocation,
                 locationName: query,
+                isSearchEntry: true,
               ),
             ),
           );
