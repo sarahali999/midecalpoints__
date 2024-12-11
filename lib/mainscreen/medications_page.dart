@@ -50,7 +50,6 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
           'Authorization': 'Bearer $jwtToken',
         },
       );
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {

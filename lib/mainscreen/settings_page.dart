@@ -224,8 +224,8 @@ class _SettingsPageState extends State<SettingsPage> {
         leading: Icon(
           icon,
           color: icon == Icons.logout || icon == Icons.dangerous
-              ? Colors.red // هنا قمت بتغيير اللون إلى الأحمر فقط للأيقونات المطلوبة
-              : Color(0xFf259e9f), // لترك الألوان الأخرى كما هي
+              ? Colors.red
+              : Color(0xFf259e9f),
         ),
         title: Text(
           title,
@@ -246,6 +246,8 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+
+
   Widget _buildFooterText() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -320,11 +321,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           controller: _thirdNameController,
                           labelText: "last_name".tr,
                         ),
-
-
-                        _buildTextField(
+                        _buildTextFieldAge(
                           controller: _birthYearController,
-                          labelText:"age".tr,
+                          labelText: "birth_date".tr,
+                          isAge: true,
                         ),
                         _buildCountryDropdown(
                           controller: _countryController,
@@ -562,6 +562,55 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
 
   }
+  Widget _buildTextFieldAge({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+    bool isAge = false, // Add this line
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        // Add these lines for age validation
+        keyboardType: isAge ? TextInputType.number : TextInputType.text,
+        inputFormatters: isAge
+            ? [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(4),
+        ]
+            : null,
+        validator: isAge
+            ? (value) {
+          if (value == null || value.length != 4) {
+            return ;
+          }
+          return ;
+        }
+            : null,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: _secondaryColor),
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: _primaryColor,
+            ),
+            onPressed: () {},
+          ),
+        ),
+      ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideX(
+          begin: 0.2, end: 0),
+    );
+  }
+
   Widget _buildCountryDropdown({
     required TextEditingController controller,
     required String labelText,

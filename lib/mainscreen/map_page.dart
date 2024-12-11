@@ -133,7 +133,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                   final List<dynamic> coordinates = data['routes'][0]['geometry']['coordinates'];
                   final List<dynamic> steps = data['routes'][0]['legs'][0]['steps'];
 
-                  // Create a more detailed route with higher resolution
                   final List<LatLng> routePointsList = coordinates.map((coord) =>
                       LatLng(coord[1], coord[0])
                   ).toList();
@@ -150,7 +149,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                     );
                   });
                   //
-                  // // Print more detailed step information
                   // for (var step in steps) {
                   //   final instruction = step['maneuver']['instruction'];
                   //   final distance = step['distance'];
@@ -493,10 +491,9 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildFloatingMarkerList() {
     return Positioned(
-      top: kToolbarHeight + MediaQuery.of(context).padding.top + 16,
+      top: (Get.height - (Get.height * 0.4)) / 2,
       right: 16,
       child: Container(
         width: Get.width * 0.6,
@@ -538,7 +535,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.symmetric(vertical: 8),
@@ -582,6 +578,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       ),
     );
   }
+
   Widget _buildSelectedMarkerInfo() {
     return Positioned(
       bottom: 16,

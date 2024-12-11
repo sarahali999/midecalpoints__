@@ -25,9 +25,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   final personalInfoKey = GlobalKey<FormState>();
   final medicalInfoKey = GlobalKey<FormState>();
   final emergencyContactKey = GlobalKey<FormState>();
-
-  int? selectedDay;
-  String? selectedMonth;
   String? selectedYear;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController middleNameController = TextEditingController();
@@ -568,13 +565,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                              );
                             }
                           },
-                          selectedDay: selectedDay,
-                          selectedMonth: selectedMonth,
+
                           selectedYear: selectedYear,
-                          onDayChanged: (value) =>
-                              setState(() => selectedDay = int.parse(value!)),
-                          onMonthChanged: (value) =>
-                              setState(() => selectedMonth = value!),
+
                           onYearChanged: (value) => setState(() =>
                           selectedYear = value),
                         ),

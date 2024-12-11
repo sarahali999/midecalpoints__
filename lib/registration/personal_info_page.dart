@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'Searchable_country.dart';
 import 'countries.dart';
@@ -14,12 +15,10 @@ class PersonalInfoPage extends StatefulWidget {
   final TextEditingController countryController;
   final TextEditingController houseController;
   final int selectedGender;
-  final int? selectedDay;
-  final String? selectedMonth;
+
   final String? selectedYear;
   final Function(int?) onGenderChanged;
-  final Function(String?) onDayChanged;
-  final Function(String?) onMonthChanged;
+
   final Function(String?) onYearChanged;
 
   const PersonalInfoPage({
@@ -33,12 +32,10 @@ class PersonalInfoPage extends StatefulWidget {
     required this.countryController,
     required this.houseController,
     required this.selectedGender,
-    required this.selectedDay,
-    required this.selectedMonth,
+
     required this.selectedYear,
     required this.onGenderChanged,
-    required this.onDayChanged,
-    required this.onMonthChanged,
+
     required this.onYearChanged,
   }) : super(key: key);
 
@@ -113,8 +110,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       });
     }
   }
-
-  Widget _buildBirthDateSection(double spacing) {
+  Widget _buildBirthYearSection(double spacing) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -128,93 +124,39 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             ),
           ),
         ),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: 'day'.tr,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFFd6dedf),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                ),
-                value: widget.selectedDay?.toString(),
-                items: days.map((day) {
-                  return DropdownMenuItem<String>(
-                    value: day.toString(),
-                    child: Text(
-                      day.toString(),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                onChanged: widget.onDayChanged,
-              ),
-            ),
-            SizedBox(width: spacing * 0.5),
-            Expanded(
-              flex: 3,
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: 'month'.tr,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFFd6dedf),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                ),
-                value: widget.selectedMonth,
-                items: months.map((month) {
-                  return DropdownMenuItem<String>(
-                    value: month,
-                    child: Text(
-                      month,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                onChanged: widget.onMonthChanged,
-              ),
-            ),
-            SizedBox(width: spacing * 0.5),
-            Expanded(
-              flex: 2,
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: 'year'.tr,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFFd6dedf),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                ),
-                value: widget.selectedYear,
-                items: years.map((year) {
-                  return DropdownMenuItem<String>(
-                    value: year,
-                    child: Text(
-                      year,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                onChanged: widget.onYearChanged,
-              ),
-            ),
+        TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(4),
           ],
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            filled: true,
+            fillColor: Color(0xFFd6dedf),
+            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            suffixIcon: IconButton(
+              icon: Icon(
+                Icons.calendar_today,
+                color: Colors.grey,
+              ),
+              onPressed: () {},
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.length != 4) {
+              return 'الرجاء إدخال أربعة أرقام فقط';
+            }
+            return null;
+          },
+          onChanged: (value) {
+            widget.onYearChanged(value);
+          },
         ),
+
       ],
     );
   }
@@ -344,7 +286,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             ),
 
           SizedBox(height: spacing),
-          _buildBirthDateSection(spacing),
+          _buildBirthYearSection(spacing),
           SizedBox(height: spacing),
      DropdownButtonFormField<String>(
     value: _currentGenderKey,

@@ -49,6 +49,7 @@ class _TopBarState extends State<TopBar> {
            Navigator.push(
             context,
              MaterialPageRoute(
+
               builder: (context) => MapPage(
                 initialLocation: searchLocation,
                locationName: query,
@@ -85,6 +86,7 @@ class _TopBarState extends State<TopBar> {
           ? TextDirection.rtl
           : TextDirection.ltr,
       child: AppBar(
+
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xfff6f6f6),
         elevation: 0,

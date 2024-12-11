@@ -98,6 +98,7 @@ class HealthInfo extends StatelessWidget {
             style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: Color(0xFf259e9f)),
           ),
           SizedBox(height: Get.height * 0.01),
+
           _buildInfoRow(Icons.phone, "${'phone_number'.tr}: ${user?.phoneNumber ?? 'not_available'.tr}"),
           _buildInfoRow(
             Icons.person,
@@ -109,7 +110,7 @@ class HealthInfo extends StatelessWidget {
           ),
           _buildInfoRow(
             Icons.calendar_today,
-            "${'age'.tr}: ${userData?.birthYear ?? 'not_available'.tr}",
+            "${'birth_date'.tr}: ${userData?.birthYear ?? 'not_available'.tr}",
           ),
           SizedBox(height: Get.height * 0.02),
           Text(
