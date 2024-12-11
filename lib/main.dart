@@ -42,14 +42,22 @@ class _MyAppState extends State<MyApp> {
         if (snapshot.hasError) {
           return const Center(child: Text('Error loading language'));
         }
-
         final locale = snapshot.data ?? 'ar';
-
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: const Color(0xfff6f6f6),
             fontFamily: 'Cairo',
+            dialogTheme: DialogTheme(
+              backgroundColor: Color(0xfff6f6f6),
+
+              titleTextStyle: TextStyle(
+                fontFamily: 'Cairo',
+              ),
+              contentTextStyle: TextStyle(
+                fontFamily: 'Cairo',
+              ),
+            ),
           ),
           translations: Languages(),
           locale: Locale(locale),

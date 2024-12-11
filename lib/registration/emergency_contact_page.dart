@@ -33,6 +33,7 @@ class EmergencyContactPage extends StatefulWidget {
 }
 
 class _EmergencyContactPageState extends State<EmergencyContactPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emergencyContactNameController = TextEditingController();
   final TextEditingController emergencyContactCountryController = TextEditingController();
   final TextEditingController emergencyContactProvinceController = TextEditingController();
@@ -308,7 +309,9 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     },
     ),
             SizedBox(height: spacing),
-            IntlPhoneField(
+    Form(
+    key: _formKey,
+    child: IntlPhoneField(
               decoration: InputDecoration(
                 labelText: 'emergencyContactPage.phoneNumber'.tr,
                 border: OutlineInputBorder(
@@ -328,11 +331,11 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                 print(phone.completeNumber);
               },
               onCountryChanged: (country) {
-                setState(() {
-                  initialCountryCode = country.code;
-                });
+                _formKey.currentState?.reset();
+                print('Country changed to: ${country.code}');
               },
             ),
+    ),
             SizedBox(height: spacing),
           ],
         ),

@@ -38,14 +38,14 @@ class _NewsState extends State<News> {
         } else if (snapshot.hasError) {
           return Center(
             child: Text(
-              'loading_news'.tr, // Add this key to the Languages class
+              'loading_news'.tr,
               style: TextStyle(color: Colors.black),
             ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: Text(
-              'no_news_available'.tr, // Add this key to the Languages class
+              'no_news_available'.tr,
               style: TextStyle(color: Colors.black),
             ),
           );
@@ -101,7 +101,7 @@ class _NewsState extends State<News> {
                                   );
                                 },
                                 child: Text(
-                                  'view_all'.tr, // Add this key to the Languages class
+                                  'view_all'.tr,
                                   style: TextStyle(
                                     color: Colors.black54,
                                     fontWeight: FontWeight.bold,

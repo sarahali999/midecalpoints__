@@ -40,7 +40,6 @@ class _PublicnoticesState extends State<Publicnotices> {
     final Map<String, dynamic> notificationMap = {
       'title': notification.title ?? 'No Title',
       'body': notification.body ?? 'No Content',
-      // Use bigPicture for image
       'image': notification.bigPicture ?? 'No Content',
     };
 

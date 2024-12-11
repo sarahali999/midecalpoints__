@@ -21,7 +21,7 @@ class ChronicDiseasesPage extends GetView<UserController> {
           ),
         ),
         title: Text(
-          'chronic_diseases_and_allergies'.tr, // Translation key
+          'chronic_diseases_and_allergies'.tr,
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         centerTitle: true,

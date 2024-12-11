@@ -61,7 +61,7 @@ class MedicalInfoPage extends StatefulWidget {
         value: _currentBloodType,
         hint: Text('اختر فصيلة الدم'),
     decoration: InputDecoration(
-    labelText: 'blood_type'.tr,
+      labelText: 'blood_type'.tr,
     border: OutlineInputBorder(
     borderSide: BorderSide.none,
     borderRadius: BorderRadius.circular(10.0),
@@ -75,6 +75,7 @@ class MedicalInfoPage extends StatefulWidget {
     return DropdownMenuItem<String>(
     value: entry.key,
     child: Text(entry.key),
+
     );
     }).toList(),
     onChanged: (String? newValue) {
@@ -83,6 +84,7 @@ class MedicalInfoPage extends StatefulWidget {
     widget.onBloodTypeChanged(newValue != null ? bloodTypeOptions[newValue] : 0);
     });
     }
+
     ),
 
           SizedBox(height: spacing),

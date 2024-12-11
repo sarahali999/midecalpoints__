@@ -122,7 +122,7 @@ class _DiagnosisPageState extends State<DiagnosisPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              'assets/icons/nodata.svg', // أيقونة لا توجد بيانات
+              'assets/icons/nodata.svg',
               height: 180,
               width: 200,            ),
             SizedBox(height: 16),

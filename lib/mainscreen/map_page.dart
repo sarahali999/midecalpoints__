@@ -5,10 +5,10 @@ import 'package:flutter/animation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+
 import '../languages.dart';
 
 class MarkerInfo {
@@ -21,18 +21,17 @@ class MarkerInfo {
 class MapPage extends StatefulWidget {
   final LatLng initialLocation;
   final String locationName;
-  final bool isSearchEntry;
 
   const MapPage({
     Key? key,
     required this.initialLocation,
     required this.locationName,
-    this.isSearchEntry = false,
   }) : super(key: key);
 
   @override
   _MapPageState createState() => _MapPageState();
 }
+
 class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   final MapController _mapController = MapController();
   LatLng currentLocation = const LatLng(0, 0);
@@ -64,14 +63,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-
-     if(widget.isSearchEntry) {
-       searchController.text = widget.locationName;
-       _searchAndNavigate();
-     }else {
-       _locateUser();
-     }
-     widget.isSearchEntry ? print("formSearch") :
+    _locateUser();
     _fetchMarkersFromApi();
   }
 
@@ -90,7 +82,9 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
     final url = Uri.parse(
         'https://router.project-osrm.org/route/v1/driving/'
-            '${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson');
+            '${start.longitude},${start.latitude};${end.longitude},${end.latitude}'
+            '?overview=full&geometries=geojson&steps=true&annotations=true'
+    );
 
     try {
       final response = await http.get(url);
@@ -100,58 +94,87 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
         if (data['routes'] != null && data['routes'].isNotEmpty) {
           final List<dynamic> coordinates = data['routes'][0]['geometry']['coordinates'];
+          final List<dynamic> steps = data['routes'][0]['legs'][0]['steps'];
 
           final List<LatLng> routePointsList = coordinates.map((coord) =>
               LatLng(coord[1], coord[0])
           ).toList();
 
-          final List<LatLng> reducedRoutePoints = _reducePoints(routePointsList);
-
           setState(() {
             polylines.add(
               Polyline(
-                points: reducedRoutePoints,
-                color: const Color(0xFf259e9f).withOpacity(0.8),
+                points: routePointsList,
+                color: const Color(0xFF259e9f).withOpacity(0.8),
                 strokeWidth: 4.0,
                 borderColor: Colors.white.withOpacity(0.5),
                 borderStrokeWidth: 2.0,
               ),
             );
+          });
+          Future<void> _updateRoute(LatLng start, LatLng end) async {
+            setState(() {
+              polylines.clear();
+              routePoints.clear();
+            });
 
-            polylines.add(
-              Polyline(
-                points: reducedRoutePoints,
-                color: Colors.black.withOpacity(0.2),
-                strokeWidth: 6.0,
-                borderStrokeWidth: 0,
-              ),
+            final url = Uri.parse(
+                'https://router.project-osrm.org/route/v1/driving/'
+                    '${start.longitude},${start.latitude};${end.longitude},${end.latitude}'
+                    '?overview=full&geometries=geojson&steps=true&annotations=true'
             );
 
-            routePoints = reducedRoutePoints.map((point) =>
-                Marker(
-                  point: point,
-                  width: 12.0,
-                  height: 12.0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFf259e9f),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2.0,
+            try {
+              final response = await http.get(url);
+
+              if (response.statusCode == 200) {
+                final Map<String, dynamic> data = json.decode(response.body);
+
+                if (data['routes'] != null && data['routes'].isNotEmpty) {
+                  final List<dynamic> coordinates = data['routes'][0]['geometry']['coordinates'];
+                  final List<dynamic> steps = data['routes'][0]['legs'][0]['steps'];
+
+                  // Create a more detailed route with higher resolution
+                  final List<LatLng> routePointsList = coordinates.map((coord) =>
+                      LatLng(coord[1], coord[0])
+                  ).toList();
+
+                  setState(() {
+                    polylines.add(
+                      Polyline(
+                        points: routePointsList,
+                        color: const Color(0xFF259e9f).withOpacity(0.8),
+                        strokeWidth: 4.0,
+                        borderColor: Colors.white.withOpacity(0.5),
+                        borderStrokeWidth: 2.0,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-            ).toList();
-          });
+                    );
+                  });
+                  //
+                  // // Print more detailed step information
+                  // for (var step in steps) {
+                  //   final instruction = step['maneuver']['instruction'];
+                  //   final distance = step['distance'];
+                  //   final duration = step['duration'];
+                  //   final name = step['name'] ?? 'Unnamed Street';
+                  //
+                  //   print('Instruction: $instruction');
+                  //   print('Street: $name');
+                  //   print('Distance: ${distance.toStringAsFixed(2)} meters');
+                  //   print('Duration: ${duration.toStringAsFixed(2)} seconds');
+                  //   print('---');
+                  // }
+                }
+              }
+            } catch (e) {
+              debugPrint("Error fetching route: $e");
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error calculating route: $e'),
+                    duration: const Duration(seconds: 2),
+                  )
+              );
+            }
+          }
         }
       }
     } catch (e) {
@@ -163,22 +186,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           )
       );
     }
-  }
-
-  List<LatLng> _reducePoints(List<LatLng> points, {int maxPoints = 10}) {
-    if (points.length <= maxPoints) return points;
-
-    List<LatLng> reducedPoints = [];
-    int step = (points.length / maxPoints).ceil();
-
-    for (int i = 0; i < points.length; i += step) {
-      reducedPoints.add(points[i]);
-    }
-    if (reducedPoints.last != points.last) {
-      reducedPoints.add(points.last);
-    }
-
-    return reducedPoints;
   }
   Future<void> _fetchMarkersFromApi() async {
     final url = Uri.parse('http://medicalpoint-api.tatwer.tech/api/Mobile/CenterMap');
@@ -246,6 +253,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   }
   Future<void> _searchAndNavigate([String? query]) async {
     final searchQuery = query ?? searchController.text;
+
     if (searchQuery.isEmpty) return;
 
     final apiKey = '48b0594741134ba7a54846c836ba8935';
@@ -263,6 +271,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
         setState(() {
           markers.removeWhere((marker) => marker.child is Icon);
+
           markers.add(
             Marker(
               point: searchLocation,
@@ -271,7 +280,9 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
               child: const Icon(Icons.place, color: Colors.red, size: 40),
             ),
           );
+
           _mapController.move(searchLocation, 15.0);
+
           _updateRoute(currentLocation, searchLocation);
         });
       } else {
@@ -288,7 +299,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           SnackBar(
             content: Text('Error searching for location: $e'),
             duration: const Duration(seconds: 2),
-         )
+          )
       );
     }
   }
@@ -335,10 +346,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       );
     });
   }
+
   Future<void> _locateUser() async {
-    if (widget.isSearchEntry) {
-      return;
-    }
     try {
       var location = Location();
       bool serviceEnabled = await location.serviceEnabled();
@@ -471,9 +480,9 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         child: TextField(
           controller: searchController,
           decoration: InputDecoration(
-            hintText: 'search_hintmap'.tr, // استخدام مفتاح اللغة
+            hintText: 'search_hintmap'.tr,
             suffixIcon: IconButton(
-              icon: const Icon(Icons.search, color: Colors.blue),
+              icon: const Icon(Icons.search, color: Color(0xFF259e9f)),
               onPressed: _searchAndNavigate,
             ),
             border: InputBorder.none,
@@ -487,55 +496,82 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
   Widget _buildFloatingMarkerList() {
     return Positioned(
-      top: kToolbarHeight + MediaQuery.of(context).padding.top + 70,
+      top: kToolbarHeight + MediaQuery.of(context).padding.top + 16,
       right: 16,
       child: Container(
-        width: 220,
-        height: 300,
+        width: Get.width * 0.6,
+        height: Get.height * 0.4,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withOpacity(0.12),
               spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, 3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
               decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child:  Text(
-                'medical_markers'.tr, // استخدام مفتاح اللغة
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.white,
+                color: Color(0xFF259e9f),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(16),
                 ),
               ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'medical_markers'.tr,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: Get.width * 0.04,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Icon(Icons.medical_services_outlined, color: Colors.white, size: Get.width * 0.05),
+                ],
+              ),
             ),
+
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 itemCount: markerInfos.length,
+                separatorBuilder: (context, index) => Divider(
+                  height: 1,
+                  color: Colors.grey[300],
+                  indent: 16,
+                  endIndent: 16,
+                ),
                 itemBuilder: (context, index) {
                   final info = markerInfos[index];
                   return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     title: Text(
                       info.name,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: Get.width * 0.035,
+                      ),
                     ),
                     subtitle: Text(
                       '${info.distance.toStringAsFixed(2)} km',
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: Get.width * 0.03,
+                      ),
                     ),
-                    leading: const Icon(Icons.location_on, color: Colors.blue),
+                    leading: Icon(
+                      Icons.location_on,
+                      color: Color(0xFF259e9f),
+                      size: Get.width * 0.08,
+                    ),
                     onTap: () => _selectMarker(info),
                   );
                 },
@@ -546,7 +582,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildSelectedMarkerInfo() {
     return Positioned(
       bottom: 16,

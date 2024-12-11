@@ -10,52 +10,56 @@ class DeleteAccount extends StatelessWidget {
     final bool? confirmDelete = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title:  Row(
-            children: [
-              Icon(Icons.warning_amber_rounded,
-                  color: Colors.red, size: 32),
-              SizedBox(width: 15),
-              Text(
-                'warning'.tr,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title:  Row(
+              children: [
+                Icon(Icons.warning_amber_rounded,
+                    color: Colors.red, size: 32),
+                SizedBox(width: 15),
+                Text(
+                  'warning'.tr,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+              ],
+            ),
+            content: Text(
+              'confirm_account_deletion'.tr,
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'cancel'.tr,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 5,
+                ),
+                child: Text(
+                  'confirm'.tr,
+                  style: TextStyle(color: Colors.white, fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () => Navigator.of(context).pop(true),
               ),
             ],
           ),
-          content: Text(
-            'confirm_account_deletion'.tr, // Add this key to the Languages class
-            style: TextStyle(fontSize: 16),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'cancel'.tr, // Add this key to the Languages class
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 5,
-              ),
-              child: Text(
-                'confirm'.tr, // Add this key to the Languages class
-                style: TextStyle(color: Colors.white, fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () => Navigator.of(context).pop(true),
-            ),
-          ],
         );
       },
     );
@@ -119,56 +123,60 @@ class DeleteAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.warning_amber_rounded, color: Colors.red, size: 40),
-            SizedBox(height: 10),
-            Text(
-              'confirm_account_deletion'.tr,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.warning_amber_rounded, color: Colors.red, size: 40),
+              SizedBox(height: 10),
+              Text(
+                'confirm_account_deletion'.tr,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text('cancel'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('cancel'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
+                    onPressed: () => _deleteAccount(context),
+                    child: Text('confirm'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
-                  onPressed: () => _deleteAccount(context),
-                  child: Text('confirm'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

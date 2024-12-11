@@ -21,6 +21,8 @@ class _LoginState extends State<Login> {
   bool isLoading = false;
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 
 
   bool isRTL = true;
@@ -221,22 +223,29 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildPhoneNumberField() {
-    return IntlPhoneField(
-      decoration: InputDecoration(
-        labelText: 'phone_number'.tr,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+    Widget _buildPhoneNumberField() {
+
+      return Form(
+        key: _formKey,
+        child: IntlPhoneField(
+          decoration: InputDecoration(
+            labelText: 'phone_number'.tr,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            filled: true,
+            fillColor: const Color(0xffecf0f1),
+          ),
+          initialCountryCode: 'IQ',
+          onChanged: (phone) {
+            phoneController.text = phone.completeNumber;
+          },
+          onCountryChanged: (country) {
+            _formKey.currentState?.reset();
+            print('Country changed to: ${country.code}');
+          },
         ),
-        filled: true,
-        fillColor: const Color(0xffecf0f1),
-      ),
-      initialCountryCode: 'IQ',
-      onChanged: (phone) {
-        phoneController.text = phone.completeNumber;
-        print(phone.completeNumber);
-      },
-    );
+      );
   }
 
   Widget _buildPasswordField() {
@@ -315,7 +324,7 @@ class _LoginState extends State<Login> {
           if (token != null) {
             Get.to(() => LoadingScreen(onLoaded: () {}));
             await Future.delayed(const Duration(seconds: 2));
-            Get.off(() => MainScreen());
+            Get.offAll(() => MainScreen());
           }
         },
         child: Text(

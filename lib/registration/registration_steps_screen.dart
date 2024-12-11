@@ -242,7 +242,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                         ),
                         SizedBox(width: 12),
                         Text(
-                          'alert'.tr,  // Use translation key instead of 'تنبيه'
+                          'alert'.tr,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -253,7 +253,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'cancel_registration_confirm'.tr,  // Use translation key instead of 'هل تريد إلغاء عملية التسجيل؟'
+                      'cancel_registration_confirm'.tr,
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.black54,
@@ -273,7 +273,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                               ),
                             ),
                             child: Text(
-                              'no'.tr,  // Use translation key instead of 'لا'
+                              'no'.tr,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -294,7 +294,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                               ),
                             ),
                             child: Text(
-                              'yes'.tr,  // Use translation key instead of 'نعم'
+                              'yes'.tr,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,

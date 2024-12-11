@@ -45,7 +45,7 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
   }
 
   String bloodType(int? type) {
-    if (type == null) return "غير معروف";
+    if (type == null)  return 'not_specified'.tr;
 
     switch (type) {
       case 1:
@@ -65,38 +65,38 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
       case 8:
         return "o-";
       default:
-        return "غير معروف";
+        return 'not_specified'.tr;
     }
   }
 
   String getEmergencyContactRelationship(int? relationship) {
     switch (relationship) {
       case 1:
-        return 'اب';
+        return 'emergencyContactPage.father'.tr;
       case 2:
-        return 'ام';
+        return 'emergencyContactPage.mother'.tr;
       case 3:
-        return 'اخ';
+        return 'emergencyContactPage.brother'.tr;
       case 4:
-        return 'اخت';
+        return 'emergencyContactPage.sister'.tr;
       case 5:
-        return 'ابن';
+        return 'emergencyContactPage.son'.tr;
       case 6:
-        return 'ابنة';
+        return 'emergencyContactPage.daughter'.tr;
       case 7:
-        return 'زوج';
+        return 'emergencyContactPage.husband'.tr;
       case 8:
-        return 'زوجة';
+        return 'emergencyContactPage.wife'.tr;
       case 9:
-        return 'أخرى';
+        return 'emergencyContactPage.other'.tr;
       default:
-        return 'غير معروف';
+        return 'not_specified'.tr;
     }
   }
 
 
-  final genderMap = {1: 'ذكر', 2: 'أنثى'};
-  String getGender(int? gender) => genderMap[gender] ?? 'غير معروف';
+  final genderMap = {1: 'male'.tr, 2: 'female'.tr};
+  String getGender(int? gender) => genderMap[gender] ?? 'not_specified'.tr;
 
   Future<void> fetchPatientDetails() async {
 

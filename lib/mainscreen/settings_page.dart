@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:midecalpoints/mainscreen/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../languages.dart';
+import '../login/verification.dart';
 import 'about.dart';
 import 'delete_account.dart';
 
@@ -34,7 +35,67 @@ class _SettingsPageState extends State<SettingsPage> {
       _notificationsEnabled = value;
     });
   }
+  Future<void> _logout() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            children: [
+              Icon(Icons.logout, color: Colors.red, size: 32),
+              SizedBox(width: 15),
+              Text(
+                'logout'.tr,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'confirm_logout'.tr,
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey,
+                textStyle: TextStyle(fontSize: 16),
+              ),
+              child: Text('cancel'.tr),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 5,
+              ),
+              child: Text(
+                'logout'.tr,
+                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('token');
+                Get.offAll(() => Login());
+              },
+            ),
+          ],
+        );
 
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -77,6 +138,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SizedBox(height: 20),
+            _buildSettingsOption(
+              icon: Icons.logout,
+              title: 'logout'.tr,
+              onTap: _logout,
+            ),
+            Spacer(),
+            Spacer(),
             _buildSettingsOption(
               icon: Icons.dangerous,
               title: 'delete_account'.tr,
@@ -139,14 +207,12 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-
   Widget _buildSettingsOption({
     required IconData icon,
     required String title,
     String? trailingText,
     required Function() onTap,
   }) {
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -155,7 +221,12 @@ class _SettingsPageState extends State<SettingsPage> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        leading: Icon(icon, color: Color(0xFf259e9f)),
+        leading: Icon(
+          icon,
+          color: icon == Icons.logout || icon == Icons.dangerous
+              ? Colors.red // هنا قمت بتغيير اللون إلى الأحمر فقط للأيقونات المطلوبة
+              : Color(0xFf259e9f), // لترك الألوان الأخرى كما هي
+        ),
         title: Text(
           title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -175,7 +246,6 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-
   Widget _buildFooterText() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16),

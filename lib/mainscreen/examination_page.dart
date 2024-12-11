@@ -142,7 +142,7 @@ class MedicalSuppliesWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(
-            'assets/icons/nodata.svg', // أيقونة لا توجد بيانات
+            'assets/icons/nodata.svg',
             height: 180,
             width: 200,
           ),
@@ -283,14 +283,15 @@ class MedicalSuppliesWidget extends StatelessWidget {
                     text: '$label: ',
                     style: TextStyle(
                       color: Colors.grey[700],
-                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Cairo',
                     ),
                   ),
                   TextSpan(
                     text: value,
                     style: TextStyle(
                       color: Colors.black87,
-                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Cairo',
+
                     ),
                   ),
                 ],

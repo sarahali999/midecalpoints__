@@ -55,7 +55,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   final Color _primaryColor = Color(0xFf259e9f);
   final Color _secondaryColor = Color(0xFf259e9f);
-  final Color _accentColor = Color(0xFFE0FBFC);
 
   @override
   void initState() {
@@ -338,11 +337,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         _buildTextField(
                           controller: _alleyController,
-                          labelText: "المحلة",
+                          labelText: "alley".tr,
                         ),
                         _buildTextField(
                           controller: _houseController,
-                          labelText: "alley".tr,
+                          labelText: "house".tr,
                         ),
                         _buildDropdown(
                           value: _selectedGender == 0 ? 1 : _selectedGender,
@@ -448,10 +447,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           labelText:"district".tr,
                         ), _buildTextField(
                           controller: _emergencyContactAlleyController,
-                          labelText:"المحلة",
+                          labelText:"alley".tr,
                         ), _buildTextField(
                           controller: _emergencyContactHouseController,
-                          labelText:"alley".tr,
+                          labelText:"house".tr,
                         ),
                         _buildDropdown(
                           value: _selectedEmergencyContactRelationship == 0 ? 1 : _selectedEmergencyContactRelationship,
@@ -513,7 +512,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: _primaryColor),
+                              borderSide: BorderSide(color:
+                              _primaryColor),
                             ),
                             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                           ),
@@ -614,16 +614,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onChanged: (value) {
                 controller.text = value ?? '';
               },
+              dropdownColor: Color(0xfff6f6f6),
+
               decoration: InputDecoration(
                 labelText: labelText,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: _primaryColor),
                 ),
               ),
+              icon: Icon(Icons.arrow_drop_down,
+                  color: _primaryColor),
             );
           }
           return Container();
@@ -694,6 +699,8 @@ Widget _buildProvinceDropdown() {
         _provinceController.text = newValue ?? '';
       });
     },
+    dropdownColor: Color(0xfff6f6f6),
+
     icon: Icon(Icons.arrow_drop_down,
         color: _primaryColor),
     // validator: (value) {
@@ -702,7 +709,8 @@ Widget _buildProvinceDropdown() {
     //   }
     //   return null;
     // },
-  );
+  ).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideX(
+      begin: -0.2, end: 0);
 }
 Widget _buildEmergencyContactProvinceDropdown() {
   return DropdownButtonFormField<String>(
@@ -734,7 +742,8 @@ Widget _buildEmergencyContactProvinceDropdown() {
     //   }
     //   return null;
     // },
-  );
+  ).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideX(
+      begin: -0.2, end: 0);
 }
 
   Widget _buildDropdown({
@@ -759,12 +768,14 @@ Widget _buildEmergencyContactProvinceDropdown() {
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         ),
         items: items,
+        dropdownColor: Color(0xfff6f6f6),
+
         onChanged: onChanged,
         icon: Icon(Icons.arrow_drop_down,
             color: _primaryColor),
+
         isExpanded: true,
-        dropdownColor: _accentColor,
-        style: TextStyle(color: _secondaryColor),
+        style: TextStyle(color:  Colors.black,),
       ),
     ).animate().fadeIn(duration: 500.ms, delay: 200.ms).slideX(
         begin: -0.2, end: 0);
@@ -782,21 +793,20 @@ Widget _buildEmergencyContactProvinceDropdown() {
       case 4:
         return "B-";
       case 5:
-        return "O+";
-      case 6:
-        return "O-";
-      case 7:
         return "AB+";
-      case 8:
+      case 6:
         return "AB-";
+      case 7:
+        return "o+";
+      case 8:
+        return "o-";
       default:
         return 'not_specified'.tr;
     }
   }
 
   String _translateEmergencyContactRelationship(int? relationship) {
-    if (relationship == null)         return 'not_specified'.tr;;
-
+    if (relationship == null)return 'not_specified'.tr;
     switch (relationship) {
       case 1:
         return 'emergencyContactPage.father'.tr;
@@ -805,11 +815,11 @@ Widget _buildEmergencyContactProvinceDropdown() {
       case 3:
         return 'emergencyContactPage.brother'.tr;
       case 4:
-        return 'mergencyContactPage.sister'.tr;
+        return 'emergencyContactPage.sister'.tr;
       case 5:
         return 'emergencyContactPage.son'.tr;
       case 6:
-        return 'emergencyContactPage.daughter';
+        return 'emergencyContactPage.daughter'.tr;
       case 7:
         return 'emergencyContactPage.husband'.tr;
       case 8:
@@ -822,8 +832,9 @@ Widget _buildEmergencyContactProvinceDropdown() {
   }
 
   String _translateGender(int? gender) {
-    if (gender == null)         return 'not_specified'.tr;;
-
+    if (gender == null) {
+      return 'not_specified'.tr;
+    }
     switch (gender) {
       case 1:
         return 'male'.tr;
