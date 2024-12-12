@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'app_routes.dart';
 import 'languages.dart';
+import 'app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,20 +46,7 @@ class _MyAppState extends State<MyApp> {
         final locale = snapshot.data ?? 'ar';
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: const Color(0xfff6f6f6),
-            fontFamily: 'Cairo',
-            dialogTheme: DialogTheme(
-              backgroundColor: Color(0xfff6f6f6),
-
-              titleTextStyle: TextStyle(
-                fontFamily: 'Cairo',
-              ),
-              contentTextStyle: TextStyle(
-                fontFamily: 'Cairo',
-              ),
-            ),
-          ),
+          theme: AppTheme.lightTheme,
           translations: Languages(),
           locale: Locale(locale),
           fallbackLocale: const Locale('ar'),

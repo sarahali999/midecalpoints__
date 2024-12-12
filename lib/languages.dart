@@ -555,7 +555,6 @@ class Languages extends Translations {
       'chronic_disease': 'نەخۆشیی درێژخایەن',
       'no_chronic_disease': 'نەخۆشیی درێژخایەنی نیە',
       'no_allergies': 'هەستیاریی نیە',
-
       'complete_medical_status': 'باری تەندروستی تەواو',
       'no_diagnosis': 'هیچ دیاریکردنێکی تەندروستی نیه',
       'no_jwt_token': 'توکن نەدۆزرایەوە. تکایه بچۆ ژوورەوە.',

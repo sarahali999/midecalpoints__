@@ -136,6 +136,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
       print('Response Status Code: ${response.statusCode}');
       print('Response Headers: ${response.headers}');
       print('Response Body: $responseBody');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('Registration Successful');
         Get.snackbar(
@@ -160,6 +161,10 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
           );
+
+          setState(() {
+            _isLoading = false;
+          });
         } else {
           Get.snackbar(
             'error'.tr,
@@ -167,6 +172,10 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
             backgroundColor: Colors.red[400],
             colorText: Colors.white,
           );
+
+          setState(() {
+            _isLoading = false;
+          });
         }
       }
     }
@@ -178,6 +187,10 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         backgroundColor: Colors.red[400],
         colorText: Colors.white,
       );
+
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
   @override
@@ -198,168 +211,14 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
 
     return WillPopScope(
         onWillPop: () async {
-      if (_currentPage > 0) {
-        _pageController.previousPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-        return false;
-      } else {
-        final shouldPop = await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              child: Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.warning_amber_rounded,
-                          color: Colors.amber,
-                          size: 28,
-                        ),
-                        SizedBox(width: 12),
-                        Text(
-                          'alert'.tr,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'cancel_registration_confirm'.tr,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 12),
-                              backgroundColor: Colors.grey[100],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              'no'.tr,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            onPressed: () => Navigator.of(context).pop(false),
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 12),
-                              backgroundColor: Colors.red[500],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              'yes'.tr,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            onPressed: () => Navigator.of(context).pop(true),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-        return shouldPop ?? false;
-      }
-    },
-    child: Scaffold(
-    body: Directionality(
-    textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-    child: Stack(
-    children: [
-    Positioned.fill(
-    left: 0,
-    right: 0,
-    bottom: screenHeight * 0.3,
-    top: 0,
-    child: Directionality(
-    textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-    child: Container(
-    decoration: BoxDecoration(
-    gradient: const LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [
-    Color(0xfffafbfb),
-    Color(0xFFecf2f3),
-    ],
-    ),
-    borderRadius: BorderRadius.only(
-    bottomLeft: Radius.circular(Get.width * 0.3),
-    bottomRight: Radius.circular(Get.width * 10),
-    ),
-    ),
-    ),
-    ),
-    ),
-    Positioned(
-    top: screenHeight * 0.05,
-    left: isRTL ? null : screenWidth * 0.05,
-    right: isRTL ? screenWidth * 0.05 : null,
-      child: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: Color(0xFf259e9f),
-          size: 24 * fontScale,
-        ),
-        onPressed: () {
           if (_currentPage > 0) {
             _pageController.previousPage(
               duration: Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
+            return false;
           } else {
-            showDialog(
+            final shouldPop = await showDialog<bool>(
               context: context,
               builder: (BuildContext context) {
                 return Dialog(
@@ -393,7 +252,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                             ),
                             SizedBox(width: 12),
                             Text(
-                              'تنبيه'.tr,
+                              'alert'.tr,
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -404,7 +263,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'هل تريد إلغاء عملية التسجيل؟'.tr,
+                          'cancel_registration_confirm'.tr,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black54,
@@ -424,14 +283,14 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  'لا'.tr,
+                                  'no'.tr,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                onPressed: () => Navigator.of(context).pop(),
+                                onPressed: () => Navigator.of(context).pop(false),
                               ),
                             ),
                             SizedBox(width: 12),
@@ -445,17 +304,14 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  'نعم'.tr,
+                                  'yes'.tr,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                },
+                                onPressed: () => Navigator.of(context).pop(true),
                               ),
                             ),
                           ],
@@ -466,231 +322,389 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                 );
               },
             );
+            return shouldPop ?? false;
           }
         },
-      ),
-    ),
-    Column(
-    children: [
-    SizedBox(height: screenHeight * 0.1),
-    Image.asset(
-    'assets/images/logo.png',
-    width: screenWidth * 0.2,
-    height: screenWidth * 0.2,
-    color: const Color(0xFf259e9f),
-    ),
-    SizedBox(height: 4),
-    Align(
-    alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
-    child: Padding(
-    padding: EdgeInsets.only(
-    top: screenHeight * 0.05,
-    right: isRTL ? screenWidth * 0.04 : 0,
-    left: isRTL ? 0 : screenWidth * 0.04,
-    ),
-    child: Column(
-    crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-    children: [
-    Align(
-    alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
-    child: Text(
-    'new_registration'.tr,
-    style: TextStyle(
-    fontSize: 24 * fontScale,
-    fontWeight: FontWeight.bold,
-    color: Colors.black87,
-    ),
-    ),
-    ),
-    SizedBox(height: 4),
-    Text(
-    'create_account_easily'.tr,
-    style: TextStyle(fontSize: 14 * fontScale, color: Colors.grey),
-    ),
-    SizedBox(height: 20),
-    ],
-    ),
-    ),
-    ),
-    Padding(
-    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-    child: Align(
-    alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
-    child: Column(
-    crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-    children: [
-    Text(
-    _titles[_currentPage],
-    style: TextStyle(
-    fontSize: 18 * fontScale,
-    fontWeight: FontWeight.bold,
-    color: Colors.black87,
-    ),
-    ),
-    SizedBox(height: 4),
-    Container(
-    width: textWidth,
-    height: 2,
-    color: Color(0xFf259e9f),
-    ),
-    ],
-    ),
-    ),
-    ),
-                Flexible(
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentPage = index;
-                      });
-                    },
-                    children: [
-                      SingleChildScrollView(
-                        child: PersonalInfoPage(
-                          firstNameController: firstNameController,
-                          lastNameController: lastNameController,
-                          middleNameController: middleNameController,
-                          alleyController: alleyController,
-                          districtController: districtController,
-                          governorateController: governorateController,
-                          countryController: countryController,
-                          houseController: houseController,
-                          selectedGender: _selectedGender,
-                          onGenderChanged: (value) {
-                            if (value != null) {
-                              setState(() {
-                                _selectedGender = value;
-                              }
-                             );
-                            }
-                          },
-
-                          selectedYear: selectedYear,
-
-                          onYearChanged: (value) => setState(() =>
-                          selectedYear = value),
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child: MedicalInfoPage(
-                          selectedBloodType: _selectedBloodType,
-                          onBloodTypeChanged: (value) {
-                            if (value != null) {
-                              setState(() {
-                                _selectedBloodType = value;
-                              });
-                            }
-                          },
-                          chronicDiseasesController: chronicDiseasesController,
-                          allergiesController: allergiesController,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child:EmergencyContactPage(
-                          emergencyContactNameController: emergencyContactNameController,
-                          emergencyContactRelationship: selectedRelationship,
-                          onRelationshipChanged: (int newRelationship) {
-                            setState(() {
-                              selectedRelationship = newRelationship;
-                            });
-                          },
-                          emergencyContactPhoneController: emergencyContactPhoneController,
-                          emergencyContactCountryController: emergencyContactCountryController,
-                          emergencyContactProvinceController: emergencyContactProvinceController,
-                          emergencyContactDistrictController: emergencyContactDistrictController,
-                          emergencyContactAlleyController: emergencyContactAlleyController,
-                          emergencyContactHouseController: emergencyContactHouseController,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child: ContactInfoPage(
-                          phoneController: phoneNumberController,
-                          emailController: emailController,
-                          usernameController: usernameController,
-                          passwordController: passwordController,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.15),
-              ],
-            ),
-            Positioned(
-              bottom: screenHeight * 0.1,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(4, (index) {
-                  return GestureDetector(
-                    onTap: () {
-                      _pageController.jumpToPage(index);
-                    },
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      width: _currentPage == index ? 12 : 8,
-                      height: 8,
+        child: Scaffold(
+          body: Directionality(
+            textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  left: 0,
+                  right: 0,
+                  bottom: screenHeight * 0.3,
+                  top: 0,
+                  child: Directionality(
+                    textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+                    child: Container(
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentPage == index ? Color(0xFf259e9f) : Colors.grey,
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xfffafbfb),
+                            Color(0xFFecf2f3),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(Get.width * 0.3),
+                          bottomRight: Radius.circular(Get.width * 10),
+                        ),
                       ),
                     ),
-                  );
-                }),
-              ),
-            ),
-      Positioned(
-        bottom: screenHeight * 0.03,
-        right: screenWidth * 0.05,
-        left: screenWidth * 0.05,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _currentPage < 3
-                ? const Color(0xFf259e9f)
-                : (_isLoading
-                ? Colors.grey
-                : const Color(0xFf259e9f)),
-            padding: EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+
+                Positioned(
+                  top: screenHeight * 0.05,
+                  left: isRTL ? null : screenWidth * 0.05,
+                  right: isRTL ? screenWidth * 0.05 : null,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Color(0xFf259e9f),
+                      size: 24 * fontScale,
+                    ),
+                    onPressed: () {
+                      if (_currentPage > 0) {
+                        _pageController.previousPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 0,
+                              backgroundColor: Colors.transparent,
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.warning_amber_rounded,
+                                          color: Colors.amber,
+                                          size: 28,
+                                        ),
+                                        SizedBox(width: 12),
+                                        Text(
+                                          'تنبيه'.tr,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 16),
+                                    Text(
+                                      'هل تريد إلغاء عملية التسجيل؟'.tr,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 24),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextButton(
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.symmetric(vertical: 12),
+                                              backgroundColor: Colors.grey[100],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'لا'.tr,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            onPressed: () => Navigator.of(context).pop(),
+                                          ),
+                                        ),
+                                        SizedBox(width: 12),
+                                        Expanded(
+                                          child: TextButton(
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.symmetric(vertical: 12),
+                                              backgroundColor: Colors.red[500],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'نعم'.tr,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Column(
+                  children: [
+                    SizedBox(height: screenHeight * 0.1),
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: screenWidth * 0.2,
+                      height: screenWidth * 0.2,
+                      color: const Color(0xFf259e9f),
+                    ),
+                    SizedBox(height: 4),
+                    Align(
+                      alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: screenHeight * 0.05,
+                          right: isRTL ? screenWidth * 0.04 : 0,
+                          left: isRTL ? 0 : screenWidth * 0.04,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                          children: [
+                            Align(
+                              alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
+                              child: Text(
+                                'new_registration'.tr,
+                                style: TextStyle(
+                                  fontSize: 24 * fontScale,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'create_account_easily'.tr,
+                              style: TextStyle(fontSize: 14 * fontScale, color: Colors.grey),
+                            ),
+                            SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                      child: Align(
+                        alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
+                        child: Column(
+                          crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              _titles[_currentPage],
+                              style: TextStyle(
+                                fontSize: 18 * fontScale,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Container(
+                              width: textWidth,
+                              height: 2,
+                              color: Color(0xFf259e9f),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: PageView(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentPage = index;
+                          });
+                        },
+                        children: [
+                          SingleChildScrollView(
+                            child: PersonalInfoPage(
+                              firstNameController: firstNameController,
+                              lastNameController: lastNameController,
+                              middleNameController: middleNameController,
+                              alleyController: alleyController,
+                              districtController: districtController,
+                              governorateController: governorateController,
+                              countryController: countryController,
+                              houseController: houseController,
+                              selectedGender: _selectedGender,
+                              onGenderChanged: (value) {
+                                if (value != null) {
+                                  setState(() {
+                                    _selectedGender = value;
+                                  }
+                                  );
+                                }
+                              },
+
+                              selectedYear: selectedYear,
+
+                              onYearChanged: (value) => setState(() =>
+                              selectedYear = value),
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: MedicalInfoPage(
+                              selectedBloodType: _selectedBloodType,
+                              onBloodTypeChanged: (value) {
+                                if (value != null) {
+                                  setState(() {
+                                    _selectedBloodType = value;
+                                  });
+                                }
+                              },
+                              chronicDiseasesController: chronicDiseasesController,
+                              allergiesController: allergiesController,
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child:EmergencyContactPage(
+                              emergencyContactNameController: emergencyContactNameController,
+                              emergencyContactRelationship: selectedRelationship,
+                              onRelationshipChanged: (int newRelationship) {
+                                setState(() {
+                                  selectedRelationship = newRelationship;
+                                });
+                              },
+                              emergencyContactPhoneController: emergencyContactPhoneController,
+                              emergencyContactCountryController: emergencyContactCountryController,
+                              emergencyContactProvinceController: emergencyContactProvinceController,
+                              emergencyContactDistrictController: emergencyContactDistrictController,
+                              emergencyContactAlleyController: emergencyContactAlleyController,
+                              emergencyContactHouseController: emergencyContactHouseController,
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: ContactInfoPage(
+                              phoneController: phoneNumberController,
+                              emailController: emailController,
+                              usernameController: usernameController,
+                              passwordController: passwordController,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.15),
+                  ],
+                ),
+                Positioned(
+                  bottom: screenHeight * 0.1,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(4, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          _pageController.jumpToPage(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 4),
+                          width: _currentPage == index ? 12 : 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentPage == index ? Color(0xFf259e9f) : Colors.grey,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                Positioned(
+                  bottom: screenHeight * 0.03,
+                  right: screenWidth * 0.05,
+                  left: screenWidth * 0.05,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _currentPage < 3
+                          ? const Color(0xFf259e9f)
+                          : (_isLoading
+                          ? Colors.grey
+                          : const Color(0xFf259e9f)),
+                      padding: EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: _currentPage < 3
+                        ? () {
+                      _pageController.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                        : (_isLoading
+                        ? null
+                        : submitPatientData),
+                    child: _isLoading && _currentPage == 3
+                        ? SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 3,
+                      ),
+                    )
+                        : Text(
+                      _currentPage < 3 ? 'next'.tr : 'finish'.tr,
+                      style: TextStyle(
+                        fontSize: 16 * fontScale,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          onPressed: _currentPage < 3
-              ? () {
-            _pageController.nextPage(
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          }
-              : (_isLoading
-              ? null
-              : submitPatientData),
-          child: _isLoading && _currentPage == 3
-              ? SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(
-              color: Colors.white,
-              strokeWidth: 3,
-            ),
-          )
-              : Text(
-            _currentPage < 3 ? 'next'.tr : 'finish'.tr,
-            style: TextStyle(
-              fontSize: 16 * fontScale,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      )
-          ],
-        ),
-      ),
-    )
+        )
     );
   }
 }

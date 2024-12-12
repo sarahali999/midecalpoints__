@@ -17,9 +17,9 @@ class DeleteAccount extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title:  Row(
               children: [
-                Icon(Icons.warning_amber_rounded,
+                const Icon(Icons.warning_amber_rounded,
                     color: Colors.red, size: 32),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Text(
                   'warning'.tr,
                   style: TextStyle(
@@ -35,16 +35,24 @@ class DeleteAccount extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 5,
+                ),
                 child: Text(
                   'cancel'.tr,
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.grey,
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -141,13 +149,13 @@ class DeleteAccount extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+
               Icon(Icons.warning_amber_rounded, color: Colors.red, size: 40),
               SizedBox(height: 10),
               Text(
                 'confirm_account_deletion'.tr,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
                     color: Colors.black),
-                textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Row(
@@ -155,23 +163,23 @@ class DeleteAccount extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text('cancel'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text('cancel'.tr, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                     onPressed: () => _deleteAccount(context),
-                    child: Text('confirm'.tr, style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: Text('confirm'.tr, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),

@@ -566,14 +566,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     required TextEditingController controller,
     required String labelText,
     bool obscureText = false,
-    bool isAge = false, // Add this line
+    bool isAge = false,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
         obscureText: obscureText,
-        // Add these lines for age validation
         keyboardType: isAge ? TextInputType.number : TextInputType.text,
         inputFormatters: isAge
             ? [
@@ -680,6 +679,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   color: _primaryColor),
             );
           }
+          
           return Container();
         },
       ).animate().fadeIn(duration: Duration(milliseconds: 500), delay: Duration(milliseconds: 100))

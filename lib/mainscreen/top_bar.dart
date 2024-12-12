@@ -57,7 +57,7 @@ class _TopBarState extends State<TopBar> {
              ),
            );
         } else {
-          _showSnackBar('No matching locations found for: $query');
+          _showSnackBar('لم يتم العثور على مواقع مطابقة لـ: $query',);
         }
       } else {
         _showSnackBar('Failed to connect to server: ${response.statusCode}');
@@ -69,12 +69,19 @@ class _TopBarState extends State<TopBar> {
       setState(() => isLoading = false);
     }
   }
-
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.white),
+        ),
         duration: const Duration(seconds: 2),
+        backgroundColor: Color(0xFF259E9F),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }

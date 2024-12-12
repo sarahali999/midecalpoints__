@@ -61,19 +61,23 @@ class _SettingsPageState extends State<SettingsPage> {
             style: TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey,
-                textStyle: TextStyle(fontSize: 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 5,
               ),
-              child: Text('cancel'.tr),
+              child: Text('cancel'.tr,style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.grey,
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
