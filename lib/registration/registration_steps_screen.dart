@@ -377,8 +377,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
           }
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false, // إضافة هذا السطر
-
+          resizeToAvoidBottomInset: false,
           body: Directionality(
             textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
             child: Stack(
