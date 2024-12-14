@@ -377,6 +377,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
           }
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false, // إضافة هذا السطر
 
           body: Directionality(
             textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
@@ -690,9 +691,9 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                     SizedBox(height: screenHeight * 0.15),
                   ],
                 ),
-                  if (!isKeyboardVisible)
-                  Positioned(
-    bottom: screenHeight * 0.1,
+                  AnimatedPositioned(
+                  duration: Duration(milliseconds: 200),
+    bottom: isKeyboardVisible ? -50 : screenHeight * 0.1,
     left: 0,
     right: 0,
     child: Row(
@@ -715,14 +716,12 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     );
     }),
     ),
-    )
-    else
-    SizedBox(height: 0), // Avoid white space
+    ),
 
-    // Positioned for button
-    if (!isKeyboardVisible)
-    Positioned(
-    bottom: screenHeight * 0.03,
+    // Final Button
+    AnimatedPositioned(
+    duration: Duration(milliseconds: 200),
+      bottom: isKeyboardVisible ? -screenHeight : screenHeight * 0.03, // التعديل هنا
     right: screenWidth * 0.05,
     left: screenWidth * 0.05,
     child: ElevatedButton(
@@ -763,23 +762,11 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
     ),
     ),
     ),
-    )
-    else
-    SizedBox(height: 0),
+    ),
     ],
-
-
-
-
-
+    ),
+    ),
     )
-
-
-
-
-            ),
-          ),
-
     );
   }
 }
