@@ -141,8 +141,9 @@ class MedicalSuppliesWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/icons/nodata.svg',
+          Image.asset(
+            'assets/images/empkit.png',
+            color: Color(0xFF259E9F),
             height: 180,
             width: 200,
           ),

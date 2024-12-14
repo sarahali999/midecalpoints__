@@ -46,16 +46,18 @@ class _TopBarState extends State<TopBar> {
           final searchLocation = LatLng(lat, lng);
 
           print(searchLocation);
-           Navigator.push(
+          Navigator.push(
             context,
-             MaterialPageRoute(
-
+            MaterialPageRoute(
               builder: (context) => MapPage(
                 initialLocation: searchLocation,
-               locationName: query,
+                locationName: query, // تمرير نص البحث
+                openedFromSearch: true,
               ),
-             ),
-           );
+            ),
+          );
+
+
         } else {
           _showSnackBar('لم يتم العثور على مواقع مطابقة لـ: $query',);
         }

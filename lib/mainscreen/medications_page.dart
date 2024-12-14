@@ -133,8 +133,9 @@ class _MedicationListWidgetState extends State<MedicationListWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                'assets/icons/nodata.svg',
+              Image.asset(
+                'assets/images/medicine.png',
+color: Color(0xFF259E9F),
                 height: 180,
                 width: 200,
               ),

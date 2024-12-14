@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'Searchable_country.dart';
 import 'countries.dart';
@@ -15,10 +14,8 @@ class PersonalInfoPage extends StatefulWidget {
   final TextEditingController countryController;
   final TextEditingController houseController;
   final int selectedGender;
-
   final String? selectedYear;
   final Function(int?) onGenderChanged;
-
   final Function(String?) onYearChanged;
 
   const PersonalInfoPage({
@@ -32,48 +29,66 @@ class PersonalInfoPage extends StatefulWidget {
     required this.countryController,
     required this.houseController,
     required this.selectedGender,
-
     required this.selectedYear,
     required this.onGenderChanged,
-
     required this.onYearChanged,
   }) : super(key: key);
 
   @override
   _PersonalInfoPageState createState() => _PersonalInfoPageState();
 }
+
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final Map<String, int> genderOptions = {
     'غير معروف': 0,
     'male'.tr: 1,
     'female'.tr: 2,
   };
-
   String? _currentGenderKey;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentGenderKey = widget.selectedGender == 0 ? null : genderOptions.entries
-        .firstWhere((entry) => entry.value == widget.selectedGender)
-        .key;
-  }
+  late FocusNode firstNameFocusNode;
+  late FocusNode middleNameFocusNode;
+  late FocusNode lastNameFocusNode;
+  late FocusNode alleyFocusNode;
+  late FocusNode districtFocusNode;
+  late FocusNode governorateFocusNode;
+  late FocusNode countryFocusNode;
+  late FocusNode houseFocusNode;
 
   String? selectedCountry;
   String? selectedGovernorate;
 
-  final List<int> days = List.generate(31, (index) => index + 1);
-  final List<String> months = [
-    'كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران',
-    'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'
-  ];
-  final List<String> years = List.generate(
-      100,
-          (index) => (DateTime.now().year - index).toString()
-  );
+  @override
+  void initState() {
+    super.initState();
+    firstNameFocusNode = FocusNode();
+    middleNameFocusNode = FocusNode();
+    lastNameFocusNode = FocusNode();
+    alleyFocusNode = FocusNode();
+    districtFocusNode = FocusNode();
+    governorateFocusNode = FocusNode();
+    countryFocusNode = FocusNode();
+    houseFocusNode = FocusNode();
+    _currentGenderKey = widget.selectedGender == 0
+        ? null
+        : genderOptions.entries.firstWhere((entry) => entry.value == widget.selectedGender).key;
+  }
+
+  @override
+  void dispose() {
+    firstNameFocusNode.dispose();
+    middleNameFocusNode.dispose();
+    lastNameFocusNode.dispose();
+    alleyFocusNode.dispose();
+    districtFocusNode.dispose();
+    governorateFocusNode.dispose();
+    countryFocusNode.dispose();
+    houseFocusNode.dispose();
+    super.dispose();
+  }
+
   final List<Map<String, String>> countryOptions = [
-    {'id': '1', 'name': 'iraq'.tr},
-    {'id': '2', 'name': 'other_country'.tr}
+    {'id': '1', 'name': 'العراق'},
+    {'id': '2', 'name': 'other_country'.tr},
   ];
 
 
@@ -102,14 +117,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     if (selectedCountry != null) {
       setState(() {
         this.selectedCountry = selectedCountry;
-        if (selectedCountry == '1') {
-          widget.countryController.text = 'العراق';
-        } else {
-          widget.countryController.clear();
-        }
+        widget.countryController.text = selectedCountry == '1' ? 'العراق' : '';
       });
     }
   }
+
   Widget _buildBirthYearSection(double spacing) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,45 +130,57 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           padding: EdgeInsets.only(right: 4, bottom: spacing * 0.5),
           child: Text(
             'birth_date'.tr,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
           ),
         ),
-        TextFormField(
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(4),
-          ],
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            filled: true,
-            fillColor: Color(0xFFd6dedf),
-            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            suffixIcon: IconButton(
-              icon: Icon(
-                Icons.calendar_today,
-                color: Colors.grey,
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return DraggableScrollableSheet(
+                  initialChildSize: 0.5,
+                  minChildSize: 0.3,
+                  maxChildSize: 0.8,
+                  expand: false,
+                  builder: (BuildContext context, ScrollController scrollController) {
+                    return ListView.builder(
+                      controller: scrollController,
+                      itemCount: List.generate(100, (index) => (DateTime.now().year - index).toString()).length,
+                      itemBuilder: (context, index) {
+                        String year = (DateTime.now().year - index).toString();
+                        return ListTile(
+                          title: Text(year, style: TextStyle(fontSize: 16)),
+                          onTap: () {
+                            widget.onYearChanged(year);
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            );
+          },
+          child: AbsorbPointer(
+            child: TextFormField(
+              controller: TextEditingController(text: widget.selectedYear),
+              readOnly: true,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFd6dedf),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                suffixIcon: Icon(Icons.calendar_today, color: Colors.grey),
               ),
-              onPressed: () {},
             ),
           ),
-          validator: (value) {
-            if (value == null || value.length != 4) {
-              return 'الرجاء إدخال أربعة أرقام فقط';
-            }
-            return null;
-          },
-          onChanged: (value) {
-            widget.onYearChanged(value);
-          },
         ),
-
       ],
     );
   }
@@ -175,91 +199,173 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           CustomTextField(
             labelText: 'first_name'.tr,
             controller: widget.firstNameController,
+            focusNode: firstNameFocusNode,
+            onSubmitted: (_) {
+              FocusScope.of(context).requestFocus(middleNameFocusNode);
+            },
           ),
           SizedBox(height: spacing),
-
           CustomTextField(
             labelText: 'middle_name'.tr,
             controller: widget.middleNameController,
+            focusNode: middleNameFocusNode,
+            onSubmitted: (_) {
+              FocusScope.of(context).requestFocus(lastNameFocusNode);
+            },
           ),
           SizedBox(height: spacing),
-
           CustomTextField(
             labelText: 'last_name'.tr,
             controller: widget.lastNameController,
+            focusNode: lastNameFocusNode,
+            onSubmitted: (_) {
+              FocusScope.of(context).requestFocus(countryFocusNode);
+            },
           ),
           SizedBox(height: spacing),
-
-          DropdownButtonFormField<String>(
-            hint: Text('choose_country'.tr),
-            value: selectedCountry,
-            items: countryOptions.map((item) => DropdownMenuItem<String>(
-              value: item['id'],
-              child: Text(
-                item['name']!,
-                style: TextStyle(fontSize: 16, color: Colors.black87),
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return DraggableScrollableSheet(
+                    initialChildSize: 0.5,
+                    minChildSize: 0.3,
+                    maxChildSize: 0.8,
+                    expand: false,
+                    builder: (BuildContext context, ScrollController scrollController) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: countryOptions.length,
+                          itemBuilder: (context, index) {
+                            final item = countryOptions[index];
+                            return ListTile(
+                              title: Text(item['name']!, style: TextStyle(fontSize: 16)),
+                              onTap: () {
+                                _onCountryChanged(item['id']);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            child: AbsorbPointer(
+              child: TextFormField(
+                focusNode: countryFocusNode,
+                controller: TextEditingController(text: selectedCountry != null ? countryOptions.firstWhere((c) => c['id'] == selectedCountry)['name'] : ''),
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'country'.tr,
+                  filled: true,
+                  fillColor: Color(0xFFd6dedf),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  suffixIcon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+                ),
               ),
-            )).toList(),
-            onChanged: _onCountryChanged,
-            decoration: InputDecoration(
-              labelText: 'country'.tr,
-              labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              filled: true,
-              fillColor: Color(0xFFd6dedf),
-              contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             ),
           ),
           SizedBox(height: spacing),
           if (selectedCountry == '1') ...[
-            DropdownButtonFormField<String>(
-              value: selectedGovernorate,
-              items: iraqGovernorates.map((item) {
-                return DropdownMenuItem<String>(
-                  value: item['name'],
-                  child: Text(
-                    item['name']!,
-                    style: TextStyle(fontSize: 16, color: Colors.black87),
-                  ),
+            SizedBox(height: spacing),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) {
+                    return DraggableScrollableSheet(
+                      initialChildSize: 0.5,
+                      minChildSize: 0.3,
+                      maxChildSize: 0.8,
+                      expand: false,
+                      builder: (BuildContext context, ScrollController scrollController) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: iraqGovernorates.length,
+                            itemBuilder: (context, index) {
+                              final item = iraqGovernorates[index];
+                              return ListTile(
+                                title: Text(item['name']!, style: TextStyle(fontSize: 16)),
+                                onTap: () {
+                                  setState(() {
+                                    selectedGovernorate = item['name'];
+                                    widget.governorateController.text = selectedGovernorate!;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
                 );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedGovernorate = value;
-                  widget.governorateController.text = value ?? '';
-                });
               },
-              decoration: InputDecoration(
-                labelText: 'province'.tr,
-                labelStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10.0),
+              child: AbsorbPointer(
+                child: TextFormField(
+                  focusNode: governorateFocusNode,
+                  controller: TextEditingController(text: selectedGovernorate),
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'province'.tr,
+                    filled: true,
+                    fillColor: Color(0xFFd6dedf),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    suffixIcon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+                  ),
                 ),
-                filled: true,
-                fillColor: Color(0xFFd6dedf),
-                contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               ),
             ),
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'district'.tr,
               controller: widget.districtController,
+              focusNode: districtFocusNode,
+              onSubmitted: (_) {
+                FocusScope.of(context).requestFocus(alleyFocusNode);
+              },
             ),
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'alley'.tr,
               controller: widget.alleyController,
+              focusNode: alleyFocusNode,
+              onSubmitted: (_) {
+                FocusScope.of(context).requestFocus(houseFocusNode);
+              },
             ),
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'house'.tr,
               controller: widget.houseController,
+              focusNode: houseFocusNode,
             ),
-          ] else if (selectedCountry == '2')
+          ] else if (selectedCountry == '2') ...[
             FutureBuilder<List<Map<String, dynamic>>>(
               future: CountryService.fetchCountries(),
               builder: (context, snapshot) {
@@ -270,9 +376,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 } else if (snapshot.hasData) {
                   return SearchableDropdown(
                     items: snapshot.data!,
-                    value: widget.countryController.text.isNotEmpty
-                        ? widget.countryController.text
-                        : null,
+                    value: widget.countryController.text.isNotEmpty ? widget.countryController.text : null,
                     labelText: 'country'.tr,
                     onChanged: (value) {
                       setState(() {
@@ -284,40 +388,71 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 return Container();
               },
             ),
-
+          ],
           SizedBox(height: spacing),
           _buildBirthYearSection(spacing),
           SizedBox(height: spacing),
-     DropdownButtonFormField<String>(
-    value: _currentGenderKey,
-    decoration: InputDecoration(
-    labelText: 'gender'.tr,
-    border: OutlineInputBorder(
-    borderSide: BorderSide.none,
-    borderRadius: BorderRadius.circular(10.0),
-    ),
-    filled: true,
-    fillColor: Color(0xFFd6dedf),
-    ),
-    items: genderOptions.entries
-        .where((entry) => entry.value != 0)
-        .map((entry) {
-    return DropdownMenuItem<String>(
-    value: entry.key,
-    child: Text(entry.key),
-    );
-    }).toList(),
-    onChanged: (newValue) {
-    if (newValue != null) {
-    setState(() {
-    _currentGenderKey = newValue;
-    widget.onGenderChanged(genderOptions[newValue]);
-    });
-    }
-    },
-    )
-    ]
-    )
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return DraggableScrollableSheet(
+                    initialChildSize: 0.5,
+                    minChildSize: 0.3,
+                    maxChildSize: 0.8,
+                    expand: false,
+                    builder: (BuildContext context, ScrollController scrollController) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: genderOptions.entries.where((entry) => entry.value != 0).length,
+                          itemBuilder: (context, index) {
+                            final entry = genderOptions.entries.where((entry) => entry.value != 0).elementAt(index);
+                            return ListTile(
+                              title: Text(entry.key, style: TextStyle(fontSize: 16)),
+                              onTap: () {
+                                setState(() {
+                                  _currentGenderKey = entry.key;
+                                  widget.onGenderChanged(entry.value);
+                                });
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            child: AbsorbPointer(
+              child: TextFormField(
+                controller: TextEditingController(text: _currentGenderKey ?? ''),
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'gender'.tr,
+                  filled: true,
+                  fillColor: Color(0xFFd6dedf),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  suffixIcon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: spacing),
+        ],
+      ),
     );
   }
 }

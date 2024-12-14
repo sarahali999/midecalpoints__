@@ -7,6 +7,7 @@ import '../login/verification.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen();
+
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
@@ -27,12 +28,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   bool _showLanguages = false;
   String _selectedLanguage = 'العربية';
-
-  static const _primaryColor = Color(0xFf259e9f);
-  static const _languages = ['العربية', 'فارسی', 'كوردي', 'تركماني', 'English'];
   bool isRTL = true;
 
-  static const _contents = [
+  static const Color _primaryColor = Color(0xFf259e9f);
+  static const List<String> _languages = ['العربية', 'فارسی', 'كوردي', 'تركماني', 'English'];
+
+  static const List<OnboardingContent> _contents = [
     OnboardingContent(
       image: 'assets/images/logo.png',
       illustrationAsset: 'assets/images/page.png',
@@ -52,60 +53,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       descriptionKey: 'medical_centers_desc',
     ),
   ];
-  void _onLanguageSelected(String language) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    String languageCode = 'ar';
-    switch (language) {
-      case 'العربية':
-        languageCode = 'ar';
-        break;
-      case 'فارسی':
-        languageCode = 'fa';
-        break;
-      case 'كوردي':
-        languageCode = 'ku';
-        break;
-      case 'تركماني':
-        languageCode = 'tk';
-        break;
-      case 'English':
-        languageCode = 'en';
-        break;
-    }
-
-    await prefs.setString('selectedLanguageCode', languageCode);
-    await prefs.setString('selectedLanguage', language);
-
-    setState(() {
-      _selectedLanguage = language;
-      _showLanguages = false;
-
-      isRTL = Languages.isRTL(languageCode);
-      Get.updateLocale(Locale(languageCode));
-    });
-  }
-  void _toggleLanguages() => setState(() => _showLanguages = !_showLanguages);
-
-  void _navigateToPhone() {
-    Get.off(() => LoadingScreen(
-      onLoaded: () => Get.off(() => const Login()),
-    ));
-  }
-  void _handleMainButtonPress() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (_currentPage == _contents.length - 1) {
-      await prefs.setBool('onboardingCompleted', true);
-      Get.off(() => LoadingScreen(
-        onLoaded: () => Get.off(() => const Login()),
-      ));
-    } else {
-      _pageController.nextPage(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.ease
-      );
-    }
-  }
 
   @override
   void initState() {
@@ -116,9 +63,49 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _loadSavedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final savedLanguage = prefs.getString('selectedLanguage') ?? 'العربية';
-
     _onLanguageSelected(savedLanguage);
-  }  @override
+  }
+
+  void _onLanguageSelected(String language) async {
+    final prefs = await SharedPreferences.getInstance();
+    String languageCode = _getLanguageCode(language);
+
+    await prefs.setString('selectedLanguageCode', languageCode);
+    await prefs.setString('selectedLanguage', language);
+
+    setState(() {
+      _selectedLanguage = language;
+      _showLanguages = false;
+      isRTL = Languages.isRTL(languageCode);
+      Get.updateLocale(Locale(languageCode));
+    });
+  }
+
+  String _getLanguageCode(String language) {
+    switch (language) {
+      case 'فارسی': return 'fa';
+      case 'كوردي': return 'ku';
+      case 'تركماني': return 'tk';
+      case 'English': return 'en';
+      default: return 'ar'; // العربية
+    }
+  }
+
+  void _navigateToPhone() {
+    Get.off(() => LoadingScreen(onLoaded: () => Get.off(() => const Login())));
+  }
+
+  void _handleMainButtonPress() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (_currentPage == _contents.length - 1) {
+      await prefs.setBool('onboardingCompleted', true);
+      _navigateToPhone();
+    } else {
+      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    }
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
@@ -132,39 +119,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         body: SafeArea(
           child: Stack(
             children: [
-              Positioned.fill(
-                left: 0,
-                right: 0,
-                bottom: Get.height * 0.3,
-                top: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xffecf2f3),
-                        Color(0xFFecf2f3),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(0),
-                      topRight: const Radius.circular(0),
-                      bottomLeft: Radius.circular(Get.width * 0.3),
-                      bottomRight: Radius.circular(Get.width * 10),
-                    ),
-                  ),
-                ),
-              ),
+              _buildBackground(),
               Column(
                 children: [
                   _buildHeader(),
-                  Expanded(child: _buildPageView()
+                  Expanded(child: _buildPageView()),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06, vertical: Get.height * 0.03),
+                    child: _buildMainButton(),
                   ),
                 ],
               ),
               if (_showLanguages) _buildLanguageOverlay(),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackground() {
+    return Positioned.fill(
+      bottom: Get.height * 0.3,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xffecf2f3), Color(0xFFecf2f3)],
+          ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(Get.width * 0.3),
+            bottomRight: Radius.circular(Get.width * 10),
           ),
         ),
       ),
@@ -183,17 +169,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildLanguageButton() {
     return TextButton(
-      onPressed: _toggleLanguages,
+      onPressed: () => setState(() => _showLanguages = !_showLanguages),
       style: TextButton.styleFrom(
         backgroundColor: _primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       child: Row(
         children: [
-          Text(
-            'language'.tr,
-            style: TextStyle(color: Colors.white, fontSize: Get.width * 0.04),
-          ),
+          Text('language'.tr, style: TextStyle(color: Colors.white, fontSize: Get.width * 0.05)),
           const SizedBox(width: 4),
           Icon(Icons.language, color: Colors.white, size: Get.width * 0.05),
         ],
@@ -210,18 +193,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         borderRadius: BorderRadius.circular(4),
       ),
       margin: const EdgeInsets.all(4),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _onLanguageSelected(language),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Text(
-              language,
-              style: TextStyle(
-                color: isSelected ? _primaryColor : Colors.white,
-                fontSize: Get.width * 0.04,
-              ),
+      child: InkWell(
+        onTap: () => _onLanguageSelected(language),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Text(
+            language,
+            style: TextStyle(
+              color: isSelected ? _primaryColor : Colors.white,
+              fontSize: Get.width * 0.038,
             ),
           ),
         ),
@@ -232,10 +212,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _buildSkipButton() {
     return TextButton(
       onPressed: _navigateToPhone,
-      child: Text(
-        'skip'.tr,
-        style: TextStyle(color: _primaryColor, fontSize: Get.width * 0.04),
-      ),
+      child: Text('skip'.tr, style: TextStyle(color: _primaryColor, fontSize: Get.width * 0.04)),
     );
   }
 
@@ -250,45 +227,59 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildPage(int index) {
     final content = _contents[index];
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
-      child: Column(
-        children: [
-          SizedBox(height: Get.height * 0.02),
-          _buildLogo(content.image),
-          SizedBox(height: Get.height * 0.01),
-          _buildTitle(content.titleKey),
-          SizedBox(height: Get.height * 0.02),
-          _buildIllustration(content.illustrationAsset),
-          SizedBox(height: Get.height * 0.03),
-          _buildDescription(content.descriptionKey),
-          SizedBox(height: Get.height * 0.04),
-          _buildPageIndicator(),
-          SizedBox(height: Get.height * 0.04),
-          _buildMainButton(),
-          SizedBox(height: Get.height * 0.03),
-        ],
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.5, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          ),
+        );
+      },
+      child: Container(
+        key: ValueKey<int>(index),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
+          child: Column(
+            children: [
+              SizedBox(height: Get.height * 0.02),
+              _buildLogo(content.image),
+              SizedBox(height: Get.height * 0.01),
+              _buildTitle(content.titleKey),
+              SizedBox(height: Get.height * 0.02),
+              _buildIllustration(content.illustrationAsset),
+              SizedBox(height: Get.height * 0.03),
+              _buildDescription(content.descriptionKey),
+              SizedBox(height: Get.height * 0.04),
+              _buildPageIndicator(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildLogo(String image) => SizedBox(
-    height: Get.height * 0.05,
-    child: Image.asset(image, color: _primaryColor),
-  );
+  Widget _buildLogo(String image) {
+    return SizedBox(
+      height: Get.height * 0.05,
+      child: Image.asset(image, color: _primaryColor),
+    );
+  }
 
-  Widget _buildIllustration(String asset) =>
-      Expanded(child: Image.asset(asset, fit: BoxFit.contain));
+  Widget _buildIllustration(String asset) {
+    return Expanded(child: Image.asset(asset, fit: BoxFit.contain));
+  }
 
   Widget _buildTitle(String titleKey) {
     return Text(
       titleKey.tr,
       textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: Get.width * 0.06,
-        fontWeight: FontWeight.bold,
-        color: _primaryColor,
-      ),
+      style: TextStyle(fontSize: Get.width * 0.06, fontWeight: FontWeight.bold, color: _primaryColor),
     );
   }
 
@@ -296,11 +287,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Text(
       descriptionKey.tr,
       textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: Get.width * 0.04,
-        color: Colors.grey,
-        height: 1.5,
-      ),
+      style: TextStyle(fontSize: Get.width * 0.04, color: Colors.grey, height: 1.5),
     );
   }
 
@@ -313,13 +300,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildDot(int index) {
     return GestureDetector(
-      onTap: () {
-        _pageController.animateToPage(
-          index,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.ease,
-        );
-      },
+      onTap: () => _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.ease,
+      ),
       child: Container(
         height: Get.width * 0.02,
         width: _currentPage == index ? Get.width * 0.06 : Get.width * 0.02,
@@ -363,16 +348,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                spreadRadius: 3,
-              ),
+              BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 5, spreadRadius: 3),
             ],
           ),
-          child: Column(
-            children: _languages.map(_buildLanguageOption).toList(),
-          ),
+          child: Column(children: _languages.map(_buildLanguageOption).toList()),
         ),
       ),
     );

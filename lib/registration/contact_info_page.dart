@@ -9,7 +9,12 @@ class ContactInfoPage extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
 
-  const ContactInfoPage({
+  final FocusNode usernameFocusNode = FocusNode();
+  final FocusNode phoneFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
+  ContactInfoPage({
     Key? key,
     required this.phoneController,
     required this.emailController,
@@ -37,6 +42,10 @@ class ContactInfoPage extends StatelessWidget {
           CustomTextField(
             labelText: 'username'.tr,
             controller: usernameController,
+            focusNode: usernameFocusNode,
+            onSubmitted: (_) {
+              FocusScope.of(context).requestFocus(phoneFocusNode);
+            },
           ),
           SizedBox(height: spacing),
           Form(
@@ -62,18 +71,30 @@ class ContactInfoPage extends StatelessWidget {
                 _formKey.currentState?.reset();
                 print('Country changed to: ${country.code}');
               },
+              focusNode: phoneFocusNode,
+              onSubmitted: (_) {
+                FocusScope.of(context).requestFocus(emailFocusNode);
+              },
             ),
           ),
           SizedBox(height: spacing),
           CustomTextField(
             labelText: 'email'.tr,
             controller: emailController,
+            focusNode: emailFocusNode,
+            onSubmitted: (_) {
+              FocusScope.of(context).requestFocus(passwordFocusNode);
+            },
           ),
           SizedBox(height: spacing),
           CustomTextField(
             labelText: 'enter_password'.tr,
             controller: passwordController,
             isPassword: true,
+            focusNode: passwordFocusNode,
+            onSubmitted: (_) {
+              passwordFocusNode.unfocus();
+            },
           ),
         ],
       ),

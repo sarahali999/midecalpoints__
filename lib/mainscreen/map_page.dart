@@ -8,24 +8,32 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import '../languages.dart';
 
 class MarkerInfo {
   final LatLng point;
   final String name;
   double distance = 0;
-  MarkerInfo({required this.point, required this.name});
+  MarkerInfo({
+    required this.point,
+    required this.name,
+
+  });
 }
+
 
 class MapPage extends StatefulWidget {
   final LatLng initialLocation;
   final String locationName;
+  final bool openedFromSearch;
 
   const MapPage({
     Key? key,
     required this.initialLocation,
     required this.locationName,
+    this.openedFromSearch = false,
+
   }) : super(key: key);
 
   @override
@@ -43,14 +51,16 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   MarkerInfo? selectedMarker;
   List<Marker> routePoints = [];
   Marker? userLocationMarker;
+  bool _isSearchedLocation = false;
+  String _searchedLocationDetails = ''; // New variable for detailed location info
 
   late AnimationController _animationController;
   late Animation<double> _animation;
   late AnimationController _zoomAnimationController;
-
   @override
   void initState() {
     super.initState();
+
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -63,10 +73,40 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    _locateUser();
-    _fetchMarkersFromApi();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.openedFromSearch &&
+          widget.initialLocation.latitude != 0 &&
+          widget.initialLocation.longitude != 0) {
+        _initializeMarkerAndMap();
+      }
+
+      _locateUser();
+      _fetchMarkersFromApi();
+    });
   }
 
+  void _initializeMarkerAndMap() {
+    setState(() {
+      markers.add(
+        Marker(
+          point: widget.initialLocation,
+          width: 50.0,
+          height: 50.0,
+          child: const Icon(Icons.place, color: Colors.red, size: 40),
+        ),
+      );
+
+      _mapController.move(widget.initialLocation, 15.0);
+
+      _updateRoute(currentLocation, widget.initialLocation);
+
+      _isSearchedLocation = true;
+
+      _searchAndNavigate(widget.locationName);
+
+    });
+  }
   @override
   void dispose() {
     _animationController.dispose();
@@ -111,68 +151,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
               ),
             );
           });
-          Future<void> _updateRoute(LatLng start, LatLng end) async {
-            setState(() {
-              polylines.clear();
-              routePoints.clear();
-            });
 
-            final url = Uri.parse(
-                'https://router.project-osrm.org/route/v1/driving/'
-                    '${start.longitude},${start.latitude};${end.longitude},${end.latitude}'
-                    '?overview=full&geometries=geojson&steps=true&annotations=true'
-            );
-
-            try {
-              final response = await http.get(url);
-
-              if (response.statusCode == 200) {
-                final Map<String, dynamic> data = json.decode(response.body);
-
-                if (data['routes'] != null && data['routes'].isNotEmpty) {
-                  final List<dynamic> coordinates = data['routes'][0]['geometry']['coordinates'];
-                  final List<dynamic> steps = data['routes'][0]['legs'][0]['steps'];
-
-                  final List<LatLng> routePointsList = coordinates.map((coord) =>
-                      LatLng(coord[1], coord[0])
-                  ).toList();
-
-                  setState(() {
-                    polylines.add(
-                      Polyline(
-                        points: routePointsList,
-                        color: const Color(0xFF259e9f).withOpacity(0.8),
-                        strokeWidth: 4.0,
-                        borderColor: Colors.white.withOpacity(0.5),
-                        borderStrokeWidth: 2.0,
-                      ),
-                    );
-                  });
-                  //
-                  // for (var step in steps) {
-                  //   final instruction = step['maneuver']['instruction'];
-                  //   final distance = step['distance'];
-                  //   final duration = step['duration'];
-                  //   final name = step['name'] ?? 'Unnamed Street';
-                  //
-                  //   print('Instruction: $instruction');
-                  //   print('Street: $name');
-                  //   print('Distance: ${distance.toStringAsFixed(2)} meters');
-                  //   print('Duration: ${duration.toStringAsFixed(2)} seconds');
-                  //   print('---');
-                  // }
-                }
-              }
-            } catch (e) {
-              debugPrint("Error fetching route: $e");
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Error calculating route: $e'),
-                    duration: const Duration(seconds: 2),
-                  )
-              );
-            }
-          }
         }
       }
     } catch (e) {
@@ -229,6 +208,81 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     }
   }
 
+  void _updateSelectedMarkerDistance() {
+    if (selectedMarker != null) {
+      selectedMarker!.distance = const Distance().as(
+          LengthUnit.Kilometer,
+          currentLocation,
+          selectedMarker!.point
+      );
+      _animationController.forward();
+    }
+  }
+
+  Widget _buildSelectedMarkerInfo() {
+    return Positioned(
+      bottom: 16,
+      left: 16,
+      right: 16,
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return Transform.translate(
+            offset: Offset(0, 50 * (1 - _animation.value)),
+            child: Opacity(
+              opacity: _animation.value,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFf259e9f),
+                      Color(0xFf259e9f),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      selectedMarker!.name,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'المسافة: ${selectedMarker!.distance.toStringAsFixed(2)} كم',
+                      style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _selectMarker(MarkerInfo info) {
     setState(() {
       selectedMarker = info;
@@ -249,6 +303,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     }
     markerInfos.sort((a, b) => a.distance.compareTo(b.distance));
   }
+
   Future<void> _searchAndNavigate([String? query]) async {
     final searchQuery = query ?? searchController.text;
 
@@ -267,6 +322,10 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         final lng = data['results'][0]['geometry']['lng'];
         final searchLocation = LatLng(lat, lng);
 
+        // Extract more detailed location information
+        final formattedAddress = data['results'][0]['formatted'] ?? '';
+        final components = data['results'][0]['components'] ?? {};
+
         setState(() {
           markers.removeWhere((marker) => marker.child is Icon);
 
@@ -282,7 +341,17 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           _mapController.move(searchLocation, 15.0);
 
           _updateRoute(currentLocation, searchLocation);
+
         });
+
+        selectedMarker = MarkerInfo(
+          point: searchLocation,
+          name: searchQuery,
+        );
+
+        // Calculate and show distance
+        _updateSelectedMarkerDistance();
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -301,6 +370,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       );
     }
   }
+
   void _smoothAnimateToMarker(LatLng target) {
     final latTween = Tween<double>(
         begin: _mapController.camera.center.latitude,
@@ -328,22 +398,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     });
   }
 
-  void _updateUserLocationMarker(LatLng location) {
-    setState(() {
-      userLocationMarker = Marker(
-        width: 50.0,
-        height: 50.0,
-        point: location,
-        child: SvgPicture.asset(
-          'assets/icons/my-location.svg',
-          colorFilter: const ColorFilter.mode(
-            Colors.blue,
-            BlendMode.srcIn,
-          ),
-        ),
-      );
-    });
-  }
 
   Future<void> _locateUser() async {
     try {
@@ -351,38 +405,54 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       bool serviceEnabled = await location.serviceEnabled();
       if (!serviceEnabled) {
         serviceEnabled = await location.requestService();
-        if (!serviceEnabled) return;
+        if (!serviceEnabled) {
+          debugPrint("Service not enabled");
+          return;
+        }
       }
 
       PermissionStatus permissionGranted = await location.hasPermission();
       if (permissionGranted == PermissionStatus.denied) {
         permissionGranted = await location.requestPermission();
-        if (permissionGranted != PermissionStatus.granted) return;
+        if (permissionGranted != PermissionStatus.granted) {
+          debugPrint("Permission not granted");
+          return;
+        }
       }
 
       var userLocation = await location.getLocation();
       setState(() {
         currentLocation = LatLng(
-            userLocation.latitude!,
-            userLocation.longitude!
+          userLocation.latitude!,
+          userLocation.longitude!,
         );
+
         _mapController.move(currentLocation, 15.0);
-        _updateUserLocationMarker(currentLocation);
-        _calculateDistances();
       });
+
     } catch (e) {
-      debugPrint("Error in _locateUser: $e");
+      debugPrint("Error in locating user: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to locate user: $e'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
+
   void _clearSelection() {
     setState(() {
       selectedMarker = null;
       polylines.clear();
       routePoints.clear();
       _animationController.reverse();
+
+      _isSearchedLocation = false;
+
+      _locateUser();
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -397,7 +467,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             _buildMap(),
             _buildSearchBar(),
             if (isMarkerListVisible) _buildFloatingMarkerList(),
-            if (selectedMarker != null) _buildSelectedMarkerInfo(),
+            if (selectedMarker != null) _buildSelectedMarkerInfo(), // Updated to show more details
           ],
         ),
         floatingActionButton: _buildFloatingActionButtons(),
@@ -437,24 +507,36 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     return FlutterMap(
       mapController: _mapController,
       options: MapOptions(
-        initialCenter: currentLocation,
         initialZoom: 3.0,
         onTap: (_, __) => _clearSelection(),
+        maxZoom: 18.0,
+        onMapReady: () {
+          _locateUser();
+        },
       ),
       children: [
         TileLayer(
-          urlTemplate: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
-          subdomains: const ['a', 'b', 'c', 'd'],
+          urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          subdomains: ['a', 'b', 'c'],
         ),
-        PolylineLayer(polylines: polylines),
-        MarkerLayer(markers: [...markers, ...routePoints]),
-        MarkerLayer(markers: [
-          if (userLocationMarker != null) userLocationMarker!,
-          ...markers,
-          ...routePoints
-        ]),
+        PolylineLayer(
+          polylines: polylines,
+        ),
+        MarkerLayer(
+          markers: markers + [if (userLocationMarker != null) userLocationMarker!],
+        ),
+        // إضافة موقع المستخدم
+        CurrentLocationLayer(
+          followOnLocationUpdate: FollowOnLocationUpdate.always,
+          turnOnHeadingUpdate: TurnOnHeadingUpdate.never,
+          style: LocationMarkerStyle(
+
+            markerSize: const Size(40, 40),
+          ),
+        ),
       ],
     );
+
   }
 
   Widget _buildSearchBar() {
@@ -575,69 +657,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildSelectedMarkerInfo() {
-    return Positioned(
-      bottom: 16,
-      left: 16,
-      right: 16,
-      child: AnimatedBuilder(
-        animation: _animation,
-        builder: (context, child) {
-          return Transform.translate(
-            offset: Offset(0, 50 * (1 - _animation.value)),
-            child: Opacity(
-              opacity: _animation.value,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFf259e9f),
-                      Color(0xFf259e9f),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      selectedMarker!.name,
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'distance'.tr + ': ${_getFormattedDistance()}',
-                      style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
       ),
     );
   }

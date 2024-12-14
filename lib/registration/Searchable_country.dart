@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'countries.dart';
 
 class SearchableDropdown extends StatefulWidget {
   final List<Map<String, dynamic>> items;
@@ -40,19 +39,82 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
     });
   }
 
+  void _toggleDropdown() {
+    if (_isDropdownOpen) {
+      setState(() {
+        _isDropdownOpen = false;
+        _searchController.clear();
+        _filteredItems = widget.items;
+      });
+    } else {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            initialChildSize: 0.5,
+            minChildSize: 0.3,
+            maxChildSize: 0.8,
+            expand: false,
+
+            builder: (BuildContext context, ScrollController scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          hintText:  'choose_country'.tr,
+                        ),
+                        onChanged: _filterItems,
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: _filteredItems.length,
+                        itemBuilder: (context, index) {
+                          final item = _filteredItems[index];
+                          return ListTile(
+                            title: Text(item['name']),
+                            onTap: () {
+                              widget.onChanged(item['name']);
+                              Navigator.pop(context); // Close the dropdown
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      );
+      setState(() {
+        _isDropdownOpen = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         GestureDetector(
-          onTap: () {
-            setState(() {
-              _isDropdownOpen = !_isDropdownOpen;
-              _searchController.clear();
-              _filteredItems = widget.items;
-            });
-          },
+          onTap: _toggleDropdown,
           child: AbsorbPointer(
             child: TextFormField(
               decoration: InputDecoration(
@@ -67,54 +129,11 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
                 contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               ),
               controller: TextEditingController(
-                  text: widget.value ?? 'choose_country'.tr
+                text: widget.value ?? 'choose_country'.tr,
               ),
             ),
           ),
         ),
-        if (_isDropdownOpen)
-          Card(
-            elevation: 4,
-            margin: EdgeInsets.symmetric(vertical: 8),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onChanged: _filterItems,
-                  ),
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 250,
-                  ),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _filteredItems.length,
-                    itemBuilder: (context, index) {
-                      final item = _filteredItems[index];
-                      return ListTile(
-                        title: Text(item['name']),
-                        onTap: () {
-                          widget.onChanged(item['name']);
-                          setState(() {
-                            _isDropdownOpen = false;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
       ],
     );
   }

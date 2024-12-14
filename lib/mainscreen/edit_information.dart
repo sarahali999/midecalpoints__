@@ -171,7 +171,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _usernameController.dispose();
     _passwordController.dispose();
   }
-
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
@@ -228,17 +227,48 @@ class _EditProfilePageState extends State<EditProfilePage> {
         print('request_sent_success'.tr);
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
+
         if (response.statusCode == 200) {
           UserInfoController.fetchPatientDetails();
           print('profile_update_success'.tr);
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('profile_update_success'.tr,style: TextStyle(color: Colors.white),),
+            SnackBar(content: Text('profile_update_success'.tr,style: TextStyle(color: Colors.white),),
               backgroundColor: Color(0xFF259E9F),
             ),
           );
           Navigator.pop(context, true);
         } else {
-          print('فشل التحديث: ${response.body}');
+          try {
+            Map<String, dynamic> errorResponse = json.decode(response.body);
+            String errorMessage = errorResponse['message'] ?? 'unknown_error'.tr;
+
+            if (errorMessage.toLowerCase().contains('phone') ||
+                errorMessage.toLowerCase().contains('already exists')) {
+              Get.snackbar(
+                'error'.tr,
+                'رقم الهاتف موجود مسبقا',
+                backgroundColor: Colors.red[400],
+                colorText: Colors.white,
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            } else {
+              Get.snackbar(
+                'error'.tr,
+                errorMessage,
+                backgroundColor: Colors.red[400],
+                colorText: Colors.white,
+              );
+            }
+          } catch (parseError) {
+            // Fallback error handling if JSON parsing fails
+            Get.snackbar(
+              'error'.tr,
+              'profile_update_error'.tr,
+              backgroundColor: Colors.red[400],
+              colorText: Colors.white,
+            );
+          }
+
           throw Exception('فشل تحديث الملف الشخصي: ${response.body}');
         }
       } catch (e) {
@@ -436,6 +466,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             _emergencyContactPhoneController.text = phone.completeNumber;
                             print(phone.completeNumber);
                           },
+                          onCountryChanged: (country) {
+                            _formKey.currentState?.reset();
+                            print('Country changed to: ${country.code}');
+                          },
                         ),
                         _buildCountryDropdown(
                           controller: _emergencyContactCountryController,
@@ -512,8 +546,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color:
-                              _primaryColor),
+                              borderSide: BorderSide(color: _primaryColor),
                             ),
                             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                           ),
@@ -523,6 +556,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           onChanged: (phone) {
                             _phoneController.text = phone.completeNumber;
                             print(phone.completeNumber);
+                          },
+                          onCountryChanged: (country) {
+                            _formKey.currentState?.reset();
+                            print('Country changed to: ${country.code}');
                           },
                         ),
                         _buildTextField(
@@ -679,7 +716,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   color: _primaryColor),
             );
           }
-          
+
           return Container();
         },
       ).animate().fadeIn(duration: Duration(milliseconds: 500), delay: Duration(milliseconds: 100))
