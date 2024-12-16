@@ -12,6 +12,7 @@ class QuicksupportnumbersController extends GetxController {
   var isLoading = true.obs;
   var errorMessage = ''.obs;
   final String apiUrl = 'https://medicalpoint-api.tatwer.tech/api/Mobile/GetAllCenters';
+
   @override
   void onInit() {
     super.onInit();
@@ -43,14 +44,93 @@ class QuicksupportnumbersController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }Future<void> _showCallOptions(String phoneNumber) async {
+    await showModalBottomSheet(
+      context: Get.context!,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.25,
+          minChildSize: 0.2,
+          maxChildSize: 0.4,
+          expand: false,
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Container(
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'اختر وسيلة الاتصال',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF259E9F),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    ListTile(
+                      leading: Icon(Icons.phone, color: Color(0xFF259E9F)),
+                      title: Text(
+                        'اتصال هاتفي',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _makePhoneCall(phoneNumber);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.phone_in_talk_outlined, color: Color(0xFF259E9F)),
+                      title: Text(
+                        'واتس اب',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _launchWhatsApp(phoneNumber);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
-
   Future<void> _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
     if (await canLaunchUrl(launchUri)) {
       await launchUrl(launchUri);
     } else {
       throw 'تعذر الاتصال بـ $phoneNumber';
+    }
+  }
+
+  Future<void> _launchWhatsApp(String phoneNumber) async {
+    final Uri whatsappUri = Uri.parse('https://wa.me/$phoneNumber');
+    if (await canLaunchUrl(whatsappUri)) {
+      await launchUrl(whatsappUri);
+    } else {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(content: Text('WhatsApp غير مثبت')),
+      );
     }
   }
 }
@@ -183,6 +263,7 @@ class Quicksupportnumbers extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildSupportNumberCard(Map<String, dynamic> number) {
     return Container(
       decoration: BoxDecoration(
@@ -218,7 +299,7 @@ class Quicksupportnumbers extends StatelessWidget {
             width: Get.width * 0.06,
             height: Get.width * 0.06,
           ),
-          onPressed: () => Get.find<QuicksupportnumbersController>()._makePhoneCall(number['number']!),
+          onPressed: () => Get.find<QuicksupportnumbersController>()._showCallOptions(number['number']!),
         ),
       ),
     ).animate().fadeIn(duration: 300.ms);

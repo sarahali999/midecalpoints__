@@ -9,11 +9,6 @@ class ContactInfoPage extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
 
-  final FocusNode usernameFocusNode = FocusNode();
-  final FocusNode phoneFocusNode = FocusNode();
-  final FocusNode emailFocusNode = FocusNode();
-  final FocusNode passwordFocusNode = FocusNode();
-
   ContactInfoPage({
     Key? key,
     required this.phoneController,
@@ -42,15 +37,11 @@ class ContactInfoPage extends StatelessWidget {
           CustomTextField(
             labelText: 'username'.tr,
             controller: usernameController,
-            focusNode: usernameFocusNode,
-            onSubmitted: (_) {
-              FocusScope.of(context).requestFocus(phoneFocusNode);
-            },
+
           ),
           SizedBox(height: spacing),
-          Form(
-            key: _formKey,
-            child: IntlPhoneField(
+
+            IntlPhoneField(
               decoration: InputDecoration(
                 labelText: 'phone_number'.tr,
                 border: OutlineInputBorder(
@@ -71,30 +62,20 @@ class ContactInfoPage extends StatelessWidget {
                 _formKey.currentState?.reset();
                 print('Country changed to: ${country.code}');
               },
-              focusNode: phoneFocusNode,
-              onSubmitted: (_) {
-                FocusScope.of(context).requestFocus(emailFocusNode);
-              },
             ),
-          ),
+
           SizedBox(height: spacing),
           CustomTextField(
             labelText: 'email'.tr,
             controller: emailController,
-            focusNode: emailFocusNode,
-            onSubmitted: (_) {
-              FocusScope.of(context).requestFocus(passwordFocusNode);
-            },
+
           ),
           SizedBox(height: spacing),
           CustomTextField(
             labelText: 'enter_password'.tr,
             controller: passwordController,
             isPassword: true,
-            focusNode: passwordFocusNode,
-            onSubmitted: (_) {
-              passwordFocusNode.unfocus();
-            },
+
           ),
         ],
       ),

@@ -4,16 +4,12 @@ class CustomTextField extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
   final bool isPassword;
-  final FocusNode? focusNode;
-  final ValueChanged<String>? onSubmitted;  // Add onSubmitted callback
 
   const CustomTextField({
     Key? key,
     required this.labelText,
     required this.controller,
     this.isPassword = false,
-    this.focusNode,
-    this.onSubmitted,  // Include onSubmitted in the constructor
   }) : super(key: key);
 
   @override
@@ -21,8 +17,6 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: isPassword,
-      focusNode: focusNode, // Use the focusNode here
-      onSubmitted: onSubmitted, // Pass the onSubmitted callback
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(

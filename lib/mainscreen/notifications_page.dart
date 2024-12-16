@@ -3,13 +3,15 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
+import '../controller/user_controller.dart';
 import '../languages.dart';
 
 class Publicnotices extends StatefulWidget {
   @override
   _PublicnoticesState createState() => _PublicnoticesState();
-}
+  final UserController infoController = Get.put(UserController());
 
+}
 class _PublicnoticesState extends State<Publicnotices> {
   List<Map<String, dynamic>> _notifications = [];
 
@@ -35,7 +37,24 @@ class _PublicnoticesState extends State<Publicnotices> {
     OneSignal.Notifications.addClickListener((event) {
       _addNotification(event.notification);
     });
+
+    final userInfo = widget.infoController.userInfoDetails.value;
+
+    if (userInfo != null) {
+      String externalUserId = userInfo.data?.userId.toString() ?? "";
+      print(externalUserId);
+      if (externalUserId.isNotEmpty) {
+        OneSignal.login(externalUserId).then((result) {
+          print("External user ID set:");
+        }).catchError((error) {
+          print("Error setting external user ID: $error");
+        });
+      }
+    } else {
+      print("User info not available.");
+    }
   }
+
   void _addNotification(OSNotification notification) {
     final Map<String, dynamic> notificationMap = {
       'title': notification.title ?? 'No Title',
@@ -49,6 +68,7 @@ class _PublicnoticesState extends State<Publicnotices> {
 
     _saveNotifications();
   }
+
   void _loadNotifications() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? notificationStrings = prefs.getStringList('notifications');
@@ -70,7 +90,7 @@ class _PublicnoticesState extends State<Publicnotices> {
 
   @override
   Widget build(BuildContext context) {
-
+    // Build method code remains the same
     final currentLocale = Get.locale?.languageCode ?? 'en';
     final bool isRightToLeft = Languages.isRTL(currentLocale);
 
@@ -127,7 +147,8 @@ class _PublicnoticesState extends State<Publicnotices> {
           itemBuilder: (BuildContext context, int index) {
             final notification = _notifications[index];
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8),
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFFEAF8F8),
@@ -141,7 +162,8 @@ class _PublicnoticesState extends State<Publicnotices> {
                   ],
                 ),
                 child: ListTile(
-                  leading: notification['image'] != null && notification['image'] != 'No Content'
+                  leading: notification['image'] != null &&
+                      notification['image'] != 'No Content'
                       ? Image.network(
                     notification['image'],
                     width: 50,

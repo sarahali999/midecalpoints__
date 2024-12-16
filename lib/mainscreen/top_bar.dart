@@ -51,7 +51,7 @@ class _TopBarState extends State<TopBar> {
             MaterialPageRoute(
               builder: (context) => MapPage(
                 initialLocation: searchLocation,
-                locationName: query, // تمرير نص البحث
+                locationName: query,
                 openedFromSearch: true,
               ),
             ),
@@ -123,6 +123,7 @@ class _TopBarState extends State<TopBar> {
                   );
                 },
               ),
+
               Image.asset(
                 'assets/images/logo.png',
                 width: Get.width * 0.12,
@@ -199,7 +200,6 @@ class _TopBarState extends State<TopBar> {
       },
     );
   }
-
   @override
   void dispose() {
     _searchController.dispose();

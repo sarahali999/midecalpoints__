@@ -8,9 +8,6 @@ class MedicalInfoPage extends StatefulWidget {
   final TextEditingController allergiesController;
   final ValueChanged<int?> onBloodTypeChanged;
 
-  final FocusNode chronicDiseasesFocusNode = FocusNode();
-  final FocusNode allergiesFocusNode = FocusNode();
-
   MedicalInfoPage({
     required this.selectedBloodType,
     required this.chronicDiseasesController,
@@ -127,19 +124,13 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
             CustomTextField(
               labelText: 'allergies'.tr,
               controller: widget.allergiesController,
-              focusNode: widget.allergiesFocusNode,
-              onSubmitted: (_) {
-                FocusScope.of(context).requestFocus(widget.chronicDiseasesFocusNode);
-              },
+
             ),
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'chronic_diseases'.tr,
               controller: widget.chronicDiseasesController,
-              focusNode: widget.chronicDiseasesFocusNode,
-              onSubmitted: (_) {
-                FocusScope.of(context).unfocus();  // Hide keyboard or move focus elsewhere if needed
-              },
+
             ),
             SizedBox(height: spacing),
           ],

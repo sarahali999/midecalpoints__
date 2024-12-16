@@ -21,8 +21,6 @@ class MarkerInfo {
 
   });
 }
-
-
 class MapPage extends StatefulWidget {
   final LatLng initialLocation;
   final String locationName;
@@ -52,7 +50,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   List<Marker> routePoints = [];
   Marker? userLocationMarker;
   bool _isSearchedLocation = false;
-  String _searchedLocationDetails = ''; // New variable for detailed location info
+  String _searchedLocationDetails = '';
 
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -145,7 +143,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
               Polyline(
                 points: routePointsList,
                 color: const Color(0xFF259e9f).withOpacity(0.8),
-                strokeWidth: 4.0,
+                strokeWidth: 7.0,
                 borderColor: Colors.white.withOpacity(0.5),
                 borderStrokeWidth: 2.0,
               ),
@@ -322,7 +320,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         final lng = data['results'][0]['geometry']['lng'];
         final searchLocation = LatLng(lat, lng);
 
-        // Extract more detailed location information
         final formattedAddress = data['results'][0]['formatted'] ?? '';
         final components = data['results'][0]['components'] ?? {};
 
@@ -349,7 +346,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           name: searchQuery,
         );
 
-        // Calculate and show distance
         _updateSelectedMarkerDistance();
 
       } else {
@@ -467,7 +463,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             _buildMap(),
             _buildSearchBar(),
             if (isMarkerListVisible) _buildFloatingMarkerList(),
-            if (selectedMarker != null) _buildSelectedMarkerInfo(), // Updated to show more details
+            if (selectedMarker != null) _buildSelectedMarkerInfo(),
           ],
         ),
         floatingActionButton: _buildFloatingActionButtons(),
@@ -508,7 +504,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       mapController: _mapController,
       options: MapOptions(
         initialZoom: 3.0,
-        onTap: (_, __) => _clearSelection(),
+         onTap: (_, __) => _clearSelection(),
         maxZoom: 18.0,
         onMapReady: () {
           _locateUser();
@@ -525,12 +521,10 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         MarkerLayer(
           markers: markers + [if (userLocationMarker != null) userLocationMarker!],
         ),
-        // إضافة موقع المستخدم
         CurrentLocationLayer(
-          followOnLocationUpdate: FollowOnLocationUpdate.always,
+
           turnOnHeadingUpdate: TurnOnHeadingUpdate.never,
           style: LocationMarkerStyle(
-
             markerSize: const Size(40, 40),
           ),
         ),

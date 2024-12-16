@@ -45,14 +45,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     'female'.tr: 2,
   };
   String? _currentGenderKey;
-  late FocusNode firstNameFocusNode;
-  late FocusNode middleNameFocusNode;
-  late FocusNode lastNameFocusNode;
-  late FocusNode alleyFocusNode;
-  late FocusNode districtFocusNode;
-  late FocusNode governorateFocusNode;
-  late FocusNode countryFocusNode;
-  late FocusNode houseFocusNode;
+
 
   String? selectedCountry;
   String? selectedGovernorate;
@@ -60,31 +53,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   void initState() {
     super.initState();
-    firstNameFocusNode = FocusNode();
-    middleNameFocusNode = FocusNode();
-    lastNameFocusNode = FocusNode();
-    alleyFocusNode = FocusNode();
-    districtFocusNode = FocusNode();
-    governorateFocusNode = FocusNode();
-    countryFocusNode = FocusNode();
-    houseFocusNode = FocusNode();
+
     _currentGenderKey = widget.selectedGender == 0
         ? null
         : genderOptions.entries.firstWhere((entry) => entry.value == widget.selectedGender).key;
   }
 
-  @override
-  void dispose() {
-    firstNameFocusNode.dispose();
-    middleNameFocusNode.dispose();
-    lastNameFocusNode.dispose();
-    alleyFocusNode.dispose();
-    districtFocusNode.dispose();
-    governorateFocusNode.dispose();
-    countryFocusNode.dispose();
-    houseFocusNode.dispose();
-    super.dispose();
-  }
 
   final List<Map<String, String>> countryOptions = [
     {'id': '1', 'name': 'العراق'},
@@ -199,28 +173,19 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           CustomTextField(
             labelText: 'first_name'.tr,
             controller: widget.firstNameController,
-            focusNode: firstNameFocusNode,
-            onSubmitted: (_) {
-              FocusScope.of(context).requestFocus(middleNameFocusNode);
-            },
+
           ),
           SizedBox(height: spacing),
           CustomTextField(
             labelText: 'middle_name'.tr,
             controller: widget.middleNameController,
-            focusNode: middleNameFocusNode,
-            onSubmitted: (_) {
-              FocusScope.of(context).requestFocus(lastNameFocusNode);
-            },
+
           ),
           SizedBox(height: spacing),
           CustomTextField(
             labelText: 'last_name'.tr,
             controller: widget.lastNameController,
-            focusNode: lastNameFocusNode,
-            onSubmitted: (_) {
-              FocusScope.of(context).requestFocus(countryFocusNode);
-            },
+
           ),
           SizedBox(height: spacing),
           GestureDetector(
@@ -230,9 +195,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 isScrollControlled: true,
                 builder: (BuildContext context) {
                   return DraggableScrollableSheet(
-                    initialChildSize: 0.5,
-                    minChildSize: 0.3,
-                    maxChildSize: 0.8,
+                    initialChildSize: 0.25,
+                    minChildSize: 0.2,
+                    maxChildSize: 0.4,
                     expand: false,
                     builder: (BuildContext context, ScrollController scrollController) {
                       return Container(
@@ -262,7 +227,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             },
             child: AbsorbPointer(
               child: TextFormField(
-                focusNode: countryFocusNode,
                 controller: TextEditingController(text: selectedCountry != null ? countryOptions.firstWhere((c) => c['id'] == selectedCountry)['name'] : ''),
                 readOnly: true,
                 decoration: InputDecoration(
@@ -324,7 +288,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               },
               child: AbsorbPointer(
                 child: TextFormField(
-                  focusNode: governorateFocusNode,
                   controller: TextEditingController(text: selectedGovernorate),
                   readOnly: true,
                   decoration: InputDecoration(
@@ -345,25 +308,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             CustomTextField(
               labelText: 'district'.tr,
               controller: widget.districtController,
-              focusNode: districtFocusNode,
-              onSubmitted: (_) {
-                FocusScope.of(context).requestFocus(alleyFocusNode);
-              },
             ),
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'alley'.tr,
               controller: widget.alleyController,
-              focusNode: alleyFocusNode,
-              onSubmitted: (_) {
-                FocusScope.of(context).requestFocus(houseFocusNode);
-              },
+
             ),
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'house'.tr,
               controller: widget.houseController,
-              focusNode: houseFocusNode,
             ),
           ] else if (selectedCountry == '2') ...[
             FutureBuilder<List<Map<String, dynamic>>>(
@@ -399,9 +354,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 isScrollControlled: true,
                 builder: (BuildContext context) {
                   return DraggableScrollableSheet(
-                    initialChildSize: 0.5,
-                    minChildSize: 0.3,
-                    maxChildSize: 0.8,
+                    initialChildSize: 0.25,
+                    minChildSize: 0.2,
+                    maxChildSize: 0.4,
                     expand: false,
                     builder: (BuildContext context, ScrollController scrollController) {
                       return Container(
@@ -415,7 +370,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           itemBuilder: (context, index) {
                             final entry = genderOptions.entries.where((entry) => entry.value != 0).elementAt(index);
                             return ListTile(
-                              title: Text(entry.key, style: TextStyle(fontSize: 16)),
+                              title: Text(
+                                entry.key,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // تقليل الحشو
                               onTap: () {
                                 setState(() {
                                   _currentGenderKey = entry.key;

@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-
       textDirection: Languages.isRTL(Get.locale?.languageCode ?? 'en')
           ? TextDirection.rtl
           : TextDirection.ltr,
@@ -91,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 height: Get.height *0.3,
                 child: News(),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(

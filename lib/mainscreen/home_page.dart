@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:midecalpoints/mainscreen/top_bar.dart';
 import 'package:latlong2/latlong.dart';
 import '../languages.dart';
-import '../login/verification.dart';
 import 'home.dart';
 import 'health_card_page.dart';
 import 'map_page.dart';

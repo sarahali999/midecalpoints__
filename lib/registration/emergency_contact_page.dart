@@ -35,17 +35,6 @@ class EmergencyContactPage extends StatefulWidget {
 
 class _EmergencyContactPageState extends State<EmergencyContactPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // FocusNodes for all text fields
-  late FocusNode nameFocusNode;
-  late FocusNode phoneFocusNode;
-  late FocusNode countryFocusNode;
-  late FocusNode provinceFocusNode;
-  late FocusNode districtFocusNode;
-  late FocusNode alleyFocusNode;
-  late FocusNode houseFocusNode;
-  late FocusNode relationshipFocusNode;
-
   String initialCountryCode = 'IQ';
   String completePhoneNumber = '';
   final Map<String, int> relationshipOptions = {
@@ -65,15 +54,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
   @override
   void initState() {
     super.initState();
-    nameFocusNode = FocusNode();
-    phoneFocusNode = FocusNode();
-    countryFocusNode = FocusNode();
-    provinceFocusNode = FocusNode();
-    districtFocusNode = FocusNode();
-    alleyFocusNode = FocusNode();
-    houseFocusNode = FocusNode();
-    relationshipFocusNode = FocusNode();
-
     _currentRelationship = widget.emergencyContactRelationship == 0
         ? null
         : relationshipOptions.entries
@@ -81,18 +61,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
         .key;
   }
 
-  @override
-  void dispose() {
-    nameFocusNode.dispose();
-    phoneFocusNode.dispose();
-    countryFocusNode.dispose();
-    provinceFocusNode.dispose();
-    districtFocusNode.dispose();
-    alleyFocusNode.dispose();
-    houseFocusNode.dispose();
-    relationshipFocusNode.dispose();
-    super.dispose();
-  }
 
   void _showRelationshipPicker() {
     showModalBottomSheet(
@@ -193,8 +161,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
             CustomTextField(
               labelText: 'emergencyContactPage.fullName'.tr,
               controller: widget.emergencyContactNameController,
-              focusNode: nameFocusNode,
-              onSubmitted: (_) => FocusScope.of(context).requestFocus(phoneFocusNode),
+
             ),
             SizedBox(height: spacing),
             GestureDetector(
@@ -204,9 +171,9 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   isScrollControlled: true,
                   builder: (BuildContext context) {
                     return DraggableScrollableSheet(
-                      initialChildSize: 0.5,
-                      minChildSize: 0.3,
-                      maxChildSize: 0.8,
+                      initialChildSize: 0.25,
+                      minChildSize: 0.2,
+                      maxChildSize: 0.4,
                       expand: false,
                       builder: (BuildContext context, ScrollController scrollController) {
                         return Container(
@@ -236,7 +203,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
               },
               child: AbsorbPointer(
                 child: TextFormField(
-                  focusNode: countryFocusNode,
                   controller: TextEditingController(text: selectedCountry != null ? countryOptions.firstWhere((c) => c['id'] == selectedCountry)['name'] : ''),
                   readOnly: true,
                   decoration: InputDecoration(
@@ -300,7 +266,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     },
                     child: AbsorbPointer(
                       child: TextFormField(
-                        focusNode: provinceFocusNode,
                         controller: TextEditingController(text: selectedGovernorate),
                         readOnly: true,
                         decoration: InputDecoration(
@@ -321,21 +286,17 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   CustomTextField(
                     labelText: 'emergencyContactPage.district'.tr,
                     controller: widget.emergencyContactDistrictController,
-                    focusNode: districtFocusNode,
-                    onSubmitted: (_) => FocusScope.of(context).requestFocus(alleyFocusNode),
-                  ),
+                    ),
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.alley'.tr,
                     controller: widget.emergencyContactAlleyController,
-                    focusNode: alleyFocusNode,
-                    onSubmitted: (_) => FocusScope.of(context).requestFocus(houseFocusNode),
+
                   ),
                   SizedBox(height: spacing),
                   CustomTextField(
                     labelText: 'emergencyContactPage.house'.tr,
                     controller: widget.emergencyContactHouseController,
-                    focusNode: houseFocusNode,
                   ),
                 ],
               )
@@ -424,7 +385,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                     fillColor: Color(0xFFd6dedf),
                   ),
                   controller: TextEditingController(text: _currentRelationship),
-                  focusNode: relationshipFocusNode,
                 ),
               ),
             ),
@@ -453,7 +413,6 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
                   _formKey.currentState?.reset();
                   print('Country changed to: ${country.code}');
                 },
-                focusNode: phoneFocusNode,
               ),
             ),
             SizedBox(height: spacing),

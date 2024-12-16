@@ -106,7 +106,6 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? jwtToken = prefs.getString('token');
 
-      print('JWT Token: ${jwtToken?.substring(0, 10)}...');
 
       if (jwtToken == null) throw Exception('JWT token is missing');
 
@@ -117,20 +116,15 @@ class UserController extends GetxController with GetSingleTickerProviderStateMix
           'Content-Type': 'application/json',
         },
       );
-      print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
-        print(response.body);
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         userInfoDetails.value = UserDetails.fromJson(jsonResponse);
 
-        print('Parsed user details: ${userInfoDetails.value?.toJson()}');
       } else {
-        print(response.body);
         throw Exception('Failed to load patient details: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error in fetchPatientDetails: $e');
       Get.snackbar(
         "خطأ",
         "حدث خطأ أثناء جلب بيانات المريض",

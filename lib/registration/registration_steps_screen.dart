@@ -65,7 +65,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   void initState() {
     super.initState();
     isRTL = Languages.isRTL(Get.locale?.languageCode ?? 'en');
-
   }
   bool _isLoading = false;
 
@@ -88,7 +87,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         return;
 
       }
-
 
       var headers = {'Content-Type': 'application/json'};
       var request = http.Request(
@@ -197,7 +195,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   }
   bool _validateCurrentPage() {
     switch (_currentPage) {
-      case 0: // Personal Info Page
+      case 0:
         if (firstNameController.text.isEmpty ||
             lastNameController.text.isEmpty ||
             _selectedGender == 0 ||
@@ -241,11 +239,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
         return false;
     }
   }
-
   @override
   Widget build(BuildContext context) {
-    bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-
     double screenHeight = Get.size.height;
     double screenWidth = Get.size.width;
     double fontScale = screenWidth / 375;
@@ -377,7 +372,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
           }
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           body: Directionality(
             textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
             child: Stack(
@@ -690,82 +684,82 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                     SizedBox(height: screenHeight * 0.15),
                   ],
                 ),
-                  AnimatedPositioned(
-                  duration: Duration(milliseconds: 200),
-    bottom: isKeyboardVisible ? -50 : screenHeight * 0.1,
-    left: 0,
-    right: 0,
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: List.generate(4, (index) {
-    return GestureDetector(
-    onTap: () {
-    _pageController.jumpToPage(index);
-    },
-    child: AnimatedContainer(
-    duration: Duration(milliseconds: 300),
-    margin: EdgeInsets.symmetric(horizontal: 4),
-    width: _currentPage == index ? 12 : 8,
-    height: 8,
-    decoration: BoxDecoration(
-    shape: BoxShape.circle,
-    color: _currentPage == index ? Color(0xFf259e9f) : Colors.grey,
-    ),
-    ),
-    );
-    }),
-    ),
-    ),
-
-    // Final Button
-    AnimatedPositioned(
-    duration: Duration(milliseconds: 200),
-      bottom: isKeyboardVisible ? -screenHeight : screenHeight * 0.03, // التعديل هنا
-    right: screenWidth * 0.05,
-    left: screenWidth * 0.05,
-    child: ElevatedButton(
-    style: ElevatedButton.styleFrom(
-    backgroundColor: _currentPage < 3
-    ? const Color(0xFf259e9f)
-        : (_isLoading ? Colors.grey : const Color(0xFf259e9f)),
-    padding: EdgeInsets.symmetric(vertical: 14),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12),
-    ),
-    ),
-    onPressed: _currentPage < 3
-    ? () {
-    if (_validateCurrentPage()) {
-    _pageController.nextPage(
-    duration: Duration(milliseconds: 300),
-    curve: Curves.easeInOut,
-    );
-    }
-    }
-        : (_isLoading ? null : submitPatientData),
-    child: _isLoading && _currentPage == 3
-    ? SizedBox(
-    width: 24,
-    height: 24,
-    child: CircularProgressIndicator(
-    color: Colors.white,
-    strokeWidth: 3,
-    ),
-    )
-        : Text(
-    _currentPage < 3 ? 'next'.tr : 'finish'.tr,
-    style: TextStyle(
-    fontSize: 16 * fontScale,
-    fontWeight: FontWeight.bold,
-    color: Colors.white,
-    ),
-    ),
-    ),
-    ),
-    ],
-    ),
-    ),
-    )
+                Positioned(
+                  bottom: screenHeight * 0.1,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(4, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          _pageController.jumpToPage(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          margin: EdgeInsets.symmetric(horizontal: 4),
+                          width: _currentPage == index ? 12 : 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentPage == index ? Color(0xFf259e9f) : Colors.grey,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                Positioned(
+                  bottom: screenHeight * 0.03,
+                  right: screenWidth * 0.05,
+                  left: screenWidth * 0.05,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _currentPage < 3
+                          ? const Color(0xFf259e9f)
+                          : (_isLoading
+                          ? Colors.grey
+                          : const Color(0xFf259e9f)),
+                      padding: EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: _currentPage < 3
+                        ? () {
+                      if (_validateCurrentPage()) {
+                        _pageController.nextPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    }
+                        : (_isLoading
+                        ? null
+                        : submitPatientData),
+                    child: _isLoading && _currentPage == 3
+                        ? SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 3,
+                      ),
+                    )
+                        : Text(
+                      _currentPage < 3 ? 'next'.tr : 'finish'.tr,
+                      style: TextStyle(
+                        fontSize: 16 * fontScale,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
     );
   }
 }
