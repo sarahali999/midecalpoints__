@@ -75,7 +75,7 @@ class QuicksupportnumbersController extends GetxController {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'اختر وسيلة الاتصال',
+                      'call_options'.tr,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -86,7 +86,7 @@ class QuicksupportnumbersController extends GetxController {
                     ListTile(
                       leading: Icon(Icons.phone, color: Color(0xFF259E9F)),
                       title: Text(
-                        'اتصال هاتفي',
+                        'phone_call'.tr,
                         style: TextStyle(color: Colors.black),
                       ),
                       onTap: () {
@@ -95,9 +95,14 @@ class QuicksupportnumbersController extends GetxController {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.phone_in_talk_outlined, color: Color(0xFF259E9F)),
+                      leading:  SvgPicture.asset(
+                      'assets/icons/whatsapp.svg',
+                      color: Color(0xFf259e9f),
+                      width: Get.width * 0.08,
+                      height: Get.width * 0.08,
+                    ),
                       title: Text(
-                        'واتس اب',
+                        'whatsapp'.tr,
                         style: TextStyle(color: Colors.black),
                       ),
                       onTap: () {
@@ -129,7 +134,7 @@ class QuicksupportnumbersController extends GetxController {
       await launchUrl(whatsappUri);
     } else {
       ScaffoldMessenger.of(Get.context!).showSnackBar(
-        SnackBar(content: Text('WhatsApp غير مثبت')),
+        SnackBar(content: Text('whatsapp_not_installed '.tr)),
       );
     }
   }

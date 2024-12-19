@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:get/get.dart';
+import 'package:midecalpoints/mainscreen/chat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -279,13 +280,7 @@ class _LoginState extends State<Login> {
   Widget _buildAuthLinks() {
     return Column(
       children: [
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            "forgot_password".tr,
-            style: TextStyle(color: const Color(0xFf259e9f), fontSize: Get.width * 0.035),
-          ),
-        ),
+
         TextButton(
           onPressed: () async {
             Get.to(() => LoadingScreen(onLoaded: () {  },));
@@ -296,6 +291,18 @@ class _LoginState extends State<Login> {
           },
           child: Text(
             "no_account".tr,
+            style: TextStyle(
+              color: const Color(0xFf259e9f),
+              fontSize: Get.width * 0.035,
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            Get.to(() => Chat());
+          },
+          child: Text(
+            "forgot_password".tr,
             style: TextStyle(
               color: const Color(0xFf259e9f),
               fontSize: Get.width * 0.035,

@@ -100,6 +100,8 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: spacing),
+
             GestureDetector(
               onTap: _showBloodTypePicker,
               child: Container(
@@ -112,7 +114,7 @@ class _MedicalInfoPageState extends State<MedicalInfoPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      _currentBloodType ?? 'اختر فصيلة الدم',
+                      _currentBloodType ?? 'blood_type'.tr,
                       style: const TextStyle(fontSize: 16),
                     ),
                     const Icon(Icons.arrow_drop_down),

@@ -142,7 +142,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
             polylines.add(
               Polyline(
                 points: routePointsList,
-                color: const Color(0xFF259e9f).withOpacity(0.8),
+                color:  Colors.blue.withOpacity(0.8),
                 strokeWidth: 7.0,
                 borderColor: Colors.white.withOpacity(0.5),
                 borderStrokeWidth: 2.0,
@@ -688,6 +688,38 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           child: Icon(
               isMarkerListVisible ? Icons.list_alt : Icons.list,
               color: Colors.white
+          ),
+        ),
+        const SizedBox(height: 16),
+        FloatingActionButton(
+          onPressed: () {
+            final shrineLocation = LatLng(32.6167, 44.0333);
+            setState(() {
+              selectedMarker = null;
+              polylines.clear();
+              markers.removeWhere((marker) => marker.child is Icon);
+              markers.add(
+                Marker(
+                  point: shrineLocation,
+                  width: 50.0,
+                  height: 50.0,
+                  child: const Icon(Icons.mosque, color: Colors.green, size: 40),
+                ),
+              );
+              _mapController.move(shrineLocation, 15.0);
+              _updateRoute(currentLocation, shrineLocation);
+              selectedMarker = MarkerInfo(
+                point: shrineLocation,
+                name: 'مرقد الإمام الحسين(عليه السلام)',
+              );
+              _updateSelectedMarkerDistance();
+            });
+          },
+          heroTag: 'shrineLocation',
+          backgroundColor: Color(0xFF259e9f),
+          child: SvgPicture.asset(
+            'assets/icons/muslim.svg',
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 16),

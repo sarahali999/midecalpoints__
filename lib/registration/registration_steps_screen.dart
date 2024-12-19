@@ -38,8 +38,6 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   TextEditingController addressController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController governorateController = TextEditingController();
-  TextEditingController districtController = TextEditingController();
-  TextEditingController alleyController = TextEditingController();
   TextEditingController houseController = TextEditingController();
   TextEditingController bloodTypeController = TextEditingController();
   TextEditingController chronicDiseasesController = TextEditingController();
@@ -75,18 +73,28 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
 
     try {
       if (phoneNumberController.text.isEmpty || passwordController.text.isEmpty) {
-        Get.snackbar(
-          'error'.tr,
-          'fill_required_fields'.tr,
-          backgroundColor: Colors.red[400],
-          colorText: Colors.white,
-        );
+        List<String> missingFields = [];
+
+        if (phoneNumberController.text.isEmpty) missingFields.add('phone_number'.tr);
+        if (passwordController.text.isEmpty) missingFields.add('password'.tr);
+
+        if (missingFields.isNotEmpty) {
+          Get.snackbar(
+            'incomplete_info'.tr,
+            'please_complete_info'.tr + ': ${missingFields.join(", ")}',
+            backgroundColor: Colors.red[400],
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 3),
+          );
+        }
+
         setState(() {
           _isLoading = false;
         });
         return;
-
       }
+
 
       var headers = {'Content-Type': 'application/json'};
       var request = http.Request(
@@ -98,16 +106,14 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
 
       var requestBody = {
         'firstName': firstNameController.text,
-        'secondName': lastNameController.text,
-        'thirdName': middleNameController.text,
+        'secondName': middleNameController.text,
+        'thirdName': lastNameController.text,
         'gender': _selectedGender,
         'bloodType': _selectedBloodType,
         'address': addressController.text,
         'birthYear': selectedYear ?? '',
         'country': countryController.text,
         'province': governorateController.text,
-        'district': districtController.text,
-        'alley': alleyController.text,
         'house': houseController.text,
         'email': emailController.text,
         'chronicDiseases': chronicDiseasesController.text,
@@ -196,49 +202,54 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
   bool _validateCurrentPage() {
     switch (_currentPage) {
       case 0:
-        if (firstNameController.text.isEmpty ||
-            lastNameController.text.isEmpty ||
-            _selectedGender == 0 ||
-            countryController.text.isEmpty ||
-            selectedYear == null) {
+        List<String> missingFields = [];
+        if (firstNameController.text.isEmpty) missingFields.add('first_name'.tr);
+        if (lastNameController.text.isEmpty) missingFields.add('middle_name'.tr);
+        if (_selectedGender == 0) missingFields.add('gender'.tr);
+        if (countryController.text.isEmpty) missingFields.add('country'.tr);
+        if (selectedYear == null) missingFields.add('year'.tr);
+        if (missingFields.isNotEmpty) {
           Get.snackbar(
-            'error'.tr,
-            'fill_required_fields'.tr,
-            backgroundColor: Colors.red[400],
+            'incomplete_info'.tr,
+            '${'please_complete_info'.tr}: ${missingFields.join(", ")}',
+            backgroundColor: Colors.red,
             colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 3),
           );
           return false;
         }
         return true;
 
       case 1:
-        if (_selectedBloodType == 0) {
-          Get.snackbar(
-            'error'.tr,
-            'fill_required_fields'.tr,
-            backgroundColor: Colors.red[400],
-            colorText: Colors.white,
-          );
-          return false;
-        }
+
         return true;
+
       case 2:
-        if (emergencyContactNameController.text.isEmpty ||
-            emergencyContactPhoneController.text.isEmpty ||
-            selectedRelationship == 0) {
+        List<String> missingFields = [];
+
+        if (emergencyContactNameController.text.isEmpty) missingFields.add('emergency_contact_name'.tr);
+        if (emergencyContactPhoneController.text.isEmpty) missingFields.add('emergency_contact_phone'.tr);
+        if (selectedRelationship == 0) missingFields.add('relationship'.tr);
+
+        if (missingFields.isNotEmpty) {
           Get.snackbar(
-            'error'.tr,
-            'fill_required_fields'.tr,
-            backgroundColor: Colors.red[400],
+            'incomplete_emergency_contact_info'.tr,
+            '${'please_complete_info'.tr}: ${missingFields.join(", ")}',
+            backgroundColor: Colors.red,
             colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 3),
           );
           return false;
         }
         return true;
+
       default:
         return false;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = Get.size.height;
@@ -453,7 +464,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                         ),
                                         SizedBox(width: 12),
                                         Text(
-                                          'تنبيه'.tr,
+                                          'alert'.tr,
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -464,7 +475,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                     ),
                                     SizedBox(height: 16),
                                     Text(
-                                      'هل تريد إلغاء عملية التسجيل؟'.tr,
+                                      'cancel_registration_confirm'.tr,
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.black54,
@@ -484,14 +495,14 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                               ),
                                             ),
                                             child: Text(
-                                              'لا'.tr,
+                                              'no'.tr,
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.black87,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                            onPressed: () => Navigator.of(context).pop(),
+                                            onPressed: () => Navigator.of(context).pop(false),
                                           ),
                                         ),
                                         SizedBox(width: 12),
@@ -505,7 +516,7 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                                               ),
                                             ),
                                             child: Text(
-                                              'نعم'.tr,
+                                              'yes'.tr,
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.white,
@@ -616,10 +627,8 @@ class _RegistrationStepsScreenState extends State<RegistrationStepsScreen> {
                           SingleChildScrollView(
                             child: PersonalInfoPage(
                               firstNameController: firstNameController,
-                              lastNameController: lastNameController,
                               middleNameController: middleNameController,
-                              alleyController: alleyController,
-                              districtController: districtController,
+                              lastNameController: lastNameController,
                               governorateController: governorateController,
                               countryController: countryController,
                               houseController: houseController,

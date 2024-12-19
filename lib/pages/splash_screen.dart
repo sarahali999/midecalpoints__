@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -38,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final screenWidth = Get.width;
     final screenHeight = Get.height;
-
     return Scaffold(
       backgroundColor: const Color(0xFF259E9F),
       body: SafeArea(
@@ -71,7 +69,7 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double logoSize = (screenWidth * 0.35).clamp(70.0, 150.0);
+    final double logoSize = (screenWidth * 0.5).clamp(70.0, 150.0);
     return SizedBox(
       width: logoSize,
       height: logoSize,
@@ -95,7 +93,7 @@ class AppTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fontSize = (screenWidth * 0.09).clamp(20.0, 32.0);
+    final double fontSize = (screenWidth * 0.1).clamp(20.0, 32.0);
     return Text(
       'طب الحشود',
       style: TextStyle(

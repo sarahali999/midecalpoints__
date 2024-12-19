@@ -786,7 +786,6 @@ Widget _buildProvinceDropdown() {
       });
     },
     dropdownColor: Color(0xfff6f6f6),
-
     icon: Icon(Icons.arrow_drop_down,
         color: _primaryColor),
     // validator: (value) {

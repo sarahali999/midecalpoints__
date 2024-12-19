@@ -8,8 +8,6 @@ class PersonalInfoPage extends StatefulWidget {
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController middleNameController;
-  final TextEditingController alleyController;
-  final TextEditingController districtController;
   final TextEditingController governorateController;
   final TextEditingController countryController;
   final TextEditingController houseController;
@@ -23,8 +21,7 @@ class PersonalInfoPage extends StatefulWidget {
     required this.firstNameController,
     required this.lastNameController,
     required this.middleNameController,
-    required this.alleyController,
-    required this.districtController,
+
     required this.governorateController,
     required this.countryController,
     required this.houseController,
@@ -170,6 +167,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       padding: padding,
       child: Column(
         children: [
+          SizedBox(height: spacing),
+
           CustomTextField(
             labelText: 'first_name'.tr,
             controller: widget.firstNameController,
@@ -304,17 +303,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 ),
               ),
             ),
-            SizedBox(height: spacing),
-            CustomTextField(
-              labelText: 'district'.tr,
-              controller: widget.districtController,
-            ),
-            SizedBox(height: spacing),
-            CustomTextField(
-              labelText: 'alley'.tr,
-              controller: widget.alleyController,
 
-            ),
+
             SizedBox(height: spacing),
             CustomTextField(
               labelText: 'house'.tr,

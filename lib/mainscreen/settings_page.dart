@@ -14,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool _notificationsEnabled = true;
+  final TextEditingController _feedbackController = TextEditingController();
 
   @override
   void initState() {
@@ -27,6 +28,184 @@ class _SettingsPageState extends State<SettingsPage> {
       _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
     });
   }
+  Future<void> _showFeedbackDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: const Offset(0.0, 10.0),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.feedback_outlined,
+                      color: Color(0xFF259E9F),
+                      size: 28,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'رأيك يهمنا'.tr,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF259E9F),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey[50],
+                    border: Border.all(
+                      color: Color(0xFF259E9F).withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: TextField(
+                    controller: _feedbackController,
+                    maxLines: 5,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'اكتب ملاحظاتك'.tr,
+                      hintStyle: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 16,
+                      ),
+                      contentPadding: EdgeInsets.all(20),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _feedbackController.clear();
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      ),
+                      child: Text(
+                        'cancel'.tr,
+                        style: TextStyle(
+                          color: Color(0xFF259E9F),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+
+                    ElevatedButton(
+                      onPressed: () async {
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF259E9F),
+                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.send_rounded,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'ارسال'.tr,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Future<void> _submitFeedback() async {
+  //   try {
+  //     final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     final jwtToken = prefs.getString('token');
+  //
+  //     if (jwtToken != null) {
+  //       final response = await http.post(
+  //         Uri.parse('https://medicalpoint-api.tatwer.tech/api/Mobile/SubmitFeedback'),
+  //         headers: {
+  //           'Authorization': 'Bearer $jwtToken',
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: json.encode({
+  //           'feedback': _feedbackController.text,
+  //         }),
+  //       );
+  //
+  //       if (response.statusCode == 200) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //             content: Text('feedback_submitted'.tr),
+  //             backgroundColor: Colors.green,
+  //           ),
+  //         );
+  //       } else {
+  //         throw Exception('Failed to submit feedback');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('error_submitting_feedback'.tr),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<void> _toggleNotifications(bool value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -108,60 +287,65 @@ class _SettingsPageState extends State<SettingsPage> {
           : TextDirection.ltr,
       child: Scaffold(
         appBar: _buildAppBar(),
-        body: Column(
-          children: [
-            SizedBox(height: 60),
-            _buildSettingsOption(
-              icon: Icons.language,
-              title: 'language'.tr,
-              trailingText: 'language'.tr,
-              onTap: () => _showLanguageDialog(context),
-            ),
-            SizedBox(height: 20),
-            _buildNotificationOption(),
-            SizedBox(height: 20),
-            _buildSettingsOption(
-              icon: Icons.person,
-              title: 'user_information'.tr,
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserProfile()
-                  )
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 60),
+              _buildSettingsOption(
+                icon: Icons.language,
+                title: 'language'.tr,
+                trailingText: 'language'.tr,
+                onTap: () => _showLanguageDialog(context),
               ),
-            ),
-            SizedBox(height: 20),
-            _buildSettingsOption(
-              icon: Icons.help_outline,
-              title: 'terms_and_service'.tr,
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Aboutapp()
-                )
+              SizedBox(height: 20),
+              _buildNotificationOption(),
+              SizedBox(height: 20),
+              _buildSettingsOption(
+                icon: Icons.person,
+                title: 'user_information'.tr,
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserProfile()
+                    )
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            _buildSettingsOption(
-              icon: Icons.logout,
-              title: 'logout'.tr,
-              onTap: _logout,
-            ),
-            Spacer(),
-            Spacer(),
-            _buildSettingsOption(
-              icon: Icons.dangerous,
-              title: 'delete_account'.tr,
-              onTap: () => _showDeleteAccountDialog(context),
-            ),
-            Spacer(),
-            _buildFooterText(),
-          ],
+              SizedBox(height: 20),
+              _buildSettingsOption(
+                icon: Icons.help_outline,
+                title: 'terms_and_service'.tr,
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Aboutapp()
+                    )
+                ),
+              ),
+              SizedBox(height: 20),
+              _buildSettingsOption(
+                icon: Icons.logout,
+                title: 'logout'.tr,
+                onTap: _logout,
+              ),
+              SizedBox(height: 20),
+              _buildSettingsOption(
+                icon: Icons.dangerous,
+                title: 'delete_account'.tr,
+                onTap: () => _showDeleteAccountDialog(context),
+              ),
+              SizedBox(height: 20),
+              _buildFooterText(),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _showFeedbackDialog,
+          backgroundColor: Color(0xFF259E9F),
+          child: Icon(Icons.feedback,color: Colors.white,),
         ),
       ),
     );
   }
-
   Widget _buildNotificationOption() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -269,6 +453,7 @@ class _SettingsPageState extends State<SettingsPage> {
       {'code': 'fa', 'name': 'فارسی'},
       {'code': 'ku', 'name': 'کوردی'},
       {'code': 'tk', 'name': 'تركماني'},
+      {'code': 'ur', 'name': 'اُرْدُوْ'},
     ];
     showDialog(
       context: context,

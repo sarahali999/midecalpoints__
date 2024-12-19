@@ -56,7 +56,6 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
             minChildSize: 0.3,
             maxChildSize: 0.8,
             expand: false,
-
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
                 decoration: BoxDecoration(

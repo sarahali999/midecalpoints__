@@ -29,15 +29,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _showLanguages = false;
   String _selectedLanguage = 'العربية';
   bool isRTL = true;
-
   static const Color _primaryColor = Color(0xFf259e9f);
-  static const List<String> _languages = ['العربية', 'فارسی', 'كوردي', 'تركماني', 'English'];
+  static const List<String> _languages = ['العربية', 'فارسی', 'كوردي', 'تركماني', 'English','اُرْدُوْ'];
 
   static const List<OnboardingContent> _contents = [
     OnboardingContent(
       image: 'assets/images/logo.png',
       illustrationAsset: 'assets/images/page.png',
-      titleKey: 'crowd_medicine',
+      titleKey: 'Health_care',
       descriptionKey: 'crowd_medicine_desc',
     ),
     OnboardingContent(
@@ -87,6 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       case 'كوردي': return 'ku';
       case 'تركماني': return 'tk';
       case 'English': return 'en';
+      case 'الاوردية': return 'ur';
       default: return 'ar'; // العربية
     }
   }

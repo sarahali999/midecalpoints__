@@ -156,8 +156,11 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
       child: Padding(
         padding: padding,
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: spacing),
+
             CustomTextField(
               labelText: 'emergencyContactPage.fullName'.tr,
               controller: widget.emergencyContactNameController,

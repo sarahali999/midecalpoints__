@@ -34,11 +34,7 @@ class ContactInfoPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CustomTextField(
-            labelText: 'username'.tr,
-            controller: usernameController,
 
-          ),
           SizedBox(height: spacing),
 
             IntlPhoneField(
@@ -65,12 +61,7 @@ class ContactInfoPage extends StatelessWidget {
             ),
 
           SizedBox(height: spacing),
-          CustomTextField(
-            labelText: 'email'.tr,
-            controller: emailController,
 
-          ),
-          SizedBox(height: spacing),
           CustomTextField(
             labelText: 'enter_password'.tr,
             controller: passwordController,
